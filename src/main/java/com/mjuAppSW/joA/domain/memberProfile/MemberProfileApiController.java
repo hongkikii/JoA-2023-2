@@ -60,7 +60,7 @@ public class MemberProfileApiController {
 
     @Operation(summary = "한 줄 소개 변경", description = "한 줄 소개 변경 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "상태 코드 반환"),
+            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환"),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
             @ApiResponse(responseCode = "403", description = "M002: 접근 권한이 없는 계정입니다."),
             @ApiResponse(responseCode = "500", description = "M003: 이미지 업로드에 실패하였습니다."),
@@ -73,7 +73,7 @@ public class MemberProfileApiController {
 
     @Operation(summary = "한 줄 소개 삭제", description = "한 줄 소개 삭제 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "상태 코드 반환"),
+            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환"),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
             @ApiResponse(responseCode = "403", description = "M002: 접근 권한이 없는 계정입니다.")
     })
@@ -86,7 +86,7 @@ public class MemberProfileApiController {
 
     @Operation(summary = "프로필 사진 변경", description = "프로필 사진 변경 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "상태 코드 반환"),
+            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환"),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
             @ApiResponse(responseCode = "403", description = "M002: 접근 권한이 없는 계정입니다."),
             @ApiResponse(responseCode = "500", description = "M003: S3 저장소 접근에 실패했습니다.")
@@ -99,7 +99,7 @@ public class MemberProfileApiController {
 
     @Operation(summary = "프로필 사진 삭제", description = "프로필 사진 삭제 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "상태 코드 반환"),
+            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환"),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
             @ApiResponse(responseCode = "403", description = "M002: 접근 권한이 없는 계정입니다."),
             @ApiResponse(responseCode = "500", description = "M003: S3 저장소 접근에 실패했습니다.")

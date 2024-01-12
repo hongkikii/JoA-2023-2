@@ -23,7 +23,7 @@ public class VoteReportApiController {
 
     @Operation(summary = "투표 신고", description = "투표 신고 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "상태 코드 응답"),
+            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환"),
             @ApiResponse(responseCode = "404", description = "RC001: 신고 카테고리가 존재하지 않습니다."),
             @ApiResponse(responseCode = "404", description = "V001: 투표가 존재하지 않습니다."),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
