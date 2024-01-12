@@ -12,6 +12,8 @@ import com.mjuAppSW.joA.domain.member.dto.request.VerifyCertifyNumRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -41,9 +43,9 @@ public class MemberApiController {
     @Operation(summary = "인증 번호 전송", description = "회원가입 시 학교 웹메일을 확인하기 위해 해당 웹메일로 인증번호를 전송하는 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "인증 번호 웹메일 전송 후 확인 코드 반환"),
-            @ApiResponse(responseCode = "404", description = "P001: 학교 정보를 찾을 수 없습니다."),
-            @ApiResponse(responseCode = "409", description = "M005: 이미 존재하는 사용자입니다."),
-            @ApiResponse(responseCode = "409", description = "M006: 사용 중인 이메일입니다."),
+            @ApiResponse(responseCode = "404", description = "P001: 학교 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "409", description = "M005: 이미 존재하는 사용자입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "409", description = "M006: 사용 중인 이메일입니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PostMapping("/certify-num/send")
     public ResponseEntity<SuccessResponse<SessionIdResponse>> sendCertifyNum(@RequestBody @Valid SendCertifyNumRequest request) {
@@ -99,8 +101,8 @@ public class MemberApiController {
     @Operation(summary = "로그인", description = "로그인 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "로그인 확인 코드 반환"),
-            @ApiResponse(responseCode = "404", description = "M013: 아이디가 존재하지 않습니다."),
-            @ApiResponse(responseCode = "404", description = "M015: 비밀번호가 올바르지 않습니다."),
+            @ApiResponse(responseCode = "404", description = "M013: 아이디가 존재하지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "M015: 비밀번호가 올바르지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PostMapping("/login")
     public ResponseEntity<SuccessResponse<SessionIdResponse>> login(@RequestBody @Valid LoginRequest request) {

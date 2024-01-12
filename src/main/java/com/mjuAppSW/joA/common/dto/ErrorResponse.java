@@ -7,11 +7,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@Schema(description = "실패 Response")
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ErrorResponse {
 
-    @Schema(description = "성공 여부. 항상 false 이다.", defaultValue = "false")
     private final boolean status = false;
     private final String code;
 
