@@ -23,7 +23,7 @@ public class PCollegeApiController {
 
     @Operation(summary = "학교 생성", description = "학교 생성(범위 포함) API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "상태 코드 반환"),
+            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환"),
     })
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid PolygonRequest request) {
