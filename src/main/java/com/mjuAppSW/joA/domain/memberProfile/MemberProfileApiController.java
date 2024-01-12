@@ -66,7 +66,7 @@ public class MemberProfileApiController {
             @ApiResponse(responseCode = "500", description = "M003: 이미지 업로드에 실패하였습니다."),
     })
     @PatchMapping("/bio")
-    public ResponseEntity<SuccessResponse<Void>> transBio(@RequestBody @Valid BioRequest request) {
+    public ResponseEntity<Void> transBio(@RequestBody @Valid BioRequest request) {
         memberProfileService.transBio(request);
         return ResponseEntity.ok().build();
     }
@@ -78,7 +78,7 @@ public class MemberProfileApiController {
             @ApiResponse(responseCode = "403", description = "M002: 접근 권한이 없는 계정입니다.")
     })
     @PatchMapping("/{id}/bio")
-    public ResponseEntity<SuccessResponse<Void>> deleteBio(
+    public ResponseEntity<Void> deleteBio(
             @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH) @PathVariable("id") Long sessionId) {
         memberProfileService.deleteBio(sessionId);
         return ResponseEntity.ok().build();
@@ -92,7 +92,7 @@ public class MemberProfileApiController {
             @ApiResponse(responseCode = "500", description = "M003: S3 저장소 접근에 실패했습니다.")
     })
     @PatchMapping("/picture")
-    public ResponseEntity<SuccessResponse<Void>> transPicture(@RequestBody @Valid PictureRequest request) {
+    public ResponseEntity<Void> transPicture(@RequestBody @Valid PictureRequest request) {
         memberProfileService.transPicture(request);
         return ResponseEntity.ok().build();
     }

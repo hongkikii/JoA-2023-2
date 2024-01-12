@@ -2,6 +2,8 @@ package com.mjuAppSW.joA.geography.college;
 
 import com.mjuAppSW.joA.geography.college.dto.PolygonRequest;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -23,7 +25,7 @@ public class PCollegeApiController {
 
     @Operation(summary = "학교 생성", description = "학교 생성(범위 포함) API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환"),
+            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
     })
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid PolygonRequest request) {
