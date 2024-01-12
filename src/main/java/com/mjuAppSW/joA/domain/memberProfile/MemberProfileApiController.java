@@ -8,6 +8,8 @@ import com.mjuAppSW.joA.domain.memberProfile.dto.response.SettingPageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -33,8 +35,8 @@ public class MemberProfileApiController {
     @Operation(summary = "설정 페이지 정보 조회", description = "설정 페이지에서 필요한 정보 조회 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "설정 페이지 필요 정보 반환"),
-            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
-            @ApiResponse(responseCode = "403", description = "M002: 접근 권한이 없는 계정입니다.")
+            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "M002: 접근 권한이 없는 계정입니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping("/{id}/setting-page")
     public ResponseEntity<SuccessResponse<SettingPageResponse>> getSettingPage(
@@ -46,8 +48,8 @@ public class MemberProfileApiController {
     @Operation(summary = "마이 페이지 정보 조회", description = "마이 페이지에서 필요한 정보 조회 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "마이 페이지 필요 정보 반환"),
-            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
-            @ApiResponse(responseCode = "403", description = "M002: 접근 권한이 없는 계정입니다.")
+            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "M002: 접근 권한이 없는 계정입니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping("/{id}/my-page")
     public ResponseEntity<SuccessResponse<MyPageResponse>> getMyPage(

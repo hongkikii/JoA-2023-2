@@ -7,6 +7,8 @@ import com.mjuAppSW.joA.domain.vote.dto.response.VoteListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -46,7 +48,7 @@ public class VoteApiController {
     @Operation(summary = "받은 투표 목록 조회", description = "받은 투표 목록 조회 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "받은 투표 목록 반환"),
-            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.")
+            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping("/{id}")
     public ResponseEntity<SuccessResponse<VoteListResponse>> getVotes(
@@ -59,7 +61,7 @@ public class VoteApiController {
     @Operation(summary = "투표 화면 사용자 정보 조회", description = "투표 화면 사용자 정보 조회 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "투표 화면 사용자 정보 반환"),
-            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.")
+            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping("/{id}/owner")
     public ResponseEntity<SuccessResponse<VoteOwnerResponse>> getVoteOwner(
