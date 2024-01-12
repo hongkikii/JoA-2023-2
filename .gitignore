@@ -42,6 +42,7 @@ out/
 
 # Setting file
 application-dev.yml
+application.yml
 .DS_Store
 
 # Init data
