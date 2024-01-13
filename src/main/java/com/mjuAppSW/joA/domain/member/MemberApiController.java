@@ -127,7 +127,7 @@ public class MemberApiController {
             @ApiResponse(responseCode = "404", description = "P001: 학교 정보를 찾을 수 없습니다."),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
     })
-    @GetMapping("/id/find")
+    @PostMapping("/id/find")
     public ResponseEntity<Void> findId(@RequestBody @Valid FindIdRequest request) {
         memberService.findId(request);
         return ResponseEntity.ok().build();
