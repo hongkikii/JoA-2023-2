@@ -71,7 +71,7 @@ public class MemberApiController {
             @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환"),
             @ApiResponse(responseCode = "400", description = "M010: 올바른 아이디 형식이 아닙니다."),
             @ApiResponse(responseCode = "400", description = "M008: 이메일 인증이 완료되지 않았습니다."),
-            @ApiResponse(responseCode = "409", description = "M011: 이미 사용 중이 아이디입니다."),
+            @ApiResponse(responseCode = "409", description = "M011: 이미 사용 중인 아이디입니다."),
 
     })
     @GetMapping("/id/verify")
@@ -127,7 +127,7 @@ public class MemberApiController {
             @ApiResponse(responseCode = "404", description = "P001: 학교 정보를 찾을 수 없습니다."),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
     })
-    @GetMapping("/id/find")
+    @PostMapping("/id/find")
     public ResponseEntity<Void> findId(@RequestBody @Valid FindIdRequest request) {
         memberService.findId(request);
         return ResponseEntity.ok().build();
