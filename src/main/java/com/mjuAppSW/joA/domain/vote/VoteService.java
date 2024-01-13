@@ -56,7 +56,8 @@ public class VoteService {
 
     private void checkEqualVote(Long giveId, Long takeId, Long categoryId) {
         voteRepository.findTodayEqualVote(giveId, takeId, categoryId, LocalDate.now())
-                .orElseThrow(VoteAlreadyExistedException::new);
+                .ifPresent(vote -> {
+                    throw new VoteAlreadyExistedException();});
     }
 
     private void checkInvalidVote(Long giveId, Long takeId) {
