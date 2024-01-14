@@ -1,10 +1,12 @@
 package com.mjuAppSW.joA.domain.message;
 
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.message.dto.CurrentMessageInfo;
+import com.mjuAppSW.joA.domain.message.dto.vo.CurrentMessageVO;
 import com.mjuAppSW.joA.domain.room.Room;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -28,7 +30,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     @Query("SELECT m.content AS content, m.time AS time FROM Message m WHERE m.room = :room " +
             "AND m.content IS NULL OR m.content IS NOT NULL " +
             "AND (m.time IS NULL OR m.time = (SELECT MAX(mes2.time) FROM Message mes2 WHERE mes2.room = :room))")
-    CurrentMessageInfo getCurrentMessageAndTime(@Param("room") Room room);
+    Optional<CurrentMessageVO> getCurrentMessageAndTime(@Param("room") Room room);
 
     @Modifying
     @Transactional

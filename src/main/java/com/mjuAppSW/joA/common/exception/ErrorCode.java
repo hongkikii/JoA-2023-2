@@ -41,9 +41,6 @@ public enum ErrorCode {
     COLLEGE_NOT_FOUND(404,"P001" , "학교 정보를 찾을 수 없습니다."),
     OUT_OF_COLLEGE(409, "P002", "사용자가 학교 밖에 위치합니다."),
 
-    // Room
-    ROOM_EXISTED(409, "R001", "이미 채팅방이 존재합니다."),
-
     // Report Category
     REPORT_CATEGORY_NOT_FOUND(404, "RC001", "신고 카테고리가 존재하지 않습니다."),
 
@@ -53,7 +50,30 @@ public enum ErrorCode {
     VOTE_ALREADY_EXISTED(409, "V003", "이미 투표가 존재합니다."),
 
     // Vote Report
-    VOTE_REPORT_ALREADY_EXISTED(409, "VR001", "이미 투표 신고가 존재합니다.");
+    VOTE_REPORT_ALREADY_EXISTED(409, "VR001", "이미 투표 신고가 존재합니다."),
+
+    // Room
+    ROOM_NOT_FOUND(404, "R001", "방을 찾을 수 없습니다."),
+    OVER_ONE_DAY(400, "R002", "방이 생성된지 24시간이 지났습니다."),
+    ROOM_EXISTED(409, "R001", "이미 채팅방이 존재합니다."),
+
+    ROOM_ALREADY_EXTEND(409, "R004", "이미 연장된 채팅방입니다."),
+
+    // RoomInMember
+    RIM_NOT_FOUND(404, "RIM001", "채팅방을 찾을 수 없습니다."),
+    RIM_ALREADY_EXISTED(409, "RIM002", "이미 두 사용자의 채팅방이 존재합니다."),
+
+    // MessageReport
+    MESSAGE_REPORT_ALREADY_EXISTED(409, "MR001", "이미 신고된 메시지가 존재합니다."),
+    MESSAGE_REPORT_NOT_FOUND(404, "MR002", "신고된 메시지를 찾을 수 없습니다."),
+    MESSAGE_REPORT_ALREADY_REPORT(409, "MR003", "상대방을 신고한 메시지가 존재합니다."),
+    MESSAGE_REPORT_ALREADY_REPORTED(409, "MR004", "상대방에게 신고된 메시지가 존재합니다."),
+
+    // Message
+    MESSAGE_NOT_FOUND(404, "MG001", "메시지를 찾을 수 없습니다."),
+
+    // WebSocket
+    ROOM_SESSION_LIST_IS_NULL(400, "W001", "방 섹션 리스트가 Null 입니다.");
 
     private final int status;
     private final String code;

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -48,4 +49,11 @@ public class RoomInMember {
         this.expired = expired;
         this.result = result;
     }
+
+    public void saveResult(String result) {
+        this.result = result;
+    }
+    public void updateExpired(String expired) { this.expired = expired; }
+    public void updateEntryTime(LocalDateTime entryTime){ this.entryTime = entryTime; }
+    public void updateExitTime(LocalDateTime exitTime) { this.exitTime = exitTime;}
 }

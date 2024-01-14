@@ -1,5 +1,7 @@
 package com.mjuAppSW.joA.domain.room;
 
+import static com.mjuAppSW.joA.common.constant.Constants.Room.*;
+
 import com.mjuAppSW.joA.domain.roomInMember.RoomInMember;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -41,7 +43,8 @@ public class Room{
         this.encryptKey = encryptKey;
     }
 
-    public Room(long roomId) {
-        this.id = roomId;
+    public void updateStatusAndDate(LocalDateTime updateRoomStatusDate) {
+        this.date = updateRoomStatusDate;
+        this.status = EXTEND;
     }
 }

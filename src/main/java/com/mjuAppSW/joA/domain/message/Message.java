@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -33,13 +34,13 @@ public class Message {
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date time;
+    private LocalDateTime time;
 
     @Column(nullable = false)
     private String isChecked;
 
     @Builder
-    public Message(Member member, Room room, String content, Date date, String isChecked) {
+    public Message(Member member, Room room, String content, LocalDateTime date, String isChecked) {
         this.member = member;
         this.room = room;
         this.content = content;
