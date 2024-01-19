@@ -38,9 +38,9 @@ public class LocationApiController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "학교 내 위치 여부 정보 반환"),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "M004: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", description = "L001: 사용자의 위치 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", description = "P001: 학교 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M004: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @PatchMapping
     public ResponseEntity<SuccessResponse<UpdateResponse>> update(@RequestBody @Valid UpdateRequest request) {

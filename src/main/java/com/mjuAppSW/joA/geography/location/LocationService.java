@@ -42,8 +42,6 @@ public class LocationService {
         Location oldLocation = findLocation(member.getId());
         PCollege college = findCollege(oldLocation.getCollege().getCollegeId());
 
-        memberChecker.checkStopped(member);
-
         boolean isContained = isPointWithinCollege
                 (request.getLatitude(), request.getLongitude(), college.getPolygonField());
 
@@ -87,14 +85,15 @@ public class LocationService {
         return geometryFactory.createPoint(coordinate);
     }
 
-    public NearByListResponse getNearByList(Long sessionId, Double latitude, Double longitude, Double altitude) {
+    public NearByListResponse getNearByList
+            (Long sessionId, Double latitude, Double longitude, Double altitude) {
         Member member = memberChecker.findBySessionId(sessionId);
         memberChecker.checkStopped(member);
         checkWithinCollege(findLocation(member.getId()));
 
         Point point = getPoint(latitude, longitude, altitude);
         List<Long> nearMemberIds = locationRepository.findNearIds(member.getId(), point,
-                                                                member.getCollege().getId(), LocalDate.now());
+                member.getCollege().getId(), LocalDate.now());
         List<NearByInfo> nearByList = makeNearByList(member, nearMemberIds);
         return NearByListResponse.of(nearByList);
     }
