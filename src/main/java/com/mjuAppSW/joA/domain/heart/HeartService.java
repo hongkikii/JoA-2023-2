@@ -10,7 +10,7 @@ import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberRepository;
 import com.mjuAppSW.joA.geography.block.BlockRepository;
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -51,7 +51,7 @@ public class HeartService {
     }
 
     private void checkEqualHeart(Long giveId, Long takeId) {
-        if (heartRepository.findEqualHeart(LocalDate.now(), giveId, takeId).isPresent()) {
+        if (heartRepository.findTodayHeart(giveId, takeId).isPresent()) {
             throw new HeartAlreadyExistedException();
         }
     }
@@ -60,7 +60,7 @@ public class HeartService {
         return Heart.builder()
                 .giveId(giveId)
                 .member(takeMember)
-                .date(LocalDate.now())
+                .date(LocalDateTime.now())
                 .build();
     }
 
@@ -71,6 +71,6 @@ public class HeartService {
     }
 
     private Boolean isOpponentHeartExisted(Long takeId, Long giveId) {
-        return heartRepository.findEqualHeart(LocalDate.now(), takeId, giveId).isPresent();
+        return heartRepository.findTodayHeart(takeId, giveId).isPresent();
     }
 }

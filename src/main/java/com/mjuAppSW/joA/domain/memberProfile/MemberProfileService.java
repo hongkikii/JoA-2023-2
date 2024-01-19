@@ -13,6 +13,8 @@ import com.mjuAppSW.joA.domain.memberProfile.dto.response.SettingPageResponse;
 import com.mjuAppSW.joA.domain.memberProfile.exception.InvalidS3Exception;
 import com.mjuAppSW.joA.domain.vote.VoteRepository;
 import com.mjuAppSW.joA.common.storage.S3Uploader;
+import com.mjuAppSW.joA.domain.memberProfile.dto.response.VotePageResponse;
+import com.mjuAppSW.joA.domain.memberProfile.dto.response.LocationPageResponse;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
@@ -37,11 +39,19 @@ public class MemberProfileService {
     public MyPageResponse getMyPage(Long sessionId) {
         Member member = memberChecker.findBySessionId(sessionId);
 
-        int todayHeart = heartRepository.countTodayHeartsById(LocalDate.now(), member.getId());
+        int todayHeart = heartRepository.countTodayHeartsById(member.getId());
         int totalHeart = heartRepository.countTotalHeartsById(member.getId());
         List<String> voteTop3 = voteRepository.findVoteCategoryById(member.getId(), PageRequest.of(0, 3));
 
         return MyPageResponse.of(member, todayHeart, totalHeart, voteTop3);
+    }
+
+    public VotePageResponse getVotePage(Long sessionId) {
+        return VotePageResponse.of(memberChecker.findBySessionId(sessionId));
+    }
+
+    public LocationPageResponse getLocationPage(Long sessionId) {
+        return LocationPageResponse.of(memberChecker.findBySessionId(sessionId));
     }
 
     @Transactional
@@ -60,7 +70,7 @@ public class MemberProfileService {
     public void transPicture(PictureRequest request) {
         Member member = memberChecker.findBySessionId(request.getId());
 
-        if (!isBasic(member.getUrlCode())){
+        if (!isBasicPicture(member.getUrlCode())){
             s3Uploader.deletePicture(member.getUrlCode());
         }
         String newUrlCode = s3Uploader.putPicture(member.getId(), request.getBase64Picture());
@@ -70,17 +80,14 @@ public class MemberProfileService {
         member.changeUrlCode(newUrlCode);
     }
 
-    private boolean isBasic(String urlCode) {
-        if(urlCode.equals(EMPTY_STRING)) {
-            return true;
-        }
-        return false;
+    private boolean isBasicPicture(String urlCode) {
+        return urlCode.equals(EMPTY_STRING);
     }
 
     @Transactional
     public void deletePicture(Long sessionId) {
         Member member = memberChecker.findBySessionId(sessionId);
-        if(isBasic(member.getUrlCode())) {
+        if(isBasicPicture(member.getUrlCode())) {
             return;
         }
         if (s3Uploader.deletePicture(member.getUrlCode())) {

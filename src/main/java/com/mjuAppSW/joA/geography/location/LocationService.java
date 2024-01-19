@@ -8,7 +8,6 @@ import com.mjuAppSW.joA.geography.college.PCollege;
 import com.mjuAppSW.joA.geography.college.PCollegeRepository;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByInfo;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByListResponse;
-import com.mjuAppSW.joA.geography.location.dto.response.OwnerResponse;
 import com.mjuAppSW.joA.geography.location.dto.request.UpdateRequest;
 import com.mjuAppSW.joA.geography.location.dto.response.UpdateResponse;
 import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
@@ -37,7 +36,7 @@ public class LocationService {
     private final MemberChecker memberChecker;
 
     @Transactional
-    public UpdateResponse updateLocation(UpdateRequest request) {
+    public UpdateResponse update(UpdateRequest request) {
         Member member = memberChecker.findBySessionId(request.getId());
         Location oldLocation = findLocation(member.getId());
         PCollege college = findCollege(oldLocation.getCollege().getCollegeId());
@@ -109,7 +108,8 @@ public class LocationService {
         return nearMemberIds.stream()
                         .map(nearId -> {
                             Member findMember = memberChecker.findById(nearId);
-                            boolean isLiked = isEqualHeartExisted(member.getId(), nearId);
+                            boolean isLiked = heartRepository.findTodayHeart(member.getId(), nearId)
+                                                            .isPresent();
                             return NearByInfo.builder()
                                         .id(findMember.getId())
                                         .name(findMember.getName())
@@ -118,14 +118,5 @@ public class LocationService {
                                         .isLiked(isLiked)
                                         .build();})
                         .collect(Collectors.toList());
-    }
-
-    private Boolean isEqualHeartExisted(Long giveId, Long takeId) {
-        return heartRepository.findEqualHeart(LocalDate.now(), giveId, takeId)
-                .isPresent();
-    }
-
-    public OwnerResponse getOwner(Long sessionId) {
-        return OwnerResponse.of(memberChecker.findBySessionId(sessionId));
     }
 }

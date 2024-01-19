@@ -8,6 +8,7 @@ import com.mjuAppSW.joA.geography.location.LocationRepository;
 import com.mjuAppSW.joA.common.storage.S3Uploader;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +48,7 @@ public class MemberStatusManager {
     }
 
     private void executeStopPolicy(Member member, int reportCount) {
-        LocalDate today = LocalDate.now();
+        LocalDateTime today = LocalDateTime.now();
         member.changeStopStartDate(today);
         if (reportCount == 5) {
             member.changeStopEndDate(today.plusDays(1));
@@ -62,7 +63,7 @@ public class MemberStatusManager {
     }
 
     private void completeStopPolicy(Member member) {
-        if(member.getStopEndDate() != LocalDate.now()) {
+        if(member.getStopEndDate().toLocalDate() != LocalDate.now()) {
             log.info("account stop ing : id = {}", member.getId());
             return;
         }

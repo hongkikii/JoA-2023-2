@@ -1,7 +1,6 @@
 package com.mjuAppSW.joA.geography.block;
 
 import com.mjuAppSW.joA.common.auth.MemberChecker;
-import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.geography.block.dto.BlockRequest;
 import com.mjuAppSW.joA.geography.block.exception.BlockAlreadyExistedException;
@@ -21,16 +20,16 @@ public class BlockService {
     private final MemberChecker memberChecker;
 
     @Transactional
-    public void block(BlockRequest request) {
+    public void create(BlockRequest request) {
         Member blockerMember = memberChecker.findBySessionId(request.getBlockerId());
 
         Location blockerLocation = findLocation(blockerMember.getId());
         Location blockedLocation = findLocation(request.getBlockedId());
 
-        checkEqualBlock(blockerLocation.getId(), blockedLocation.getId());
+        checkEqual(blockerLocation.getId(), blockedLocation.getId());
 
-        Block saveBlock = new Block(blockerLocation, blockedLocation);
-        blockRepository.save(saveBlock);
+        Block newBlock = new Block(blockerLocation, blockedLocation);
+        blockRepository.save(newBlock);
     }
 
     private Location findLocation(Long memberId) {
@@ -38,7 +37,7 @@ public class BlockService {
                 .orElseThrow(LocationNotFoundException::new);
     }
 
-    private void checkEqualBlock(Long blockerId, Long blockedId) {
+    private void checkEqual(Long blockerId, Long blockedId) {
         blockRepository.findEqualBlock(blockerId, blockedId)
                     .ifPresent(block -> {
                         throw new BlockAlreadyExistedException();});
