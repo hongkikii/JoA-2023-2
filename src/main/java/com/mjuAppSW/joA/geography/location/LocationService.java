@@ -108,7 +108,8 @@ public class LocationService {
         return nearMemberIds.stream()
                         .map(nearId -> {
                             Member findMember = memberChecker.findById(nearId);
-                            boolean isLiked = isEqualHeartExisted(member.getId(), nearId);
+                            boolean isLiked = heartRepository.findTodayHeart(member.getId(), nearId)
+                                                            .isPresent();
                             return NearByInfo.builder()
                                         .id(findMember.getId())
                                         .name(findMember.getName())
@@ -117,10 +118,5 @@ public class LocationService {
                                         .isLiked(isLiked)
                                         .build();})
                         .collect(Collectors.toList());
-    }
-
-    private Boolean isEqualHeartExisted(Long giveId, Long takeId) {
-        return heartRepository.findEqualHeart(LocalDate.now(), giveId, takeId)
-                .isPresent();
     }
 }

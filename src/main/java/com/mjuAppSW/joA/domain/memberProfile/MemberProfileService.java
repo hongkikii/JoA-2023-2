@@ -39,7 +39,7 @@ public class MemberProfileService {
     public MyPageResponse getMyPage(Long sessionId) {
         Member member = memberChecker.findBySessionId(sessionId);
 
-        int todayHeart = heartRepository.countTodayHeartsById(LocalDate.now(), member.getId());
+        int todayHeart = heartRepository.countTodayHeartsById(member.getId());
         int totalHeart = heartRepository.countTotalHeartsById(member.getId());
         List<String> voteTop3 = voteRepository.findVoteCategoryById(member.getId(), PageRequest.of(0, 3));
 

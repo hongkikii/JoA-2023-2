@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,10 +33,10 @@ public class Heart {
     private Member member;
 
     @Column(nullable = false)
-    private LocalDate date;
+    private LocalDateTime date;
 
     @Builder
-    public Heart(Long giveId, Member member, LocalDate date) {
+    public Heart(Long giveId, Member member, LocalDateTime date) {
         this.giveId = giveId;
         this.member = member;
         this.date = date;
