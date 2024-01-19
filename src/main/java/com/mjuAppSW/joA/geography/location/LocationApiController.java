@@ -52,10 +52,10 @@ public class LocationApiController {
     @Operation(summary = "주변 사람 목록 조회", description = "주변 사람 목록 조회 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "주변 사람 목록 반환"),
-            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "404", description = "L001: 사용자의 위치 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404-1", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404-2", description = "L001: 사용자의 위치 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "409", description = "P002: 사용자가 학교 밖에 위치합니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping("/{id}/near-by-list")

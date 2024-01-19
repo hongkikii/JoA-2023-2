@@ -39,8 +39,8 @@ public class MemberProfileApiController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "설정 페이지 필요 정보 반환"),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @GetMapping("/{id}/setting-page")
     public ResponseEntity<SuccessResponse<SettingPageResponse>> getSettingPage(
@@ -53,8 +53,8 @@ public class MemberProfileApiController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "마이 페이지 필요 정보 반환"),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @GetMapping("/{id}/my-page")
     public ResponseEntity<SuccessResponse<MyPageResponse>> getMyPage(
@@ -67,8 +67,8 @@ public class MemberProfileApiController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "투표 화면 사용자 정보 반환"),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @GetMapping("/{id}/vote-page")
     public ResponseEntity<SuccessResponse<VotePageResponse>> getVotePage(
@@ -82,8 +82,8 @@ public class MemberProfileApiController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "주변 사람 목록 화면 사용자 정보 반환"),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @GetMapping("/{id}/location-page")
     public ResponseEntity<SuccessResponse<LocationPageResponse>> getLocationPage(
@@ -97,8 +97,8 @@ public class MemberProfileApiController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "500", description = "M003: 이미지 업로드에 실패하였습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PatchMapping("/bio")
@@ -111,8 +111,8 @@ public class MemberProfileApiController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PatchMapping("/{id}/bio")
     public ResponseEntity<Void> deleteBio(
@@ -125,8 +125,8 @@ public class MemberProfileApiController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "500", description = "M003: S3 저장소 접근에 실패했습니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @PatchMapping("/picture")
@@ -139,8 +139,8 @@ public class MemberProfileApiController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "500", description = "M003: S3 저장소 접근에 실패했습니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @PatchMapping("/{id}/picture")

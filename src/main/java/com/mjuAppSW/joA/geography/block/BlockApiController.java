@@ -24,8 +24,8 @@ public class BlockApiController {
     @Operation(summary = "사용자 차단", description = "사용자 차단 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "404", description = "L001: 사용자의 위치 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404-1", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404-2", description = "L001: 사용자의 위치 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "409", description = "B002: 이미 차단한 사용자입니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PostMapping
