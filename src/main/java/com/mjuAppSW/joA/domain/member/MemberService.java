@@ -40,7 +40,7 @@ import com.mjuAppSW.joA.geography.college.PCollege;
 import com.mjuAppSW.joA.geography.college.PCollegeRepository;
 import com.mjuAppSW.joA.geography.location.Location;
 import com.mjuAppSW.joA.geography.location.LocationRepository;
-import com.mjuAppSW.joA.common.session.SessionManager;
+import com.mjuAppSW.joA.common.auth.SessionManager;
 import com.mjuAppSW.joA.common.storage.CacheManager;
 import com.mjuAppSW.joA.common.storage.S3Uploader;
 import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
