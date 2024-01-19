@@ -16,8 +16,4 @@ public class VerifyCertifyNumRequest {
     private final Long id;
     @NotBlank
     private final String certifyNum;
-    @NotBlank
-    private final String uEmail;
-    @NotNull
-    private final Long collegeId;
 }

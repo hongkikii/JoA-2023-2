@@ -51,7 +51,7 @@ public class Member {
     @Column(nullable = false)
     private Boolean isWithdrawal;
 
-    @Column(name = "Session_id", nullable = false)
+    @Column(name = "Session_id")
     private Long sessionId;
 
     @ManyToOne
