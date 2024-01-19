@@ -70,7 +70,7 @@ public class MemberProfileService {
     public void transPicture(PictureRequest request) {
         Member member = memberChecker.findBySessionId(request.getId());
 
-        if (!isBasic(member.getUrlCode())){
+        if (!isBasicPicture(member.getUrlCode())){
             s3Uploader.deletePicture(member.getUrlCode());
         }
         String newUrlCode = s3Uploader.putPicture(member.getId(), request.getBase64Picture());
@@ -80,17 +80,14 @@ public class MemberProfileService {
         member.changeUrlCode(newUrlCode);
     }
 
-    private boolean isBasic(String urlCode) {
-        if(urlCode.equals(EMPTY_STRING)) {
-            return true;
-        }
-        return false;
+    private boolean isBasicPicture(String urlCode) {
+        return urlCode.equals(EMPTY_STRING);
     }
 
     @Transactional
     public void deletePicture(Long sessionId) {
         Member member = memberChecker.findBySessionId(sessionId);
-        if(isBasic(member.getUrlCode())) {
+        if(isBasicPicture(member.getUrlCode())) {
             return;
         }
         if (s3Uploader.deletePicture(member.getUrlCode())) {
