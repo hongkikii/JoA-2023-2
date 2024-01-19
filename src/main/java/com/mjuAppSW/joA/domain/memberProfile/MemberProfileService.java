@@ -14,6 +14,7 @@ import com.mjuAppSW.joA.domain.memberProfile.exception.InvalidS3Exception;
 import com.mjuAppSW.joA.domain.vote.VoteRepository;
 import com.mjuAppSW.joA.common.storage.S3Uploader;
 import com.mjuAppSW.joA.domain.memberProfile.dto.response.VotePageResponse;
+import com.mjuAppSW.joA.domain.memberProfile.dto.response.LocationPageResponse;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
@@ -47,6 +48,10 @@ public class MemberProfileService {
 
     public VotePageResponse getVotePage(Long sessionId) {
         return VotePageResponse.of(memberChecker.findBySessionId(sessionId));
+    }
+
+    public LocationPageResponse getLocationPage(Long sessionId) {
+        return LocationPageResponse.of(memberChecker.findBySessionId(sessionId));
     }
 
     @Transactional

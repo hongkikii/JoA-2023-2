@@ -6,7 +6,7 @@ import com.mjuAppSW.joA.domain.memberProfile.dto.response.MyPageResponse;
 import com.mjuAppSW.joA.domain.memberProfile.dto.request.PictureRequest;
 import com.mjuAppSW.joA.domain.memberProfile.dto.response.SettingPageResponse;
 import com.mjuAppSW.joA.domain.memberProfile.dto.response.VotePageResponse;
-import com.mjuAppSW.joA.geography.location.dto.response.OwnerResponse;
+import com.mjuAppSW.joA.domain.memberProfile.dto.response.LocationPageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -71,6 +71,19 @@ public class MemberProfileApiController {
             @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH)
             @PathVariable("id") Long sessionId) {
         return SuccessResponse.of(memberProfileService.getVotePage(sessionId))
+                .asHttp(HttpStatus.OK);
+    }
+
+    @Operation(summary = "주변 사람 조회 화면 사용자 정보 조회", description = "주변 사람 목록 화면 사용자 정보 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "주변 사람 목록 화면 사용자 정보 반환"),
+            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true)))
+    })
+    @GetMapping("/{id}/location-page")
+    public ResponseEntity<SuccessResponse<LocationPageResponse>> getLocationPage(
+            @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH)
+            @PathVariable("id") @NotNull Long sessionId) {
+        return SuccessResponse.of(memberProfileService.getLocationPage(sessionId))
                 .asHttp(HttpStatus.OK);
     }
 

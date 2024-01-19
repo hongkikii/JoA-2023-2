@@ -8,7 +8,6 @@ import com.mjuAppSW.joA.geography.college.PCollege;
 import com.mjuAppSW.joA.geography.college.PCollegeRepository;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByInfo;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByListResponse;
-import com.mjuAppSW.joA.geography.location.dto.response.OwnerResponse;
 import com.mjuAppSW.joA.geography.location.dto.request.UpdateRequest;
 import com.mjuAppSW.joA.geography.location.dto.response.UpdateResponse;
 import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
@@ -37,7 +36,7 @@ public class LocationService {
     private final MemberChecker memberChecker;
 
     @Transactional
-    public UpdateResponse updateLocation(UpdateRequest request) {
+    public UpdateResponse update(UpdateRequest request) {
         Member member = memberChecker.findBySessionId(request.getId());
         Location oldLocation = findLocation(member.getId());
         PCollege college = findCollege(oldLocation.getCollege().getCollegeId());
@@ -123,9 +122,5 @@ public class LocationService {
     private Boolean isEqualHeartExisted(Long giveId, Long takeId) {
         return heartRepository.findEqualHeart(LocalDate.now(), giveId, takeId)
                 .isPresent();
-    }
-
-    public OwnerResponse getOwner(Long sessionId) {
-        return OwnerResponse.of(memberChecker.findBySessionId(sessionId));
     }
 }
