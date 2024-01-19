@@ -22,9 +22,10 @@ public class BlockService {
     @Transactional
     public void create(BlockRequest request) {
         Member blockerMember = memberChecker.findBySessionId(request.getBlockerId());
+        Member blockedMember = memberChecker.findById(request.getBlockedId());
 
         Location blockerLocation = findLocation(blockerMember.getId());
-        Location blockedLocation = findLocation(request.getBlockedId());
+        Location blockedLocation = findLocation(blockedMember.getId());
 
         checkEqual(blockerLocation.getId(), blockedLocation.getId());
 
