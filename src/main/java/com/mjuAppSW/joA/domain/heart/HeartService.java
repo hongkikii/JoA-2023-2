@@ -27,7 +27,7 @@ public class HeartService {
 
     @Transactional
     public HeartResponse sendHeart(HeartRequest request) {
-        Member giveMember = memberChecker.findBySessionId(request.getGiveId());
+        Member giveMember = memberChecker.findFilterBySessionId(request.getGiveId());
         Long giveMemberId = giveMember.getId();
         Long takeMemberId = request.getTakeId();
         Member takeMember = memberChecker.findById(takeMemberId);

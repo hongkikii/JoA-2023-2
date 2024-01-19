@@ -46,7 +46,7 @@ public class MemberApiController {
             @ApiResponse(responseCode = "200", description = "인증 번호 웹메일 전송 후 확인 코드 반환"),
             @ApiResponse(responseCode = "404", description = "P001: 학교 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "409", description = "M005: 이미 존재하는 사용자입니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M014: 접근이 제한된 이메일입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "409", description = "M006: 사용 중인 이메일입니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PostMapping("/certify-num/send")

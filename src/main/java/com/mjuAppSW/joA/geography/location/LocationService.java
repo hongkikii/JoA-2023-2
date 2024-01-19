@@ -13,7 +13,6 @@ import com.mjuAppSW.joA.geography.location.dto.response.UpdateResponse;
 import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
 import com.mjuAppSW.joA.geography.location.exception.OutOfCollegeException;
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,7 +37,7 @@ public class LocationService {
 
     @Transactional
     public UpdateResponse update(UpdateRequest request) {
-        Member member = memberChecker.findBySessionId(request.getId());
+        Member member = memberChecker.findFilterBySessionId(request.getId());
         Location oldLocation = findLocation(member.getId());
         PCollege college = findCollege(oldLocation.getCollege().getCollegeId());
 
@@ -87,8 +86,7 @@ public class LocationService {
 
     public NearByListResponse getNearByList
             (Long sessionId, Double latitude, Double longitude, Double altitude) {
-        Member member = memberChecker.findBySessionId(sessionId);
-        memberChecker.checkStopped(member);
+        Member member = memberChecker.findFilterBySessionId(sessionId);
         checkWithinCollege(findLocation(member.getId()));
 
         Point point = getPoint(latitude, longitude, altitude);

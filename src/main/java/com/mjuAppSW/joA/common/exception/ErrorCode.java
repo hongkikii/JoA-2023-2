@@ -22,7 +22,7 @@ public enum ErrorCode {
 
     // Member
     MEMBER_NOT_FOUND(404,"M001","사용자를 찾을 수 없습니다."),
-    ACCESS_FORBIDDEN(403, "M002", "접근 권한이 없는 계정입니다."),
+    ACCESS_FORBIDDEN(403, "M002", "접근 권한이 없는 계정입니다."), // 미사용
     INVALID_S3(500, "M003", "S3 저장소 접근에 실패했습니다."),
     ACCESS_STOPPED(403, "M004", "정지된 계정입니다."),
     MEMBER_ALREADY_EXISTED(409, "M005", "이미 존재하는 사용자입니다."),
@@ -34,7 +34,7 @@ public enum ErrorCode {
     LOGIN_ID_ALREADY_EXISTED(409, "M011", "이미 사용 중인 아이디입니다."),
     INVALID_PASSWORD(400, "M012", "올바른 비밀번호 형식이 아닙니다."),
     LOGIN_ID_NOT_AUTHORIZED(404, "M013", "아이디 중복 확인이 완료되지 않았습니다."),
-    MAIL_FORBIDDEN(403, "M014", "접근이 제한된 이메일입니다."),
+    PERMANENT_BAN(403, "M014", "영구 정지된 계정입니다."),
     PASSWORD_NOT_FOUND(404, "M015", "비밀번호가 올바르지 않습니다."),
 
     // PCollege

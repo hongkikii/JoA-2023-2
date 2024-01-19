@@ -4,7 +4,6 @@ import com.mjuAppSW.joA.common.auth.MemberChecker;
 import com.mjuAppSW.joA.domain.vote.exception.InvalidVoteExistedException;
 import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.memberProfile.exception.AccessForbiddenException;
 import com.mjuAppSW.joA.domain.vote.dto.request.VoteRequest;
 import com.mjuAppSW.joA.domain.vote.dto.response.VoteContent;
 import com.mjuAppSW.joA.domain.vote.dto.response.VoteListResponse;
@@ -34,7 +33,7 @@ public class VoteService {
 
     @Transactional
     public void send(VoteRequest request) {
-        Member giveMember = memberChecker.findBySessionId(request.getGiveId());
+        Member giveMember = memberChecker.findFilterBySessionId(request.getGiveId());
         Member takeMember = memberChecker.findById(request.getTakeId());
         VoteCategory voteCategory = findVoteCategoryById(request.getCategoryId());
 
@@ -76,7 +75,7 @@ public class VoteService {
     }
 
     public VoteListResponse get(Long sessionId) {
-        Member findTakeMember = memberChecker.findBySessionId(sessionId);
+        Member findTakeMember = memberChecker.findFilterBySessionId(sessionId);
         return VoteListResponse.of(getVoteList(findTakeMember.getId()));
     }
 
