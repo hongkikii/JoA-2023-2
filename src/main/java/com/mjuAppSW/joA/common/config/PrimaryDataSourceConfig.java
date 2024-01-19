@@ -38,7 +38,7 @@ public class PrimaryDataSourceConfig {
     public LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(primaryDataSource());
-        em.setPackagesToScan(new String[] {"com.mjuAppSW.joA.domain", "com.mjuAppSW.joA.data"});
+        em.setPackagesToScan(new String[] {"com.mjuAppSW.joA.domain"});
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Map<String, String> properties = new HashMap<String, String>();
