@@ -2,7 +2,6 @@ package com.mjuAppSW.joA.common.auth;
 
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.MemberRepository;
-import com.mjuAppSW.joA.domain.member.exception.InvalidLoginIdException;
 import com.mjuAppSW.joA.domain.memberProfile.exception.AccessForbiddenException;
 import com.mjuAppSW.joA.domain.memberProfile.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.geography.location.exception.AccessStoppedException;
