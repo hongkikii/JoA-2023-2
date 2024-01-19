@@ -23,7 +23,7 @@ public class PCollegeApiController {
 
     private final PCollegeService pCollegeService;
 
-    @Operation(summary = "학교 생성", description = "학교 생성(범위 포함) API")
+    @Operation(summary = "학교 범위 생성", description = "학교 범위 생성 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
     })
