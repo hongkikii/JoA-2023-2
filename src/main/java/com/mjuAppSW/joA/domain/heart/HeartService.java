@@ -37,6 +37,11 @@ public class HeartService {
 
         Heart newHeart = createHeart(giveMemberId, takeMember);
         heartRepository.save(newHeart);
+        /**
+         * if(채팅방이 이미 존재) {
+         *      채팅방이 이미 존재합니다! 예외!
+         * }
+         */
         checkExistedRoom(giveMember, takeMember);
 
         boolean isMatched = isOpponentHeartExisted(takeMemberId, giveMemberId);
