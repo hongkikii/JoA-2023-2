@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface LocationRepository extends JpaRepository<Location, Long> {
 
+
     @Query(value = "SELECT l.member_id " +
             "FROM location l " +
             "WHERE ST_DWithin(l.member_point, :point, 0.000899) " +

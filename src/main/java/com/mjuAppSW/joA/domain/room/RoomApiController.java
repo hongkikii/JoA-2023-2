@@ -4,7 +4,6 @@ import com.mjuAppSW.joA.domain.room.dto.RoomCheckRequest;
 import com.mjuAppSW.joA.domain.room.dto.RoomResponse;
 import com.mjuAppSW.joA.domain.room.dto.RoomUpdateRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.internal.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

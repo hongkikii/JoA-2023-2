@@ -33,8 +33,6 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
-	implementation 'org.modelmapper:modelmapper:3.1.1'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'javax.mail:javax.mail-api:1.6.2'
 	implementation platform('io.awspring.cloud:spring-cloud-aws-starters:3.0.0-M2')
@@ -48,10 +46,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.mindrot:jbcrypt:0.4'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
-
 	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-	runtimeOnly 'mysql:mysql-connector-java'
-	implementation 'commons-dbcp:commons-dbcp:1.4'
 	implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
 }
 
