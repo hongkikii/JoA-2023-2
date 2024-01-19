@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@Schema(description = "인증번호 전송 Request")
+@Schema(description = "아이디 중복 검증 request")
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public class SendCertifyNumRequest {
-    @NotBlank
-    private final String collegeEmail;
+public class VerifyIdRequest {
     @NotNull
-    private final Long collegeId;
+    private final Long sessionId;
+    @NotBlank
+    private final String loginId;
 }

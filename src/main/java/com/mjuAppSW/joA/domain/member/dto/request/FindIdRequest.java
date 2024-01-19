@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor(force = true)
 public class FindIdRequest {
     @NotBlank
-    private final String uEmail;
+    private final String collegeEmail;
     @NotNull
     private final Long collegeId;
 }
