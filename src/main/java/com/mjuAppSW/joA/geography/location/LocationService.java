@@ -92,8 +92,10 @@ public class LocationService {
         checkWithinCollege(findLocation(member.getId()));
 
         Point point = getPoint(latitude, longitude, altitude);
-        List<Long> nearMemberIds = locationRepository.findNearIds(member.getId(), point,
-                member.getCollege().getId(), LocalDate.now());
+        System.out.println(member.getId());
+        List<Long> nearMemberIds = locationRepository.findNearIds
+                (member.getId(), point, member.getCollege().getId());
+        System.out.println(nearMemberIds.size());
         List<NearByInfo> nearByList = makeNearByList(member, nearMemberIds);
         return NearByListResponse.of(nearByList);
     }
