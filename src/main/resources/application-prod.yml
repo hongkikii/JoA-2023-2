@@ -12,16 +12,6 @@ spring:
       username: postgres
       password: ${AWS_POSTGRESQL_PASSWORD}
 
-  jpa:
-    properties:
-      hibernate:
-        format_sql: true
-        show_sql: true
-        highlight_sql: true
-    generate-ddl: true
-#    hibernate:
-#      ddl-auto: create
-
   mail:
     host: smtp.gmail.com
     port: 587
@@ -46,7 +36,3 @@ spring:
         auto: false
       s3:
         bucket: j-project-2023
-
-#  sql:
-#    init:
-#      mode: always
