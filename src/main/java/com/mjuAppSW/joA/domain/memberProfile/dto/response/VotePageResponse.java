@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.vote.dto.response;
+package com.mjuAppSW.joA.domain.memberProfile.dto.response;
 
 import com.mjuAppSW.joA.domain.member.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,12 +11,12 @@ import lombok.RequiredArgsConstructor;
 @Schema(description = "투표 화면 사용자 정보 Response")
 @Builder(access = AccessLevel.PRIVATE)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class VoteOwnerResponse {
+public class VotePageResponse {
     private final String name;
     private final String urlCode;
 
-    public static VoteOwnerResponse of(Member member) {
-        return VoteOwnerResponse.builder()
+    public static VotePageResponse of(Member member) {
+        return VotePageResponse.builder()
                 .name(member.getName())
                 .urlCode(member.getUrlCode())
                 .build();

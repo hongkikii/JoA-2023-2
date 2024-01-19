@@ -5,6 +5,8 @@ import com.mjuAppSW.joA.domain.memberProfile.dto.request.BioRequest;
 import com.mjuAppSW.joA.domain.memberProfile.dto.response.MyPageResponse;
 import com.mjuAppSW.joA.domain.memberProfile.dto.request.PictureRequest;
 import com.mjuAppSW.joA.domain.memberProfile.dto.response.SettingPageResponse;
+import com.mjuAppSW.joA.domain.memberProfile.dto.response.VotePageResponse;
+import com.mjuAppSW.joA.geography.location.dto.response.OwnerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -13,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -55,6 +58,19 @@ public class MemberProfileApiController {
     public ResponseEntity<SuccessResponse<MyPageResponse>> getMyPage(
             @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH) @PathVariable("id") Long sessionId) {
         return SuccessResponse.of(memberProfileService.getMyPage(sessionId))
+                .asHttp(HttpStatus.OK);
+    }
+
+    @Operation(summary = "투표 화면 사용자 정보 조회", description = "투표 화면 사용자 정보 조회 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "투표 화면 사용자 정보 반환"),
+            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true)))
+    })
+    @GetMapping("/{id}/vote-page")
+    public ResponseEntity<SuccessResponse<VotePageResponse>> getVotePage(
+            @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH)
+            @PathVariable("id") Long sessionId) {
+        return SuccessResponse.of(memberProfileService.getVotePage(sessionId))
                 .asHttp(HttpStatus.OK);
     }
 
