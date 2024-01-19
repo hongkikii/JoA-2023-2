@@ -14,6 +14,7 @@ import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
 import com.mjuAppSW.joA.geography.location.exception.OutOfCollegeException;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -75,7 +76,7 @@ public class LocationService {
                                     .college(oldLocation.getCollege())
                                     .point(point)
                                     .isContained(isContained)
-                                    .updateDate(LocalDate.now())
+                                    .updateDate(LocalDateTime.now())
                                     .build();
         locationRepository.save(newLocation);
     }

@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,7 +34,7 @@ public class Location {
     private Boolean isContained;
 
     @Column(name = "Update_date")
-    private LocalDate updateDate;
+    private LocalDateTime updateDate;
 
     public Location(Long id, PCollege college) {
         this.id = id;
@@ -42,7 +43,7 @@ public class Location {
     }
 
     @Builder
-    public Location(Long id, PCollege college, Point point, Boolean isContained, LocalDate updateDate) {
+    public Location(Long id, PCollege college, Point point, Boolean isContained, LocalDateTime updateDate) {
         this.id = id;
         this.college = college;
         this.point = point;
