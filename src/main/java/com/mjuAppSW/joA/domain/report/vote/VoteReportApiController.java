@@ -32,8 +32,8 @@ public class VoteReportApiController {
             @ApiResponse(responseCode = "409", description = "VR001: 이미 투표 신고가 존재합니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PostMapping("/vote")
-    public ResponseEntity<Void> reportVote(@RequestBody @Valid VoteReportRequest request) {
-        voteReportService.reportVote(request);
+    public ResponseEntity<Void> execute(@RequestBody @Valid VoteReportRequest request) {
+        voteReportService.execute(request);
         return ResponseEntity.ok().build();
     }
 }
