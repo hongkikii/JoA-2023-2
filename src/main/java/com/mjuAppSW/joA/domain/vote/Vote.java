@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,7 +38,7 @@ public class Vote {
     private VoteCategory voteCategory;
 
     @Column(nullable = false)
-    private LocalDate date;
+    private LocalDateTime date;
 
     private String hint;
 
@@ -45,7 +46,7 @@ public class Vote {
     private Boolean isValid;
 
     @Builder
-    public Vote(Long giveId, Member member, VoteCategory voteCategory, LocalDate date, String hint) {
+    public Vote(Long giveId, Member member, VoteCategory voteCategory, LocalDateTime date, String hint) {
         this.giveId = giveId;
         this.member = member;
         this.voteCategory = voteCategory;

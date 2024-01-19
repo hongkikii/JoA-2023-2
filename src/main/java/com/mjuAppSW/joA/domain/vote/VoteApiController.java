@@ -39,8 +39,8 @@ public class VoteApiController {
             @ApiResponse(responseCode = "403", description = "V003: 차단 조치가 이루어진 계정입니다.")
     })
     @PostMapping
-    public ResponseEntity<Void> sendVote(@RequestBody @Valid VoteRequest request) {
-        voteService.sendVote(request);
+    public ResponseEntity<Void> send(@RequestBody @Valid VoteRequest request) {
+        voteService.send(request);
         return ResponseEntity.ok().build();
     }
 
@@ -50,10 +50,10 @@ public class VoteApiController {
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<SuccessResponse<VoteListResponse>> getVotes(
+    public ResponseEntity<SuccessResponse<VoteListResponse>> get(
             @Parameter(description = "세션 id", in = ParameterIn.PATH)
             @PathVariable("id") Long sessionId) {
-        return SuccessResponse.of(voteService.getVotes(sessionId))
+        return SuccessResponse.of(voteService.get(sessionId))
                 .asHttp(HttpStatus.OK);
     }
 }

@@ -13,7 +13,7 @@ import com.mjuAppSW.joA.domain.vote.voteCategory.VoteCategory;
 import com.mjuAppSW.joA.domain.vote.voteCategory.VoteCategoryRepository;
 import com.mjuAppSW.joA.geography.block.BlockRepository;
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class VoteService {
     private final MemberChecker memberChecker;
 
     @Transactional
-    public void sendVote(VoteRequest request) {
+    public void send(VoteRequest request) {
         Member giveMember = memberChecker.findBySessionId(request.getGiveId());
         Member takeMember = memberChecker.findById(request.getTakeId());
         VoteCategory voteCategory = findVoteCategoryById(request.getCategoryId());
@@ -53,7 +53,7 @@ public class VoteService {
     }
 
     private void checkEqualVote(Long giveId, Long takeId, Long categoryId) {
-        voteRepository.findTodayEqualVote(giveId, takeId, categoryId, LocalDate.now())
+        voteRepository.findTodayVote(giveId, takeId, categoryId)
                 .ifPresent(vote -> {
                     throw new VoteAlreadyExistedException();});
     }
@@ -69,12 +69,12 @@ public class VoteService {
                             .giveId(giveMember.getId())
                             .member(takeMember)
                             .voteCategory(voteCategory)
-                            .date(LocalDate.now())
+                            .date(LocalDateTime.now())
                             .hint(hint)
                             .build());
     }
 
-    public VoteListResponse getVotes(Long sessionId) {
+    public VoteListResponse get(Long sessionId) {
         Member findTakeMember = memberChecker.findBySessionId(sessionId);
         return VoteListResponse.of(getVoteList(findTakeMember.getId()));
     }
