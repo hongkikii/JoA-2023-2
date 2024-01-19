@@ -51,6 +51,7 @@ public enum ErrorCode {
     VOTE_NOT_FOUND(404, "V001", "투표가 존재하지 않습니다."),
     VOTE_CATEGORY_NOT_FOUND(404, "V002", "투표 카테고리가 존재하지 않습니다."),
     VOTE_ALREADY_EXISTED(409, "V003", "이미 투표가 존재합니다."),
+    INVALID_VOTE_EXISTED(403, "V004", "투표 신고로 인해 접근이 제한된 계정입니다."),
 
     // Vote Report
     VOTE_REPORT_ALREADY_EXISTED(409, "VR001", "이미 투표 신고가 존재합니다.");

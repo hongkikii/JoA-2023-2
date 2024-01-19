@@ -1,6 +1,7 @@
 package com.mjuAppSW.joA.domain.vote;
 
 import com.mjuAppSW.joA.common.auth.MemberChecker;
+import com.mjuAppSW.joA.domain.vote.exception.InvalidVoteExistedException;
 import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.memberProfile.exception.AccessForbiddenException;
@@ -60,7 +61,7 @@ public class VoteService {
 
     private void checkInvalidVote(Long giveId, Long takeId) {
         if (voteRepository.findInvalidVotes(giveId, takeId).size() != 0) {
-            throw new AccessForbiddenException();
+            throw new InvalidVoteExistedException();
         }
     }
 
