@@ -55,10 +55,10 @@ public class MemberApiController {
 
     @Operation(summary = "인증 번호 검증", description = "회원가입 시 학교 웹메일을 확인하기 위해 전송된 인증번호를 확인하는 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환"),
-            @ApiResponse(responseCode = "404", description = "P001: 학교 정보를 찾을 수 없습니다."),
-            @ApiResponse(responseCode = "404", description = "M007: 세션 id가 유효하지 않습니다."),
-            @ApiResponse(responseCode = "400", description = "M009: 인증번호가 올바르지 않습니다."),
+            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "P001: 학교 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "M007: 세션 id가 유효하지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "400", description = "M009: 인증번호가 올바르지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PostMapping("/certify-num/verify")
     public ResponseEntity<Void> verifyCertifyNum(@RequestBody @Valid VerifyCertifyNumRequest request) {
@@ -68,10 +68,10 @@ public class MemberApiController {
 
     @Operation(summary = "아이디 중복 검증", description = "회원가입 시 중복 아이디가 존재하는지 확인하는 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환"),
-            @ApiResponse(responseCode = "400", description = "M010: 올바른 아이디 형식이 아닙니다."),
-            @ApiResponse(responseCode = "400", description = "M008: 이메일 인증이 완료되지 않았습니다."),
-            @ApiResponse(responseCode = "409", description = "M011: 이미 사용 중인 아이디입니다."),
+            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "400", description = "M010: 올바른 아이디 형식이 아닙니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "400", description = "M008: 이메일 인증이 완료되지 않았습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "409", description = "M011: 이미 사용 중인 아이디입니다.", content = @Content(schema = @Schema(hidden = true))),
 
     })
     @GetMapping("/id/verify")
@@ -84,12 +84,12 @@ public class MemberApiController {
 
     @Operation(summary = "회원 가입", description = "회원 가입 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환"),
-            @ApiResponse(responseCode = "400", description = "M012: 올바른 비밀번호 형식이 아닙니다."),
-            @ApiResponse(responseCode = "404", description = "M007: 세션 id가 유효하지 않습니다."),
-            @ApiResponse(responseCode = "400", description = "M013: 아이디 중복 확인이 완료되지 않았습니다."),
-            @ApiResponse(responseCode = "404", description = "P001: 학교 정보를 찾을 수 없습니다."),
-            @ApiResponse(responseCode = "403", description = "M014: 접근이 제한된 이메일입니다."),
+            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "400", description = "M012: 올바른 비밀번호 형식이 아닙니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "M007: 세션 id가 유효하지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "400", description = "M013: 아이디 중복 확인이 완료되지 않았습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "P001: 학교 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "M014: 접근이 제한된 이메일입니다.", content = @Content(schema = @Schema(hidden = true))),
 
     })
     @PostMapping
@@ -112,8 +112,8 @@ public class MemberApiController {
 
     @Operation(summary = "로그아웃", description = "로그아웃 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환"),
-            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.")
+            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @PostMapping("{id}/logout")
     public ResponseEntity<Void> logout(@PathVariable("id") @NotNull Long sessionId) {
@@ -123,9 +123,9 @@ public class MemberApiController {
 
     @Operation(summary = "아이디 찾기", description = "아이디 찾기 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "로그인 id 웹메일 전송 후 HTTP 상태 코드 반환"),
-            @ApiResponse(responseCode = "404", description = "P001: 학교 정보를 찾을 수 없습니다."),
-            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "200", description = "로그인 id 웹메일 전송 후 HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "P001: 학교 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PostMapping("/id/find")
     public ResponseEntity<Void> findId(@RequestBody @Valid FindIdRequest request) {
@@ -135,8 +135,8 @@ public class MemberApiController {
 
     @Operation(summary = "비밀번호 찾기", description = "비밀번호 찾기 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "임시 비밀번호 웹메일 전송 후 HTTP 상태 코드 반환"),
-            @ApiResponse(responseCode = "404", description = "M013: 아이디가 존재하지 않습니다."),
+            @ApiResponse(responseCode = "200", description = "임시 비밀번호 웹메일 전송 후 HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "M013: 아이디가 존재하지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PatchMapping("/password/find")
     public ResponseEntity<Void> findPassword(@PathVariable @Valid FindPasswordRequest request) {
@@ -146,9 +146,9 @@ public class MemberApiController {
 
     @Operation(summary = "비밀번호 변경", description = "비밀번호 변경 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환"),
-            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
-            @ApiResponse(responseCode = "404", description = "M015: 비밀번호가 올바르지 않습니다."),
+            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "M015: 비밀번호가 올바르지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PatchMapping("/password")
     public ResponseEntity<Void> transPassword(@RequestBody @Valid TransPasswordRequest request) {
@@ -158,9 +158,9 @@ public class MemberApiController {
 
     @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환"),
-            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
-            @ApiResponse(responseCode = "500", description = "M003: S3 저장소 접근에 실패했습니다.")
+            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "500", description = "M003: S3 저장소 접근에 실패했습니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> withdrawal(@PathVariable("id") @NotNull Long sessionId) {
