@@ -22,7 +22,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByuEmailAndcollege(@Param("uEmail") String uEmail, @Param("college") MCollege college);
 
     @Query("SELECT m FROM Member m WHERE m.uEmail = :uEmail AND m.college = :college AND m.status = 3")
-    Optional<Member> findForbiddenMember(@Param("uEmail") String uEmail, @Param("college") MCollege college);
+    Optional<Member> findForbidden(@Param("uEmail") String uEmail, @Param("college") MCollege college);
 
     @Query("SELECT m FROM Member m WHERE m.isWithdrawal = false")
     List<Member> findJoiningAll();

@@ -13,7 +13,6 @@ import com.mjuAppSW.joA.geography.location.dto.response.UpdateResponse;
 import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
 import com.mjuAppSW.joA.geography.location.exception.OutOfCollegeException;
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,11 +37,9 @@ public class LocationService {
 
     @Transactional
     public UpdateResponse update(UpdateRequest request) {
-        Member member = memberChecker.findBySessionId(request.getId());
+        Member member = memberChecker.findFilterBySessionId(request.getId());
         Location oldLocation = findLocation(member.getId());
         PCollege college = findCollege(oldLocation.getCollege().getCollegeId());
-
-        memberChecker.checkStopped(member);
 
         boolean isContained = isPointWithinCollege
                 (request.getLatitude(), request.getLongitude(), college.getPolygonField());
@@ -87,14 +84,16 @@ public class LocationService {
         return geometryFactory.createPoint(coordinate);
     }
 
-    public NearByListResponse getNearByList(Long sessionId, Double latitude, Double longitude, Double altitude) {
-        Member member = memberChecker.findBySessionId(sessionId);
-        memberChecker.checkStopped(member);
+    public NearByListResponse getNearByList
+            (Long sessionId, Double latitude, Double longitude, Double altitude) {
+        Member member = memberChecker.findFilterBySessionId(sessionId);
         checkWithinCollege(findLocation(member.getId()));
 
         Point point = getPoint(latitude, longitude, altitude);
-        List<Long> nearMemberIds = locationRepository.findNearIds(member.getId(), point,
-                                                                member.getCollege().getId(), LocalDate.now());
+        System.out.println(member.getId());
+        List<Long> nearMemberIds = locationRepository.findNearIds
+                (member.getId(), point, member.getCollege().getId());
+        System.out.println(nearMemberIds.size());
         List<NearByInfo> nearByList = makeNearByList(member, nearMemberIds);
         return NearByListResponse.of(nearByList);
     }

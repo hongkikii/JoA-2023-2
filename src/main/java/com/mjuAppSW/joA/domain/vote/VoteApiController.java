@@ -32,11 +32,13 @@ public class VoteApiController {
     @Operation(summary = "투표 전송", description = "투표 전송 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "상태 코드 반환"),
-            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
-            @ApiResponse(responseCode = "404", description = "V002: 투표 카테고리가 존재하지 않습니다."),
-            @ApiResponse(responseCode = "409", description = "V003: 이미 투표가 존재합니다."),
-            @ApiResponse(responseCode = "403", description = "V003: 접근 권한이 없는 계정입니다."),
-            @ApiResponse(responseCode = "403", description = "V003: 차단 조치가 이루어진 계정입니다.")
+            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "V002: 투표 카테고리가 존재하지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "409", description = "V003: 이미 투표가 존재합니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "V004: 투표 신고로 인해 접근이 제한된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "B001: 차단 조치에 의해 접근 권한이 없습니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @PostMapping
     public ResponseEntity<Void> send(@RequestBody @Valid VoteRequest request) {
@@ -47,7 +49,9 @@ public class VoteApiController {
     @Operation(summary = "받은 투표 목록 조회", description = "받은 투표 목록 조회 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "받은 투표 목록 반환"),
-            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true)))
+            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping("/{id}")
     public ResponseEntity<SuccessResponse<VoteListResponse>> get(

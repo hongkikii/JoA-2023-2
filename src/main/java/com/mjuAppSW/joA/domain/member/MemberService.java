@@ -31,10 +31,9 @@ import com.mjuAppSW.joA.domain.member.exception.InvalidPasswordException;
 import com.mjuAppSW.joA.domain.member.exception.JoiningMailException;
 import com.mjuAppSW.joA.domain.member.exception.LoginIdAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.LoginIdNotAuthorizedException;
-import com.mjuAppSW.joA.domain.member.exception.MailForbiddenException;
-import com.mjuAppSW.joA.domain.member.exception.MailNotVerifyException;
 import com.mjuAppSW.joA.domain.member.exception.MemberAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.PasswordNotFoundException;
+import com.mjuAppSW.joA.domain.member.exception.PermanentBanException;
 import com.mjuAppSW.joA.domain.member.exception.SessionNotFoundException;
 import com.mjuAppSW.joA.domain.memberProfile.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.domain.memberProfile.exception.InvalidS3Exception;
@@ -94,9 +93,9 @@ public class MemberService {
     }
 
     private void checkForbiddenMail(String uEmail, MCollege mCollege) {
-        memberRepository.findForbiddenMember(uEmail, mCollege)
+        memberRepository.findForbidden(uEmail, mCollege)
                 .ifPresent(forbiddenMember -> {
-                    throw new MailForbiddenException();});
+                    throw new PermanentBanException();});
     }
 
     private void checkExistedMember(String uEmail, MCollege college) {
