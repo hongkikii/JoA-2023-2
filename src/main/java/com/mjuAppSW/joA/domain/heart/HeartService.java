@@ -37,10 +37,9 @@ public class HeartService {
 
         Heart newHeart = createHeart(giveMemberId, takeMember);
         heartRepository.save(newHeart);
-
         checkExistedRoom(giveMember, takeMember);
 
-        Boolean isMatched = isOpponentHeartExisted(takeMemberId, giveMemberId);
+        boolean isMatched = isOpponentHeartExisted(takeMemberId, giveMemberId);
         return HeartResponse.of(isMatched, giveMember, takeMember);
     }
 
@@ -51,9 +50,9 @@ public class HeartService {
     }
 
     private void checkEqualHeart(Long giveId, Long takeId) {
-        if (heartRepository.findTodayHeart(giveId, takeId).isPresent()) {
-            throw new HeartAlreadyExistedException();
-        }
+        heartRepository.findTodayHeart(giveId, takeId)
+                    .ifPresent(heart -> {
+                        throw new HeartAlreadyExistedException();});
     }
 
     private Heart createHeart(Long giveId, Member takeMember) {
@@ -70,7 +69,7 @@ public class HeartService {
         }
     }
 
-    private Boolean isOpponentHeartExisted(Long takeId, Long giveId) {
+    private boolean isOpponentHeartExisted(Long takeId, Long giveId) {
         return heartRepository.findTodayHeart(takeId, giveId).isPresent();
     }
 }
