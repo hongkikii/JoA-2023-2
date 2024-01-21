@@ -7,6 +7,7 @@ import com.mjuAppSW.joA.common.encryption.EncryptManager;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.message.MessageRepository;
 import com.mjuAppSW.joA.domain.message.dto.vo.CurrentMessageVO;
+import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
 import com.mjuAppSW.joA.domain.room.Room;
 import com.mjuAppSW.joA.domain.room.RoomRepository;
 import com.mjuAppSW.joA.domain.room.exception.RoomNotFoundException;
@@ -56,10 +57,7 @@ public class RoomInMemberService {
 
     public RoomListResponse getRoomList(Long memberId) {
         Member member = memberChecker.findBySessionId(memberId);
-        // 정지 회원에 대한 제재 처리
-        if (memberChecker.isStopped(member)) {
-            return null;
-        }
+        memberChecker.checkStopped(member);
 
         List<RoomInMember> memberList = roomInMemberRepository.findByAllMember(member);
         if (memberList.isEmpty()) {return RoomListResponse.of(new ArrayList<>());}
@@ -81,6 +79,9 @@ public class RoomInMemberService {
                     roomWithoutMessageList.add(roomInfoVO);
                 } else {
                     String decryptedString = encryptManager.decrypt(currentMessageVO.getContent(), anotherRoomInMember.getRoom().getEncryptKey());
+                    if(decryptedString == null){
+                        throw new FailDecryptException();
+                    }
                     RoomInfoVO roomInfoVO = new RoomInfoVO(roomInfoEMVO.getRoom().getId(), roomInfoEMVO.getName(),
                         roomInfoEMVO.getUrlCode(), decryptedString, currentMessageVO.getTime(), String.valueOf(unCheckedMessage));
                     roomWithMessageList.add(roomInfoVO);
@@ -115,23 +116,12 @@ public class RoomInMemberService {
         Integer unCheckedMessageCount = messageRepository.countUnCheckedMessage(roomInMember.getRoom(), roomInMember.getMember());
 
         String decryptedString = encryptManager.decrypt(rlr.getContent(), rlr.getRoom().getEncryptKey());
+        if(decryptedString == null){
+            throw new FailDecryptException();
+        }
         return RoomInfoExceptDateVO.of(rlr.getRoom().getId(), rlr.getName(), rlr.getUrlCode(), decryptedString, String.valueOf(unCheckedMessageCount));
     }
 
-    // @Transactional
-    // public void createRoom(Long roomId, Long memberId){
-    //     Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
-    //     Member member = memberChecker.findById(memberId);
-    //
-    //     RoomInMember roomInMember = RoomInMember.builder()
-    //         .room(room)
-    //         .member(member)
-    //         .expired(NOT_EXIT)
-    //         .result(DISAPPROVE_OR_BEFORE_VOTE)
-    //         .build();
-    //
-    //     roomInMemberRepository.save(roomInMember);
-    // }
     @Transactional
     public void createRoom(Long roomId, String[] idArr){
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);

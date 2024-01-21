@@ -21,7 +21,6 @@ import com.mjuAppSW.joA.domain.report.ReportCategory;
 import com.mjuAppSW.joA.domain.report.ReportCategoryRepository;
 import com.mjuAppSW.joA.domain.report.message.dto.request.CheckMessageReportRequest;
 import com.mjuAppSW.joA.domain.report.message.dto.request.ReportRequest;
-import com.mjuAppSW.joA.domain.report.message.dto.response.CheckMessageReportResponse;
 import com.mjuAppSW.joA.domain.report.message.exception.MessageReportAlreadyExistedException;
 import com.mjuAppSW.joA.domain.report.message.exception.MessageReportAlreadyReportException;
 import com.mjuAppSW.joA.domain.report.message.exception.MessageReportAlreadyReportedException;

@@ -6,6 +6,8 @@ import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.MemberRepository;
 import com.mjuAppSW.joA.domain.message.dto.vo.MessageVO;
 import com.mjuAppSW.joA.domain.message.dto.response.MessageResponse;
+import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
+import com.mjuAppSW.joA.domain.message.exception.FailEncryptException;
 import com.mjuAppSW.joA.domain.room.Room;
 import com.mjuAppSW.joA.domain.room.RoomRepository;
 import com.mjuAppSW.joA.domain.room.exception.RoomNotFoundException;
@@ -39,10 +41,14 @@ public class MessageService {
     public Long saveMessage(Long roomId, Long memberId, String content, String isChecked, LocalDateTime createdMessageDate) {
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
         Member member = memberChecker.findById(memberId);
+        String encryptedMessage = encryptManager.encrypt(content, room.getEncryptKey());
+        if(encryptedMessage == null){
+            throw new FailEncryptException();
+        }
         Message message = Message.builder()
             .member(member)
             .room(room)
-            .content(encryptManager.encrypt(content, room.getEncryptKey()))
+            .content(encryptedMessage)
             .date(createdMessageDate)
             .isChecked(isChecked)
             .build();
@@ -69,6 +75,9 @@ public class MessageService {
 
     private String makeMessageContent(Message message, Member member, Room room) {
         String decryptedMessage = encryptManager.decrypt(message.getContent(), room.getEncryptKey());
+        if(decryptedMessage == null){
+            throw new FailDecryptException();
+        }
         String messageType = (message.getMember() == member) ? "R" : "L";
         return messageType + " " + message.getId() + " " + message.getIsChecked() + " " + decryptedMessage;
     }

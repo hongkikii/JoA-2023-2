@@ -4,9 +4,9 @@ import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
 import static com.mjuAppSW.joA.common.constant.Constants.WebSocketHandler.*;
 
 import com.mjuAppSW.joA.common.auth.MemberChecker;
+import com.mjuAppSW.joA.common.websocket.exception.MemberSessionListNullException;
 import com.mjuAppSW.joA.common.websocket.exception.RoomSessionListNullException;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.MemberRepository;
 import com.mjuAppSW.joA.domain.message.MessageService;
 import com.mjuAppSW.joA.domain.report.message.MessageReport;
 import com.mjuAppSW.joA.domain.report.message.MessageReportRepository;
@@ -46,14 +46,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private final MessageService messageService;
     private final RoomRepository roomRepository;
     private final MemberChecker memberChecker;
-    private final MemberRepository memberRepository;
     private final RoomService roomService;
     private final MessageReportRepository messageReportRepository;
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
-        log.info("payload : {}", payload);
         String[] arr = payload.split(SEPARATOR, LIMIT_SEPARATOR);
 
         String separator = arr[0];
@@ -90,33 +88,44 @@ public class WebSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    private boolean isMessageSendable(Long roomId, Long memberId, WebSocketSession session) throws IOException {
-        // find Room
+
+    private Boolean isMessageSendable(Long roomId, Long memberId, WebSocketSession session) throws IOException {
+        if(checkMessageReport(roomId, session) && checkExpired(roomId, memberId, session)
+            && checkIsWithDrawal(roomId, memberId, session) && checkTime(roomId, session)) return true;
+        return false;
+    }
+
+    private Boolean checkMessageReport(Long roomId, WebSocketSession session) throws IOException {
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
-
-        // check MessageReport
         List<MessageReport> checkMessageReport = messageReportRepository.findByRoomId(room);
-        // check Expired
-        Boolean checkExpired = roomInMemberService.checkExpired(roomId, memberId);
-        // check isWithDrawal
-        Boolean checkIsWithDrawal = roomInMemberService.checkIsWithDrawal(roomId, memberId);
-        // check createdAt
-        Integer checkTime = roomService.checkTime(roomId);
-
         if(!checkMessageReport.isEmpty()){
             sendExceptionMessage(String.valueOf(roomId), session, ALARM_REPORTED_ROOM);
             return false;
-        }else if(!checkExpired){
+        }return true;
+    }
+
+    private Boolean checkExpired(Long roomId, Long memberId, WebSocketSession session) throws IOException {
+        Boolean checkExpired = roomInMemberService.checkExpired(roomId, memberId);
+        if(!checkExpired){
             sendExceptionMessage(String.valueOf(roomId), session, ALARM_OPPONENT_EXITED);
             return false;
-        }else if(!checkIsWithDrawal){
+        }return true;
+    }
+
+    private Boolean checkIsWithDrawal(Long roomId, Long memberId, WebSocketSession session) throws IOException {
+        Boolean checkIsWithDrawal = roomInMemberService.checkIsWithDrawal(roomId, memberId);
+        if(!checkIsWithDrawal){
             sendExceptionMessage(String.valueOf(roomId), session, ALARM_OPPONENT_IS_WITH_DRAWAL);
             return false;
-        }else if(checkTime != NORMAL_OPERATION){
+        }return true;
+    }
+
+    private Boolean checkTime(Long roomId, WebSocketSession session) throws IOException {
+        Integer checkTime = roomService.checkTime(roomId);
+        if(checkTime != NORMAL_OPERATION){
             handleTimeRelatedIssues(roomId, checkTime, session);
             return false;
-        }
-        return true;
+        }return true;
     }
 
     private void handleTimeRelatedIssues(Long roomId, Integer checkTime, WebSocketSession session) throws IOException {
@@ -131,11 +140,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     private void sendExceptionMessage(String roomId, WebSocketSession session, String message) throws IOException {
         List<WebSocketSession> roomSessionsList = roomSessions.get(roomId);
-        if (roomSessionsList != null) {
-            for (WebSocketSession targetSession : roomSessionsList) {
-                if (targetSession.equals(session)) {
-                    targetSession.sendMessage(new TextMessage(message));
-                }
+        if(roomSessionsList.isEmpty() || roomSessionsList == null){
+            throw new RoomSessionListNullException();
+        }
+        for (WebSocketSession targetSession : roomSessionsList) {
+            if (targetSession.equals(session)) {
+                targetSession.sendMessage(new TextMessage(message));
             }
         }
     }
@@ -143,48 +153,42 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private Long saveAndSendMessage(String roomId, String memberId, String content, String isChecked) {
         LocalDateTime createdMessageDate = LocalDateTime.now();
         Long saveId = messageService.saveMessage(Long.parseLong(roomId), Long.parseLong(memberId), content, isChecked, createdMessageDate);
-        log.info("SaveMessage : roomId = {}, memberId = {}, content = {}, isChecked = {}", roomId, memberId, content, isChecked);
         return saveId;
     }
 
     private void updateAndNotify(String roomId, String memberId, String content, Long saveId,
         WebSocketSession session, List<WebSocketSession> roomSessionsList) throws Exception {
-        Boolean update = updateCurrentMessage(roomId, memberId);
-        if (update) {log.info("updateRoomList : roomId = {}, memberId = {}", roomId, memberId);}
+
+        updateCurrentMessage(roomId, memberId);
+
         for (WebSocketSession targetSession : roomSessionsList) {
             if (targetSession.isOpen() && !targetSession.equals(session)) {
-                log.info("sendMessage : roomId = {}, memberId = {}, content = {}", roomId, memberId, content);
                 targetSession.sendMessage(new TextMessage(saveId + SEPARATOR + content));
             }
             if (targetSession.isOpen() && targetSession.equals(session) && roomSessionsList.size() == 2) {
-                log.info("sendMessage : send 0 sessionURI = {}", session.getUri());
                 targetSession.sendMessage(new TextMessage(OPPONENT_CHECK_MESSAGE));
             }
         }
     }
 
-    public Boolean updateCurrentMessage(String roomId, String memberId) throws Exception {
-        Room room = roomRepository.findById(Long.parseLong(roomId)).orElse(null);
-        Member member = memberRepository.findById(Long.parseLong(memberId)).orElse(null);
-        if(room != null && member != null){
-            RoomInMember roomInMember = roomInMemberRepository.checkOpponentExpired(room, member, NOT_EXIT).orElseThrow(
-                RoomInMemberNotFoundException::new);
-            List<WebSocketSession> memberSessionsList = memberSessions.get(String.valueOf(roomInMember.getMember().getId()));
-            if(memberSessionsList == null || memberSessionsList.isEmpty()) return false;
+    public void updateCurrentMessage(String roomId, String memberId) throws Exception {
+        Room room = roomRepository.findById(Long.parseLong(roomId)).orElseThrow(RoomNotFoundException::new);
+        Member member = memberChecker.findById(Long.parseLong(memberId));
 
-            for(WebSocketSession targetSession : memberSessionsList){
-                if(targetSession.isOpen()){
+        RoomInMember roomInMember = roomInMemberRepository.checkOpponentExpired(room, member, NOT_EXIT).orElseThrow(
+            RoomInMemberNotFoundException::new);
+        List<WebSocketSession> memberSessionsList = memberSessions.get(String.valueOf(roomInMember.getMember().getId()));
+
+        if(memberSessionsList != null){
+            for(WebSocketSession targetSession : memberSessionsList) {
+                if (targetSession.isOpen()) {
                     RoomInfoExceptDateVO roomVO = roomInMemberService.getUpdateRoom(room, member);
                     String message = roomVO.getRoomId() + SEPARATOR + roomVO.getName() + SEPARATOR +
                         roomVO.getUrlCode() + SEPARATOR + roomVO.getUnCheckedMessage() + SEPARATOR + roomVO.getContent();
-                    log.info("updateCurrentMessage : message = {}", message);
                     targetSession.sendMessage(new TextMessage(message));
-                    return true;
                 }
             }
-            log.info("updateCurrentMessage Fail : roomId = {}, memberId = {}", roomInMember.getRoom().getId(), roomInMember.getMember().getId());
         }
-        return false;
     }
 
     private String getRoomId(WebSocketSession session) throws URISyntaxException {
@@ -227,28 +231,18 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     public Boolean checkURI(WebSocketSession session, String roomId){
         List<WebSocketSession> roomSessionsList = roomSessions.get(roomId);
-        if(roomSessionsList == null || roomSessionsList.isEmpty()){
-            return true;
-        }else{
-            for(WebSocketSession ss : roomSessionsList){
-                if(ss.getUri().toString().equals(session.getUri().toString())){
-                    return false;
-                }
-            }
+        if(roomSessionsList == null || roomSessionsList.isEmpty()) return true;
+        for(WebSocketSession ss : roomSessionsList){
+            if(ss.getUri().toString().equals(session.getUri().toString())) return false;
         }
         return true;
     }
 
     public Boolean checkURIOfMemberId(WebSocketSession session, String memberId){
         List<WebSocketSession> memberRoomList = memberSessions.get(memberId);
-        if(memberRoomList == null || memberRoomList.isEmpty()){
-            return true;
-        }else{
-            for(WebSocketSession ss : memberRoomList){
-                if(ss.getUri().toString().equals(session.getUri().toString())){
-                    return false;
-                }
-            }
+        if(memberRoomList == null || memberRoomList.isEmpty()) return true;
+        for(WebSocketSession ss : memberRoomList){
+            if(ss.getUri().toString().equals(session.getUri().toString())) return false;
         }
         return true;
     }
@@ -263,12 +257,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 Member member = memberChecker.findBySessionId(onlyMemberId);
 
                 memberId = String.valueOf(member.getId());
-                if (checkURIOfMemberId(session, memberId)) {
-                    log.info("websocketConnect : memberId = {}", memberId);
-                    memberSessions.computeIfAbsent(memberId, key -> new ArrayList<>()).add(session);
-                } else {
-                    log.info("Already existed websocket : memberId = {}", memberId);
-                }
+                if (checkURIOfMemberId(session, memberId)) memberSessions.computeIfAbsent(memberId, key -> new ArrayList<>()).add(session);
                 break;
             case 2:
                 String roomId = getRoomId(session);
@@ -276,28 +265,26 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 Member mem = memberChecker.findBySessionId(memberOfSessionId);
 
                 memberId = String.valueOf(mem.getId());
-                Boolean checkURI = checkURI(session, roomId);
-                if (checkURI) {
+                if (checkURI(session, roomId)) {
                     roomSessions.computeIfAbsent(roomId, key -> new ArrayList<>()).add(session);
 
                     roomInMemberService.updateEntryTime(roomId, memberId);
                     messageService.updateIsChecked(roomId, memberId);
 
                     List<WebSocketSession> roomSessionsList = roomSessions.get(roomId);
+                    if(roomSessionsList.isEmpty() || roomSessionsList == null) {
+                        throw new RoomSessionListNullException();
+                    }
+
                     Integer checkTime = roomService.checkTime(Long.parseLong(roomId));
                     for (WebSocketSession targetSession : roomSessionsList) {
                         if (targetSession.isOpen() && !targetSession.equals(session) && checkTime == NORMAL_OPERATION) {
-                            log.info("Opponent has entered, targetSession = {}, check = {}", targetSession,
-                                OPPONENT_CHECK_MESSAGE);
                             targetSession.sendMessage(new TextMessage(OPPONENT_CHECK_MESSAGE));
                         }
                     }
-                } else {
-                    log.warn("already existed websocket : roomId = {}, memberId = {}", roomId, memberId);
                 }
                 break;
             default:
-                log.info("websocketConnect : /ws");
                 break;
         }
     }
@@ -312,15 +299,14 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 Member member = memberChecker.findBySessionId(onlyMemberId);
 
                 memberId = String.valueOf(member.getId());
-                log.info("websocketClosed : memberId = {}", memberId);
                 List<WebSocketSession> memberSessionsList = memberSessions.get(memberId);
-                if(memberSessionsList != null){
-                    memberSessionsList.remove(session);
-                    if(memberSessionsList.isEmpty()){
-                        log.info("websocketClosed Remove : memberId = {}", memberId);
-                        memberSessions.remove(memberId);
-                    }
+
+                if(memberSessionsList.isEmpty() || memberSessionsList == null){
+                    throw new MemberSessionListNullException();
                 }
+
+                memberSessionsList.remove(session);
+                if(memberSessionsList.isEmpty()) memberSessions.remove(memberId);
                 break;
             case 2 :
                 String roomId = getRoomId(session);
@@ -328,23 +314,18 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 Member mem = memberChecker.findBySessionId(memberOfSessionId);
 
                 memberId = String.valueOf(mem.getId());
-                log.info("websocketClosed : roomId = {}, memberId = {}", roomId, memberId);
-
                 List<WebSocketSession> roomSessionsList = roomSessions.get(roomId);
-                if (roomSessionsList != null) {
-                    roomSessionsList.remove(session);
-                    if (roomSessionsList.isEmpty()) {
-                        log.info("websocketClosed Remove : roomId = {}, memberId = {}", roomId, memberId);
-                        roomSessions.remove(roomId);
-                    }
-                }else{
-                    log.warn("websocketClosed can't find : roomId = {}, memberId = {}", roomId, memberId);
+
+                if(roomSessionsList.isEmpty() || roomSessionsList == null){
+                    throw new RoomSessionListNullException();
                 }
+
+                roomSessionsList.remove(session);
+                if (roomSessionsList.isEmpty()) roomSessions.remove(roomId);
+
                 roomInMemberService.updateExitTime(roomId, memberId);
-                log.info("updateExitTime : roomId = {}, memberId = {}", roomId, memberId);
                 break;
             default:
-                log.info("websocketClosed : /ws");
                 break;
         }
     }

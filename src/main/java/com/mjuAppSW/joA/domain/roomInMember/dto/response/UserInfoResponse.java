@@ -1,9 +1,11 @@
 package com.mjuAppSW.joA.domain.roomInMember.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Schema(description = "채팅방 입장시 상대방 정보 조회 Response")
 public class UserInfoResponse {
 	private String name;
 	private String urlCode;

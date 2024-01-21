@@ -71,9 +71,12 @@ public enum ErrorCode {
 
     // Message
     MESSAGE_NOT_FOUND(404, "MG001", "메시지를 찾을 수 없습니다."),
+    FAIL_ENCRYPT(500, "MG002", "메시지 암호화를 실패했습니다."),
+    FAIL_DECRYPT(500, "MG003", "메시지 복호화를 실패했습니다."),
 
     // WebSocket
-    ROOM_SESSION_LIST_IS_NULL(400, "W001", "방 섹션 리스트가 Null 입니다.");
+    ROOM_SESSION_LIST_IS_NULL(400, "W001", "방 섹션 리스트가 Null 입니다."),
+    MEMBER_SESSION_LIST_IS_NULL(400, "W002", "사용자 섹션 리스트가 Null 입니다.");
 
     private final int status;
     private final String code;

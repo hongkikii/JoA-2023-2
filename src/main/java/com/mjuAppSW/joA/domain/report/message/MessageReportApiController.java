@@ -2,7 +2,6 @@ package com.mjuAppSW.joA.domain.report.message;
 
 import java.time.LocalDateTime;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,10 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mjuAppSW.joA.common.dto.SuccessResponse;
 import com.mjuAppSW.joA.domain.report.message.dto.request.CheckMessageReportRequest;
 import com.mjuAppSW.joA.domain.report.message.dto.request.ReportRequest;
-import com.mjuAppSW.joA.domain.report.message.dto.response.CheckMessageReportResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

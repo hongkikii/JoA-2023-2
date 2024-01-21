@@ -5,10 +5,11 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Schema(description = "방 연장 투표 후 상대방의 투표 유무")
+@Schema(description = "방 연장 투표 후 상대방의 투표 유무 Response")
 public class VoteResponse {
     private Long roomId;
     private Long memberId;
+    @Schema(description = "상대방의 result 결과 0 -> 찬성 / 1 -> 반대 혹은 투표하지 않음")
     private String result;
 
     @Builder
