@@ -22,6 +22,7 @@ import com.mjuAppSW.joA.domain.member.dto.request.JoinRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.LoginRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.TransPasswordRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.SendCertifyNumRequest;
+import com.mjuAppSW.joA.domain.member.dto.request.VerifyIdRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
 import com.mjuAppSW.joA.domain.member.dto.request.VerifyCertifyNumRequest;
 import com.mjuAppSW.joA.domain.member.exception.InvalidCertifyNumberException;
@@ -30,17 +31,17 @@ import com.mjuAppSW.joA.domain.member.exception.InvalidPasswordException;
 import com.mjuAppSW.joA.domain.member.exception.JoiningMailException;
 import com.mjuAppSW.joA.domain.member.exception.LoginIdAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.LoginIdNotAuthorizedException;
-import com.mjuAppSW.joA.domain.member.exception.MailForbiddenException;
-import com.mjuAppSW.joA.domain.member.exception.MailNotVerifyException;
 import com.mjuAppSW.joA.domain.member.exception.MemberAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.PasswordNotFoundException;
+import com.mjuAppSW.joA.domain.member.exception.PermanentBanException;
+import com.mjuAppSW.joA.domain.member.exception.SessionNotFoundException;
 import com.mjuAppSW.joA.domain.memberProfile.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.domain.memberProfile.exception.InvalidS3Exception;
 import com.mjuAppSW.joA.geography.college.PCollege;
 import com.mjuAppSW.joA.geography.college.PCollegeRepository;
 import com.mjuAppSW.joA.geography.location.Location;
 import com.mjuAppSW.joA.geography.location.LocationRepository;
-import com.mjuAppSW.joA.common.session.SessionManager;
+import com.mjuAppSW.joA.common.auth.SessionManager;
 import com.mjuAppSW.joA.common.storage.CacheManager;
 import com.mjuAppSW.joA.common.storage.S3Uploader;
 import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
@@ -73,14 +74,16 @@ public class MemberService {
 
     public SessionIdResponse sendCertifyNum(SendCertifyNumRequest request) {
         MCollege college = findByMCollegeId(request.getCollegeId());
-        checkExistedMember(request.getUEmail(), college);
+        String uEmail = request.getCollegeEmail();
 
-        String eMail = request.getUEmail() + college.getDomain();
+        checkExistedMember(uEmail, college);
+        checkForbiddenMail(uEmail, college);
+        String eMail = uEmail + college.getDomain();
         checkJoiningMail(eMail);
 
         long sessionId = sessionManager.makeSessionId();
         String certifyNum = cacheCertifyNumAndEmail(sessionId, eMail);
-        sendCertifyNumMail(request.getUEmail(), college.getDomain(), certifyNum);
+        sendCertifyNumMail(request.getCollegeEmail(), college.getDomain(), certifyNum);
         return SessionIdResponse.of(sessionId);
     }
 
@@ -89,10 +92,16 @@ public class MemberService {
                 .orElseThrow(CollegeNotFoundException::new);
     }
 
+    private void checkForbiddenMail(String uEmail, MCollege mCollege) {
+        memberRepository.findForbidden(uEmail, mCollege)
+                .ifPresent(forbiddenMember -> {
+                    throw new PermanentBanException();});
+    }
+
     private void checkExistedMember(String uEmail, MCollege college) {
-        if (memberRepository.findByuEmailAndcollege(uEmail, college).isPresent()) {
-            throw new MemberAlreadyExistedException();
-        }
+        memberRepository.findByuEmailAndcollege(uEmail, college)
+                .ifPresent(member -> {
+                    throw new MemberAlreadyExistedException();});
     }
 
     private void checkJoiningMail(String eMail) {
@@ -131,8 +140,8 @@ public class MemberService {
     }
 
     private void validateSession(String key, Long sessionId) {
-        if (!cacheManager.isNotExistedKey(key + sessionId)) {
-            throw new MailNotVerifyException();
+        if (cacheManager.isNotExistedKey(key + sessionId)) {
+            throw new SessionNotFoundException();
         }
     }
 
@@ -148,7 +157,9 @@ public class MemberService {
         cacheManager.add(AFTER_EMAIL + sessionId, Email, AFTER_CERTIFY_TIME);
     }
 
-    public void verifyId(Long sessionId, String loginId) {
+    public void verifyId(VerifyIdRequest request) {
+        String loginId = request.getLoginId();
+        Long sessionId = request.getSessionId();
         validateLoginId(loginId);
         validateSession(AFTER_EMAIL, sessionId);
         checkExistedLoginId(sessionId, loginId);
@@ -195,7 +206,6 @@ public class MemberService {
         String uEmail = splitEMail[0];
         MCollege mCollege = findByDomain(splitEMail[1]);
         PCollege pCollege = findByPCollegeId(mCollege.getId());
-        checkForbiddenMail(uEmail, mCollege);
 
         Member joinMember = createMember(request, uEmail, mCollege);
         createLocation(joinMember, pCollege);
@@ -225,12 +235,6 @@ public class MemberService {
     private PCollege findByPCollegeId(Long collegeId) {
         return pCollegeRepository.findById(collegeId)
                 .orElseThrow(CollegeNotFoundException::new);
-    }
-
-    private void checkForbiddenMail(String uEmail, MCollege mCollege) {
-        memberRepository.findForbiddenMember(uEmail, mCollege)
-                .ifPresent(forbiddenMember -> {
-                    throw new MailForbiddenException();});
     }
 
     private Member createMember(JoinRequest request, String uEmail, MCollege mCollege) {
@@ -290,7 +294,7 @@ public class MemberService {
     public void findId(FindIdRequest request) {
         MCollege college = findByMCollegeId(request.getCollegeId());
 
-        Member member = memberRepository.findByuEmailAndcollege(request.getUEmail(), college)
+        Member member = memberRepository.findByuEmailAndcollege(request.getCollegeEmail(), college)
                 .orElseThrow(MemberNotFoundException::new);
 
         mail(USER_ID_IS, member.getName(), member.getUEmail(), college.getDomain(), member.getLoginId());

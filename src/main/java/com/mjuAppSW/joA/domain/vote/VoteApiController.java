@@ -2,7 +2,6 @@ package com.mjuAppSW.joA.domain.vote;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
 import com.mjuAppSW.joA.domain.vote.dto.request.VoteRequest;
-import com.mjuAppSW.joA.domain.vote.dto.response.VoteOwnerResponse;
 import com.mjuAppSW.joA.domain.vote.dto.response.VoteListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -33,41 +32,32 @@ public class VoteApiController {
     @Operation(summary = "투표 전송", description = "투표 전송 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "상태 코드 반환"),
-            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
-            @ApiResponse(responseCode = "404", description = "V002: 투표 카테고리가 존재하지 않습니다."),
-            @ApiResponse(responseCode = "409", description = "V003: 이미 투표가 존재합니다."),
-            @ApiResponse(responseCode = "403", description = "V003: 접근 권한이 없는 계정입니다."),
-            @ApiResponse(responseCode = "403", description = "V003: 차단 조치가 이루어진 계정입니다.")
+            @ApiResponse(responseCode = "404-1", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404-2", description = "V002: 투표 카테고리가 존재하지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "409", description = "V003: 이미 투표가 존재합니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-3", description = "V004: 투표 신고로 인해 접근이 제한된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-4", description = "B001: 차단 조치에 의해 접근 권한이 없습니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @PostMapping
-    public ResponseEntity<Void> sendVote(@RequestBody @Valid VoteRequest request) {
-        voteService.sendVote(request);
+    public ResponseEntity<Void> send(@RequestBody @Valid VoteRequest request) {
+        voteService.send(request);
         return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "받은 투표 목록 조회", description = "받은 투표 목록 조회 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "받은 투표 목록 반환"),
-            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true)))
+            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<SuccessResponse<VoteListResponse>> getVotes(
+    public ResponseEntity<SuccessResponse<VoteListResponse>> get(
             @Parameter(description = "세션 id", in = ParameterIn.PATH)
             @PathVariable("id") Long sessionId) {
-        return SuccessResponse.of(voteService.getVotes(sessionId))
-                .asHttp(HttpStatus.OK);
-    }
-
-    @Operation(summary = "투표 화면 사용자 정보 조회", description = "투표 화면 사용자 정보 조회 API")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "투표 화면 사용자 정보 반환"),
-            @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true)))
-    })
-    @GetMapping("/{id}/owner")
-    public ResponseEntity<SuccessResponse<VoteOwnerResponse>> getVoteOwner(
-            @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH)
-            @PathVariable("id") Long sessionId) {
-        return SuccessResponse.of(voteService.getVoteOwner(sessionId))
+        return SuccessResponse.of(voteService.get(sessionId))
                 .asHttp(HttpStatus.OK);
     }
 }

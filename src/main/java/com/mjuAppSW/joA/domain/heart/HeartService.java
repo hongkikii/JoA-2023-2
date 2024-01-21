@@ -10,7 +10,7 @@ import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberRepository;
 import com.mjuAppSW.joA.geography.block.BlockRepository;
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class HeartService {
 
     @Transactional
     public HeartResponse sendHeart(HeartRequest request) {
-        Member giveMember = memberChecker.findBySessionId(request.getGiveId());
+        Member giveMember = memberChecker.findFilterBySessionId(request.getGiveId());
         Long giveMemberId = giveMember.getId();
         Long takeMemberId = request.getTakeId();
         Member takeMember = memberChecker.findById(takeMemberId);
@@ -37,10 +37,14 @@ public class HeartService {
 
         Heart newHeart = createHeart(giveMemberId, takeMember);
         heartRepository.save(newHeart);
-
+        /**
+         * if(채팅방이 이미 존재) {
+         *      채팅방이 이미 존재합니다! 예외!
+         * }
+         */
         checkExistedRoom(giveMember, takeMember);
 
-        Boolean isMatched = isOpponentHeartExisted(takeMemberId, giveMemberId);
+        boolean isMatched = isOpponentHeartExisted(takeMemberId, giveMemberId);
         return HeartResponse.of(isMatched, giveMember, takeMember);
     }
 
@@ -51,16 +55,16 @@ public class HeartService {
     }
 
     private void checkEqualHeart(Long giveId, Long takeId) {
-        if (heartRepository.findEqualHeart(LocalDate.now(), giveId, takeId).isPresent()) {
-            throw new HeartAlreadyExistedException();
-        }
+        heartRepository.findTodayHeart(giveId, takeId)
+                    .ifPresent(heart -> {
+                        throw new HeartAlreadyExistedException();});
     }
 
     private Heart createHeart(Long giveId, Member takeMember) {
         return Heart.builder()
                 .giveId(giveId)
                 .member(takeMember)
-                .date(LocalDate.now())
+                .date(LocalDateTime.now())
                 .build();
     }
 
@@ -70,7 +74,7 @@ public class HeartService {
         }
     }
 
-    private Boolean isOpponentHeartExisted(Long takeId, Long giveId) {
-        return heartRepository.findEqualHeart(LocalDate.now(), takeId, giveId).isPresent();
+    private boolean isOpponentHeartExisted(Long takeId, Long giveId) {
+        return heartRepository.findTodayHeart(takeId, giveId).isPresent();
     }
 }

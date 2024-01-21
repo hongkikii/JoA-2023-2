@@ -11,6 +11,7 @@ import com.mjuAppSW.joA.domain.report.vote.exception.VoteReportAlreadyExistedExc
 import com.mjuAppSW.joA.domain.vote.Vote;
 import com.mjuAppSW.joA.domain.vote.VoteRepository;
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class VoteReportService {
     private final MemberChecker memberChecker;
 
     @Transactional
-    public void reportVote(VoteReportRequest request) {
+    public void execute(VoteReportRequest request) {
         ReportCategory reportCategory = findReportCategoryById(request.getReportId());
         Long voteId = request.getVoteId();
         Vote vote = findVoteById(voteId);
@@ -59,6 +60,7 @@ public class VoteReportService {
                                         .vote(vote)
                                         .reportCategory(reportCategory)
                                         .content(content)
+                                        .date(LocalDateTime.now())
                                         .build());
     }
 }

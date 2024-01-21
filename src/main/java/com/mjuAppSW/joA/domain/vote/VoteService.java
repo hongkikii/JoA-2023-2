@@ -1,10 +1,9 @@
 package com.mjuAppSW.joA.domain.vote;
 
 import com.mjuAppSW.joA.common.auth.MemberChecker;
+import com.mjuAppSW.joA.domain.vote.exception.InvalidVoteExistedException;
 import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.memberProfile.exception.AccessForbiddenException;
-import com.mjuAppSW.joA.domain.vote.dto.response.VoteOwnerResponse;
 import com.mjuAppSW.joA.domain.vote.dto.request.VoteRequest;
 import com.mjuAppSW.joA.domain.vote.dto.response.VoteContent;
 import com.mjuAppSW.joA.domain.vote.dto.response.VoteListResponse;
@@ -14,8 +13,7 @@ import com.mjuAppSW.joA.domain.vote.voteCategory.VoteCategory;
 import com.mjuAppSW.joA.domain.vote.voteCategory.VoteCategoryRepository;
 import com.mjuAppSW.joA.geography.block.BlockRepository;
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +32,8 @@ public class VoteService {
     private final MemberChecker memberChecker;
 
     @Transactional
-    public void sendVote(VoteRequest request) {
-        Member giveMember = memberChecker.findBySessionId(request.getGiveId());
+    public void send(VoteRequest request) {
+        Member giveMember = memberChecker.findFilterBySessionId(request.getGiveId());
         Member takeMember = memberChecker.findById(request.getTakeId());
         VoteCategory voteCategory = findVoteCategoryById(request.getCategoryId());
 
@@ -55,14 +53,14 @@ public class VoteService {
     }
 
     private void checkEqualVote(Long giveId, Long takeId, Long categoryId) {
-        voteRepository.findTodayEqualVote(giveId, takeId, categoryId, LocalDate.now())
+        voteRepository.findTodayVote(giveId, takeId, categoryId)
                 .ifPresent(vote -> {
                     throw new VoteAlreadyExistedException();});
     }
 
     private void checkInvalidVote(Long giveId, Long takeId) {
         if (voteRepository.findInvalidVotes(giveId, takeId).size() != 0) {
-            throw new AccessForbiddenException();
+            throw new InvalidVoteExistedException();
         }
     }
 
@@ -71,13 +69,13 @@ public class VoteService {
                             .giveId(giveMember.getId())
                             .member(takeMember)
                             .voteCategory(voteCategory)
-                            .date(LocalDate.now())
+                            .date(LocalDateTime.now())
                             .hint(hint)
                             .build());
     }
 
-    public VoteListResponse getVotes(Long sessionId) {
-        Member findTakeMember = memberChecker.findBySessionId(sessionId);
+    public VoteListResponse get(Long sessionId) {
+        Member findTakeMember = memberChecker.findFilterBySessionId(sessionId);
         return VoteListResponse.of(getVoteList(findTakeMember.getId()));
     }
 
@@ -94,10 +92,6 @@ public class VoteService {
                         .categoryId(vote.getVoteCategory().getId())
                         .hint(vote.getHint())
                         .build();
-    }
-
-    public VoteOwnerResponse getVoteOwner(Long sessionId) {
-        return VoteOwnerResponse.of(memberChecker.findBySessionId(sessionId));
     }
 
     private void checkBlock(Long giveId, Long takeId) {

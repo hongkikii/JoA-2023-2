@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,7 +51,7 @@ public class Member {
     @Column(nullable = false)
     private Boolean isWithdrawal;
 
-    @Column(name = "Session_id", nullable = false)
+    @Column(name = "Session_id")
     private Long sessionId;
 
     @ManyToOne
@@ -63,9 +64,9 @@ public class Member {
     @Column(nullable = false)
     private Integer status;
 
-    private LocalDate stopStartDate;
+    private LocalDateTime stopStartDate;
 
-    private LocalDate stopEndDate;
+    private LocalDateTime stopEndDate;
 
     @Builder
     public Member(String name, String loginId, String password, String salt, String uEmail, MCollege college, Long sessionId) {
@@ -107,11 +108,11 @@ public class Member {
         this.sessionId = sessionId;
     }
 
-    public void changeStopStartDate(LocalDate date) {
+    public void changeStopStartDate(LocalDateTime date) {
         this.stopStartDate = date;
     }
 
-    public void changeStopEndDate(LocalDate date) {
+    public void changeStopEndDate(LocalDateTime date) {
         this.stopEndDate = date;
     }
 

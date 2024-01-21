@@ -8,13 +8,12 @@ import com.mjuAppSW.joA.geography.college.PCollege;
 import com.mjuAppSW.joA.geography.college.PCollegeRepository;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByInfo;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByListResponse;
-import com.mjuAppSW.joA.geography.location.dto.response.OwnerResponse;
 import com.mjuAppSW.joA.geography.location.dto.request.UpdateRequest;
 import com.mjuAppSW.joA.geography.location.dto.response.UpdateResponse;
 import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
 import com.mjuAppSW.joA.geography.location.exception.OutOfCollegeException;
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -37,12 +36,10 @@ public class LocationService {
     private final MemberChecker memberChecker;
 
     @Transactional
-    public UpdateResponse updateLocation(UpdateRequest request) {
-        Member member = memberChecker.findBySessionId(request.getId());
+    public UpdateResponse update(UpdateRequest request) {
+        Member member = memberChecker.findFilterBySessionId(request.getId());
         Location oldLocation = findLocation(member.getId());
         PCollege college = findCollege(oldLocation.getCollege().getCollegeId());
-
-        memberChecker.checkStopped(member);
 
         boolean isContained = isPointWithinCollege
                 (request.getLatitude(), request.getLongitude(), college.getPolygonField());
@@ -76,7 +73,7 @@ public class LocationService {
                                     .college(oldLocation.getCollege())
                                     .point(point)
                                     .isContained(isContained)
-                                    .updateDate(LocalDate.now())
+                                    .updateDate(LocalDateTime.now())
                                     .build();
         locationRepository.save(newLocation);
     }
@@ -87,14 +84,16 @@ public class LocationService {
         return geometryFactory.createPoint(coordinate);
     }
 
-    public NearByListResponse getNearByList(Long sessionId, Double latitude, Double longitude, Double altitude) {
-        Member member = memberChecker.findBySessionId(sessionId);
-        memberChecker.checkStopped(member);
+    public NearByListResponse getNearByList
+            (Long sessionId, Double latitude, Double longitude, Double altitude) {
+        Member member = memberChecker.findFilterBySessionId(sessionId);
         checkWithinCollege(findLocation(member.getId()));
 
         Point point = getPoint(latitude, longitude, altitude);
-        List<Long> nearMemberIds = locationRepository.findNearIds(member.getId(), point,
-                                                                member.getCollege().getId(), LocalDate.now());
+        System.out.println(member.getId());
+        List<Long> nearMemberIds = locationRepository.findNearIds
+                (member.getId(), point, member.getCollege().getId());
+        System.out.println(nearMemberIds.size());
         List<NearByInfo> nearByList = makeNearByList(member, nearMemberIds);
         return NearByListResponse.of(nearByList);
     }
@@ -109,7 +108,8 @@ public class LocationService {
         return nearMemberIds.stream()
                         .map(nearId -> {
                             Member findMember = memberChecker.findById(nearId);
-                            boolean isLiked = isEqualHeartExisted(member.getId(), nearId);
+                            boolean isLiked = heartRepository.findTodayHeart(member.getId(), nearId)
+                                                            .isPresent();
                             return NearByInfo.builder()
                                         .id(findMember.getId())
                                         .name(findMember.getName())
@@ -118,14 +118,5 @@ public class LocationService {
                                         .isLiked(isLiked)
                                         .build();})
                         .collect(Collectors.toList());
-    }
-
-    private Boolean isEqualHeartExisted(Long giveId, Long takeId) {
-        return heartRepository.findEqualHeart(LocalDate.now(), giveId, takeId)
-                .isPresent();
-    }
-
-    public OwnerResponse getOwner(Long sessionId) {
-        return OwnerResponse.of(memberChecker.findBySessionId(sessionId));
     }
 }

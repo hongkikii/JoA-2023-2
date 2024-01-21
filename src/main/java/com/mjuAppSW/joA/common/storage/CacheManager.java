@@ -42,6 +42,10 @@ public class CacheManager {
         return String.valueOf(random);
     }
 
+    public boolean isExistedKey(String key) {
+        return expireDataMap.containsKey(key);
+    }
+
     public boolean isNotExistedKey(String key) {
         return !expireDataMap.containsKey(key);
     }
