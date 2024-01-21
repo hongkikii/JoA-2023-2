@@ -42,7 +42,7 @@ public class RoomInMemberApiController {
     @Operation(summary = "채팅방 연장 투표 저장 및 상대방 투표 유무 확인", description = "채팅방 연장 투표 저장 및 상대방 투표 유무 확인 API")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "채팅방 연장 투표 저장 및 상대방 투표 유무 반환"),
-        @ApiResponse(responseCode = "404", description = "R001: 방을 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
         @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
         @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다.")
     })
@@ -55,7 +55,7 @@ public class RoomInMemberApiController {
     @Operation(summary = "채팅방 퇴장", description = "채팅방 퇴장 API")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "상태코드 반환"),
-        @ApiResponse(responseCode = "404", description = "R001: 방을 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
         @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
         @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다.")
     })
@@ -81,7 +81,7 @@ public class RoomInMemberApiController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "상대방 정보 반환"),
         @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
-        @ApiResponse(responseCode = "404", description = "R001: 방을 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
         @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다.")
     })
     @GetMapping("/{roomId}/{memberId}/userInfo")

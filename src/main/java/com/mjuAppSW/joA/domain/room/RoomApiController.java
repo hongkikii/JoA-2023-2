@@ -40,7 +40,7 @@ public class RoomApiController {
     @Operation(summary = "방 생성 시간 조회", description = "채팅방 페이지에서 투표를 누르기 전 유효기간을 확인하는 API")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "방이 생성된지 24시간이 지나지 않았습니다."),
-        @ApiResponse(responseCode = "404", description = "R001: 방을 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
         @ApiResponse(responseCode = "400", description = "R002: 방이 생성된지 24시간이 지났습니다.")
     })
     @PostMapping("/{id}/status")
@@ -52,7 +52,7 @@ public class RoomApiController {
     @Operation(summary = "방 상태 연장", description = "채팅방 페이지에서 투표가 완료되었을 때 유효기간을 연장하는 API")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "방 연장 완료"),
-        @ApiResponse(responseCode = "404", description = "R001: 방을 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
         @ApiResponse(responseCode = "409", description = "R004: 이미 연장된 채팅방입니다.")
     })
     @PatchMapping("/{id}/status")

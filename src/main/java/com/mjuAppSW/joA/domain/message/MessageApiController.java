@@ -29,7 +29,7 @@ public class MessageApiController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "메시지 조회 완료"),
         @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
-        @ApiResponse(responseCode = "404", description = "R001: 방을 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
         @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다.")
     })
     @GetMapping("/{roomId}/{memberId}/messages")
