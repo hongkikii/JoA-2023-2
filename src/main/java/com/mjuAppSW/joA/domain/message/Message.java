@@ -1,5 +1,7 @@
 package com.mjuAppSW.joA.domain.message;
 
+import static com.mjuAppSW.joA.common.constant.Constants.Message.*;
+
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.room.Room;
 import jakarta.persistence.*;
@@ -46,5 +48,9 @@ public class Message {
         this.content = content;
         this.time = date;
         this.isChecked = isChecked;
+    }
+
+    public void updateIsChecked(){
+        this.isChecked = CHECKED;
     }
 }

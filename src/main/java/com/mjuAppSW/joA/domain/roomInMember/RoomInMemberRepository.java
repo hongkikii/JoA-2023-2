@@ -59,12 +59,6 @@ public interface RoomInMemberRepository extends JpaRepository<RoomInMember, Long
             "WHERE rim.member = :member AND rim.room = :room ")
     Optional<RoomInfoExceptMessageVO> findRoomInfoExceptMessage(@Param("room") Room room, @Param("member") Member member);
 
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE RoomInMember rim set rim.result = :result  WHERE rim.room = :room AND rim.member = :member")
-    void saveVote(@Param("room") Room room, @Param("member") Member member, @Param("result") String result);
-
     @Query("SELECT rim FROM RoomInMember rim Where rim.room = :room")
     List<RoomInMember> findAllRoom(@Param("room") Room room);
 
@@ -79,19 +73,5 @@ public interface RoomInMemberRepository extends JpaRepository<RoomInMember, Long
             "WHERE rim.room = :room AND rim.member <> :member")
     UserInfoVO getUserInfo(@Param("room") Room room, @Param("member") Member member);
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE RoomInMember rim set rim.expired = :expired WHERE rim.room = :room and rim.member = :member")
-    void updateExpired(@Param("room") Room room, @Param("member") Member member, @Param("expired") String expired);
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE RoomInMember rim set rim.entryTime = :date WHERE rim.room = :room and rim.member = :member")
-    void updateEntryTime(@Param("room") Room room, @Param("member") Member member, @Param("date") LocalDateTime date);
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE RoomInMember rim set rim.exitTime = :date WHERE rim.room = :room and rim.member = :member")
-    void updateExitTime(@Param("room") Room room, @Param("member") Member member, @Param("date") LocalDateTime date);
 }
 

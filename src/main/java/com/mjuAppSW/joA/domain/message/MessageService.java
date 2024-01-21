@@ -89,7 +89,9 @@ public class MessageService {
 
         List<Message> getMessages = messageRepository.findMessage(room, member);
         if(!getMessages.isEmpty()){
-            messageRepository.updateIsChecked(getMessages);
+            for(Message message : getMessages){
+                message.updateIsChecked();
+            }
         }
     }
 }

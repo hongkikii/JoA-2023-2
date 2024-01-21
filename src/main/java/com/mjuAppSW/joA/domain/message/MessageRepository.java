@@ -36,9 +36,4 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     @Transactional
     @Query("DELETE FROM Message m WHERE m.room = :room")
     void deleteByRoom(@Param("room") Room room);
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE Message m SET m.isChecked = '0' WHERE m In :messages")
-    void updateIsChecked(@Param("messages") List<Message> messages);
 }

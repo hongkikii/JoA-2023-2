@@ -46,6 +46,10 @@ public class Constants {
         public static Integer NINETY_DAY_HOURS = 2160;
     }
 
+    public static class Message{
+        public static String CHECKED = "0";
+    }
+
     public static class WebSocketHandler{
         public static String R_SEPARATOR = "R";
         public static String M_SEPARATOR = "M";
