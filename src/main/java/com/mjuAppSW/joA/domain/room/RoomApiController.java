@@ -1,61 +1,65 @@
 package com.mjuAppSW.joA.domain.room;
 
-import com.mjuAppSW.joA.domain.room.dto.RoomCheckRequest;
-import com.mjuAppSW.joA.domain.room.dto.RoomResponse;
-import com.mjuAppSW.joA.domain.room.dto.RoomUpdateRequest;
+import java.time.LocalDateTime;
+
+import com.mjuAppSW.joA.common.dto.SuccessResponse;
+import com.mjuAppSW.joA.domain.room.dto.response.RoomResponse;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 @Slf4j
+@RequestMapping("/joa/rooms")
 public class RoomApiController {
 
-    private RoomService roomService;
+    private final RoomService roomService;
 
-    @Autowired
-    public RoomApiController(RoomService romRoomService){
-        this.roomService = romRoomService;
+    @Operation(summary = "방 생성", description = "메인 페이지에서 하트가 눌렸을 때 방을 생성하는 API")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "방 생성 완료")
+    })
+    @PostMapping()
+    public ResponseEntity<SuccessResponse<RoomResponse>> createRoom(){
+        LocalDateTime createdRoomDate = LocalDateTime.now();
+        return SuccessResponse.of(roomService.createRoom(createdRoomDate)).asHttp(HttpStatus.OK);
     }
-
-    @PostMapping("/create/room") // 방 생성
-    public ResponseEntity<RoomResponse> createRoom(){
-        log.info("createRoom");
-        RoomResponse roomResponse = roomService.createRoom();
-        log.info("createRoom Return : roomId = {}", roomResponse.getRoomId());
-        return ResponseEntity.ok(roomResponse);
+    @Operation(summary = "방 생성 시간 조회", description = "채팅방 페이지에서 투표를 누르기 전 유효기간을 확인하는 API")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "방이 생성된지 24시간이 지나지 않았습니다."),
+        @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "400", description = "R002: 방이 생성된지 24시간이 지났습니다.")
+    })
+    @PostMapping("/{id}/status")
+    public ResponseEntity<Void> checkCreateAtRoom(
+            @Parameter(description = "방 id", in = ParameterIn.PATH) @PathVariable("id") Long roomId){
+        roomService.checkCreateAtRoom(roomId);
+        return ResponseEntity.ok().build();
     }
-
-    @PostMapping("/check/createdTime")
-    public ResponseEntity<String> checkCreateAtRoom(@RequestBody RoomCheckRequest roomCheckRequest){
-        log.info("checkCreateAtRoom : roomId = {} ", roomCheckRequest.getRoomId());
-        int checkCreatedAt = roomService.checkCreateAtRoom(roomCheckRequest.getRoomId());
-        if(checkCreatedAt == 0){
-            log.info("checkCreateAtRoom Return : BAD_REQUEST, over 24hours");
-            return ResponseEntity.badRequest().build();
-        }else if(checkCreatedAt == 1){
-            log.info("checkCreateAtRoom Return : OK, not over 24hours");
-            return ResponseEntity.ok().build();
-        }else{
-            log.warn("checkCreateAtRoom Return : BAD_REQUEST, roomId's not correct / roomId = {}", roomCheckRequest.getRoomId());
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping("/update/createdAt/status") // 투표가 완료되었을 때, 방 상태 없데이트
-    public HttpStatus updateRoom(@RequestBody RoomUpdateRequest roomUpdateRequest){
-        log.info("updateRoom : roomId = {}, status = {}", roomUpdateRequest.getRoomId(), roomUpdateRequest.getStatus());
-        boolean checkRoomId = roomService.checkRoomId(roomUpdateRequest.getRoomId());
-        if(!checkRoomId) {
-            log.warn("updateRoom Return : BAD_REQUEST, roomId's not correct / roomId = {}, status = {}", roomUpdateRequest.getRoomId(), roomUpdateRequest.getStatus());
-            return HttpStatus.BAD_REQUEST;
-        }
-        roomService.updateRoom(roomUpdateRequest.getRoomId(), roomUpdateRequest.getStatus());
-        log.info("updateRoom Return : OK, update complete");
-        return HttpStatus.OK;
+    @Operation(summary = "방 상태 연장", description = "채팅방 페이지에서 투표가 완료되었을 때 유효기간을 연장하는 API")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "방 연장 완료"),
+        @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "409", description = "R004: 이미 연장된 채팅방입니다.")
+    })
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Void> updateStatusAndDate(
+         @Parameter(description = "방 id", in = ParameterIn.PATH) @PathVariable("id") Long roomId){
+        LocalDateTime updateRoomStatusDate = LocalDateTime.now();
+        roomService.updateStatusAndDate(roomId, updateRoomStatusDate);
+        return ResponseEntity.ok().build();
     }
 }

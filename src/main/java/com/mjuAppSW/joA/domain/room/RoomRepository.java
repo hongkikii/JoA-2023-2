@@ -14,14 +14,6 @@ import java.util.Set;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE Room r set r.date = :date, r.status = :status Where r.id = :roomId")
-    void updateCreatedAtAndStatus(@Param("roomId") Long roomId, @Param("date") LocalDateTime date, @Param("status") String status);
-
-    @Query("SELECT r FROM Room r Where r.id = :roomId")
-    Room findByDate(@Param("roomId") Long roomId);
-
     @Query("SELECT r FROM Room r Where r.status = :status")
     List<Room> findByStatus(@Param("status") String status);
 

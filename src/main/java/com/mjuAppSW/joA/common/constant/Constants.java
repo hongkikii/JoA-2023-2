@@ -23,6 +23,52 @@ public class Constants {
         public static String ERROR = "error";
     }
 
+    public static class Room {
+        public static String EXTEND = "0";
+        public static String NOT_EXTEND = "1";
+        public static Integer ONE_DAY_HOURS = 24;
+        public static Integer SEVEN_DAY_HOURS = 168;
+        public static Integer OVER_ONE_DAY = 1;
+        public static Integer OVER_SEVEN_DAY = 7;
+    }
+
+    public static class RoomInMember{
+        public static String EXIT = "0";
+        public static String NOT_EXIT = "1";
+        public static String APPROVE_VOTE = "0";
+        public static String DISAPPROVE_OR_BEFORE_VOTE = "1";
+    }
+
+    public static class MessageReport{
+        public static Integer REPORTED = 1;
+        public static Integer REPORT = 2;
+        public static Integer CLEAR = 3;
+        public static Integer NINETY_DAY_HOURS = 2160;
+    }
+
+    public static class Message{
+        public static String CHECKED = "0";
+    }
+
+    public static class WebSocketHandler{
+        public static String R_SEPARATOR = "R";
+        public static String M_SEPARATOR = "M";
+        public static Integer LIMIT_SEPARATOR = 4;
+        public static String SEPARATOR = " ";
+        public static Integer OVER_ONE_DAY = 1;
+        public static Integer OVER_SEVEN_DAY = 7;
+        public static String OPPONENT_CHECK_MESSAGE = "0";
+        public static Integer NORMAL_OPERATION = 0;
+        public static String AND_OPERATION = "&";
+        public static String EQUAL_OPERATION = "=";
+        public static String ALARM_REPORTED_ROOM = "신고된 방입니다.";
+        public static String ALARM_OPPONENT_EXITED = "상대방이 나갔습니다.";
+        public static String ALARM_OPPONENT_IS_WITH_DRAWAL = "상대방이 탈퇴하였습니다.";
+        public static String ALARM_OVER_ONE_DAY = "방 유효시간이 24시간을 초과하였습니다.";
+        public static String ALARM_OVER_SEVEN_DAY = "방 유효시간이 7일을 초과하였습니다.";
+        public static Integer MAX_CAPACITY_IN_ROOM = 2;
+    }
+
     public static Integer ZERO = 0;
     public static String EMPTY_STRING = "";
     public static String EMAIL_SPLIT = "@";
