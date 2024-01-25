@@ -59,7 +59,7 @@ public class RoomInMemberApiController {
         @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
         @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다.")
     })
-    @PatchMapping("/expired")
+    @PatchMapping("/out")
     public ResponseEntity<Void> updateExpired(@RequestBody @Valid UpdateExpiredRequest request){
         roomInMemberService.updateExpired(request);
         return ResponseEntity.ok().build();
@@ -71,7 +71,7 @@ public class RoomInMemberApiController {
         @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
         @ApiResponse(responseCode = "400", description = "RIM002: 이미 두 사용자의 채팅방이 존재합니다.")
     })
-    @GetMapping("/check")
+    @GetMapping("/existence")
     public ResponseEntity<Void> checkRoomInMember(@RequestBody @Valid CheckRoomInMemberRequest request){
         roomInMemberService.checkRoomInMember(request);
         return ResponseEntity.ok().build();
