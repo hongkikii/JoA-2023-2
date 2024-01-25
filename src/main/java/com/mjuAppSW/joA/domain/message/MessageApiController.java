@@ -32,7 +32,7 @@ public class MessageApiController {
         @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
         @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다.")
     })
-    @GetMapping("/{roomId}/{memberId}/messages")
+    @GetMapping("/{roomId}/{memberId}")
     public ResponseEntity<SuccessResponse<MessageResponse>> loadMessages(
         @Parameter(description = "방 id", in = ParameterIn.PATH) @PathVariable("roomId") Long roomId,
         @Parameter(description = "사용자 id", in = ParameterIn.PATH) @PathVariable("memberId") Long memberId){

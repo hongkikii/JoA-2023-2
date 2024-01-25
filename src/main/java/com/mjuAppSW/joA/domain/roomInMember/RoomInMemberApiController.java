@@ -71,7 +71,7 @@ public class RoomInMemberApiController {
         @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
         @ApiResponse(responseCode = "400", description = "RIM002: 이미 두 사용자의 채팅방이 존재합니다.")
     })
-    @PostMapping("/check")
+    @GetMapping("/check")
     public ResponseEntity<Void> checkRoomInMember(@RequestBody @Valid CheckRoomInMemberRequest request){
         roomInMemberService.checkRoomInMember(request);
         return ResponseEntity.ok().build();
@@ -84,7 +84,7 @@ public class RoomInMemberApiController {
         @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
         @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다.")
     })
-    @GetMapping("/{roomId}/{memberId}/userInfo")
+    @GetMapping("/{roomId}/{memberId}/userinfo")
     public ResponseEntity<SuccessResponse<UserInfoResponse>> getUserInfo(@PathVariable("roomId") Long roomId, @PathVariable("memberId") Long memberId){
         return SuccessResponse.of(roomInMemberService.getUserInfo(roomId, memberId))
             .asHttp(HttpStatus.OK);

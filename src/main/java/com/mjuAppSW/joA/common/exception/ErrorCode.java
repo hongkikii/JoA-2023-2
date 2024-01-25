@@ -57,7 +57,7 @@ public enum ErrorCode {
     ROOM_EXISTED(409, "R001", "이미 채팅방이 존재합니다."),
     OVER_ONE_DAY(400, "R002", "방이 생성된지 24시간이 지났습니다."),
     ROOM_NOT_FOUND(404, "R003", "방을 찾을 수 없습니다."),
-    ROOM_ALREADY_EXTEND(409, "R004", "이미 연장된 채팅방입니다."),
+    ROOM_ALREADY_EXTEND(409, "R004", "이미 연장된 방입니다."),
 
     // RoomInMember
     RIM_NOT_FOUND(404, "RIM001", "채팅방을 찾을 수 없습니다."),
