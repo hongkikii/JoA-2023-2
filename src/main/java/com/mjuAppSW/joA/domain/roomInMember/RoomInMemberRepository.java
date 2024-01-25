@@ -1,12 +1,13 @@
 package com.mjuAppSW.joA.domain.roomInMember;
 
 import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.memberProfile.vo.UserInfoVO;
 import com.mjuAppSW.joA.domain.room.Room;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoExceptMessageVO;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoIncludeMessageVO;
-import com.mjuAppSW.joA.domain.roomInMember.vo.UserInfoVO;
+
 import jakarta.transaction.Transactional;
-import java.time.LocalDateTime;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +73,5 @@ public interface RoomInMemberRepository extends JpaRepository<RoomInMember, Long
             "From RoomInMember rim LEFT JOIN Member m ON rim.member.id = m.id " +
             "WHERE rim.room = :room AND rim.member <> :member")
     UserInfoVO getUserInfo(@Param("room") Room room, @Param("member") Member member);
-
 }
 

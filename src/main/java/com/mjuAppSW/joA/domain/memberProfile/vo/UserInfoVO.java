@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.roomInMember.vo;
+package com.mjuAppSW.joA.domain.memberProfile.vo;
 
 public interface UserInfoVO {
     String getName();

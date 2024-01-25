@@ -116,14 +116,13 @@ public class SwaggerConfig {
                 .build();
     }
 
-    // 임의 지정, 변경 요함
     @Bean
     public GroupedOpenApi messageOpenApi() {
         String[] paths = {"/joa/messages/**"};
 
         return GroupedOpenApi
                 .builder()
-                .group("채팅 API")
+                .group("채팅 메시지 API")
                 .pathsToMatch(paths)
                 .build();
     }
@@ -134,7 +133,7 @@ public class SwaggerConfig {
 
         return GroupedOpenApi
                 .builder()
-                .group("채팅방 API")
+                .group("방 API")
                 .pathsToMatch(paths)
                 .build();
     }
@@ -145,9 +144,8 @@ public class SwaggerConfig {
 
         return GroupedOpenApi
                 .builder()
-                .group("채팅 사용자 API")
+                .group("채팅방 API")
                 .pathsToMatch(paths)
                 .build();
     }
-
 }
