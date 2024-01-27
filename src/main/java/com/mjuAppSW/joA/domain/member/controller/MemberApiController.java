@@ -1,6 +1,8 @@
-package com.mjuAppSW.joA.domain.member;
+package com.mjuAppSW.joA.domain.member.controller;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
+import com.mjuAppSW.joA.domain.member.service.CertifyService;
+import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.member.dto.request.FindIdRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.FindPasswordRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.JoinRequest;
@@ -11,8 +13,6 @@ import com.mjuAppSW.joA.domain.member.dto.request.VerifyIdRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
 import com.mjuAppSW.joA.domain.member.dto.request.VerifyCertifyNumRequest;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -40,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberApiController {
 
     private final MemberService memberService;
+    private final CertifyService certifyService;
 
     @Operation(summary = "인증 번호 전송", description = "회원가입 시 학교 웹메일을 확인하기 위해 해당 웹메일로 인증번호를 전송하는 API")
     @ApiResponses(value = {
@@ -51,7 +51,7 @@ public class MemberApiController {
     })
     @PostMapping("/certify-num/send")
     public ResponseEntity<SuccessResponse<SessionIdResponse>> sendCertifyNum(@RequestBody @Valid SendCertifyNumRequest request) {
-        return SuccessResponse.of(memberService.sendCertifyNum(request))
+        return SuccessResponse.of(certifyService.send(request))
                 .asHttp(HttpStatus.OK);
     }
 
@@ -63,7 +63,7 @@ public class MemberApiController {
     })
     @PostMapping("/certify-num/verify")
     public ResponseEntity<Void> verifyCertifyNum(@RequestBody @Valid VerifyCertifyNumRequest request) {
-        memberService.verifyCertifyNum(request);
+        certifyService.verify(request);
         return ResponseEntity.ok().build();
     }
 

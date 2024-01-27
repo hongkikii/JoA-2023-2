@@ -3,7 +3,7 @@ package com.mjuAppSW.joA.domain.message;
 import com.mjuAppSW.joA.common.auth.MemberChecker;
 import com.mjuAppSW.joA.common.encryption.EncryptManager;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.MemberRepository;
+import com.mjuAppSW.joA.domain.member.infrastructure.MemberRepository;
 import com.mjuAppSW.joA.domain.message.dto.vo.MessageVO;
 import com.mjuAppSW.joA.domain.message.dto.response.MessageResponse;
 import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;

@@ -1,7 +1,9 @@
 package com.mjuAppSW.joA.common.auth;
 
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.MemberRepository;
+import com.mjuAppSW.joA.domain.member.exception.SessionNotFoundException;
+import com.mjuAppSW.joA.domain.member.infrastructure.MemberRepository;
+import com.mjuAppSW.joA.domain.member.service.port.CacheManager;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 public class SessionManager {
 
     private final MemberRepository memberRepository;
+    private final CacheManager cacheManager;
 
     public long makeSessionId() {
         long min = 1000000000L;
@@ -30,5 +33,12 @@ public class SessionManager {
         for (Member member : members) {
             member.makeSessionId(makeSessionId());
         }
+    }
+
+    public boolean isCached(String key, Long sessionId) {
+        if (cacheManager.isNotExistedKey(key + sessionId)) {
+            throw new SessionNotFoundException();
+        }
+        return true;
     }
 }

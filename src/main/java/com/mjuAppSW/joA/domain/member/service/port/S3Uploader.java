@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.common.storage;
+package com.mjuAppSW.joA.domain.member.service.port;
 
 import static com.mjuAppSW.joA.common.constant.Constants.S3Uploader.ERROR;
 

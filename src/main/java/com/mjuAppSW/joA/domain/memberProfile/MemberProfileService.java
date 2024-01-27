@@ -12,7 +12,7 @@ import com.mjuAppSW.joA.domain.memberProfile.dto.request.PictureRequest;
 import com.mjuAppSW.joA.domain.memberProfile.dto.response.SettingPageResponse;
 import com.mjuAppSW.joA.domain.memberProfile.exception.InvalidS3Exception;
 import com.mjuAppSW.joA.domain.vote.VoteRepository;
-import com.mjuAppSW.joA.common.storage.S3Uploader;
+import com.mjuAppSW.joA.domain.member.service.port.S3Uploader;
 import com.mjuAppSW.joA.domain.memberProfile.dto.response.VotePageResponse;
 import com.mjuAppSW.joA.domain.memberProfile.dto.response.LocationPageResponse;
 import jakarta.transaction.Transactional;

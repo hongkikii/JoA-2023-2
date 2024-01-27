@@ -1,6 +1,7 @@
-package com.mjuAppSW.joA.domain.member;
+package com.mjuAppSW.joA.domain.member.infrastructure;
 
-import com.mjuAppSW.joA.domain.college.MCollege;
+import com.mjuAppSW.joA.domain.college.MCollegeEntity;
+import com.mjuAppSW.joA.domain.member.Member;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,10 +20,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findBysessionId(@Param("sessionId") Long sessionId);
 
     @Query("SELECT m FROM Member m WHERE m.uEmail = :uEmail AND m.college = :college AND m.isWithdrawal = false")
-    Optional<Member> findByuEmailAndcollege(@Param("uEmail") String uEmail, @Param("college") MCollege college);
+    Optional<Member> findByuEmailAndcollege(@Param("uEmail") String uEmail, @Param("college") MCollegeEntity college);
 
     @Query("SELECT m FROM Member m WHERE m.uEmail = :uEmail AND m.college = :college AND m.status = 3")
-    Optional<Member> findForbidden(@Param("uEmail") String uEmail, @Param("college") MCollege college);
+    Optional<Member> findForbidden(@Param("uEmail") String uEmail, @Param("college") MCollegeEntity college);
 
     @Query("SELECT m FROM Member m WHERE m.isWithdrawal = false")
     List<Member> findJoiningAll();

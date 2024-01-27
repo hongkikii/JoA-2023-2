@@ -3,7 +3,7 @@ package com.mjuAppSW.joA.domain.member;
 import static com.mjuAppSW.joA.common.constant.Constants.EMPTY_STRING;
 import static com.mjuAppSW.joA.common.constant.Constants.ZERO;
 
-import com.mjuAppSW.joA.domain.college.MCollege;
+import com.mjuAppSW.joA.domain.college.MCollegeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -56,7 +55,7 @@ public class Member {
 
     @ManyToOne
     @JoinColumn(name = "College_id")
-    private MCollege college;
+    private MCollegeEntity college;
 
     @Column(name = "Report_count", nullable = false)
     private Integer reportCount;
@@ -69,7 +68,7 @@ public class Member {
     private LocalDateTime stopEndDate;
 
     @Builder
-    public Member(String name, String loginId, String password, String salt, String uEmail, MCollege college, Long sessionId) {
+    public Member(String name, String loginId, String password, String salt, String uEmail, MCollegeEntity college, Long sessionId) {
         this.name = name;
         this.loginId = loginId;
         this.password = password;

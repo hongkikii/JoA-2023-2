@@ -6,6 +6,7 @@ import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.geography.block.exception.LocationNotFoundException;
 import com.mjuAppSW.joA.geography.college.PCollege;
 import com.mjuAppSW.joA.geography.college.PCollegeRepository;
+import com.mjuAppSW.joA.geography.college.PCollegeService;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByInfo;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByListResponse;
 import com.mjuAppSW.joA.geography.location.dto.request.UpdateRequest;
@@ -31,31 +32,32 @@ import org.springframework.stereotype.Service;
 public class LocationService {
 
     private final LocationRepository locationRepository;
-    private final PCollegeRepository pCollegeRepository;
+    private final PCollegeService pCollegeService;
     private final HeartRepository heartRepository;
     private final MemberChecker memberChecker;
 
     @Transactional
+    public void create(Member joinMember, PCollege pCollege) {
+        Location joinLocation = new Location(joinMember.getId(), pCollege);
+        locationRepository.save(joinLocation);
+    }
+
+    @Transactional
     public UpdateResponse update(UpdateRequest request) {
         Member member = memberChecker.findFilterBySessionId(request.getId());
-        Location oldLocation = findLocation(member.getId());
-        PCollege college = findCollege(oldLocation.getCollege().getCollegeId());
+        Location oldLocation = findByMemberId(member.getId());
+        PCollege college = pCollegeService.findById(oldLocation.getCollege().getCollegeId());
 
         boolean isContained = isPointWithinCollege
                 (request.getLatitude(), request.getLongitude(), college.getPolygonField());
 
-        createLocation(request, oldLocation, isContained);
+        create(request, oldLocation, isContained);
         return UpdateResponse.of(isContained);
     }
 
-    private Location findLocation(Long memberId) {
+    private Location findByMemberId(Long memberId) {
         return locationRepository.findById(memberId)
                 .orElseThrow(LocationNotFoundException::new);
-    }
-
-    private PCollege findCollege(Long memberId) {
-        return pCollegeRepository.findById(memberId)
-                .orElseThrow(CollegeNotFoundException::new);
     }
 
     private boolean isPointWithinCollege(double latitude, double longitude, Polygon polygon) {
@@ -66,7 +68,7 @@ public class LocationService {
         return polygon.contains(point);
     }
 
-    private void createLocation(UpdateRequest request, Location oldLocation, boolean isContained) {
+    private void create(UpdateRequest request, Location oldLocation, boolean isContained) {
         Point point = getPoint(request.getLatitude(), request.getLongitude(), request.getAltitude());
         Location newLocation = Location.builder()
                                     .id(oldLocation.getId())
@@ -87,7 +89,7 @@ public class LocationService {
     public NearByListResponse getNearByList
             (Long sessionId, Double latitude, Double longitude, Double altitude) {
         Member member = memberChecker.findFilterBySessionId(sessionId);
-        checkWithinCollege(findLocation(member.getId()));
+        checkWithinCollege(findByMemberId(member.getId()));
 
         Point point = getPoint(latitude, longitude, altitude);
         System.out.println(member.getId());
@@ -118,5 +120,21 @@ public class LocationService {
                                         .isLiked(isLiked)
                                         .build();})
                         .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateIsContained(Long memberId, boolean isContained) {
+        locationRepository.findById(memberId)
+                .ifPresent(location -> {
+                    locationRepository.save(Location.builder().id(location.getId())
+                            .college(location.getCollege())
+                            .point(location.getPoint())
+                            .isContained(isContained)
+                            .updateDate(location.getUpdateDate()).build());});
+    }
+
+    @Transactional
+    public void delete(Long memberId) {
+        locationRepository.deleteById(memberId);
     }
 }

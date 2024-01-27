@@ -3,9 +3,9 @@ package com.mjuAppSW.joA.common.auth;
 import static com.mjuAppSW.joA.common.constant.Constants.EMPTY_STRING;
 
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.MemberRepository;
+import com.mjuAppSW.joA.domain.member.infrastructure.MemberRepository;
 import com.mjuAppSW.joA.geography.location.LocationRepository;
-import com.mjuAppSW.joA.common.storage.S3Uploader;
+import com.mjuAppSW.joA.domain.member.service.port.S3Uploader;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

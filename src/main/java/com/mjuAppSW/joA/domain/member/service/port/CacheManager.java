@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.common.storage;
+package com.mjuAppSW.joA.domain.member.service.port;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
