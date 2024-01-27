@@ -15,7 +15,7 @@ public class SessionIdResponse {
 
     public static SessionIdResponse of(Long id) {
         return SessionIdResponse.builder()
-                                        .id(id)
-                                        .build();
+                            .id(id)
+                            .build();
     }
  }
