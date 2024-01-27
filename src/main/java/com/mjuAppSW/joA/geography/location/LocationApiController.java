@@ -58,7 +58,7 @@ public class LocationApiController {
             @ApiResponse(responseCode = "404-2", description = "L001: 사용자의 위치 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "409", description = "P002: 사용자가 학교 밖에 위치합니다.", content = @Content(schema = @Schema(hidden = true)))
     })
-    @GetMapping("/{id}/near-by-list")
+    @GetMapping("/{id}")
     public ResponseEntity<SuccessResponse<NearByListResponse>> getNearByList(
             @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH) @PathVariable("id") @NotNull Long sessionId,
             @Parameter(description = "사용자 현재 위도", in = ParameterIn.QUERY) @RequestParam @NotBlank Double latitude,
