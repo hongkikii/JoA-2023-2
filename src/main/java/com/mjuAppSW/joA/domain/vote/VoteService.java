@@ -3,7 +3,7 @@ package com.mjuAppSW.joA.domain.vote;
 import com.mjuAppSW.joA.common.auth.MemberChecker;
 import com.mjuAppSW.joA.domain.vote.exception.InvalidVoteExistedException;
 import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.vote.dto.request.VoteRequest;
 import com.mjuAppSW.joA.domain.vote.dto.response.VoteContent;
 import com.mjuAppSW.joA.domain.vote.dto.response.VoteListResponse;
@@ -33,8 +33,8 @@ public class VoteService {
 
     @Transactional
     public void send(VoteRequest request) {
-        Member giveMember = memberChecker.findFilterBySessionId(request.getGiveId());
-        Member takeMember = memberChecker.findById(request.getTakeId());
+        MemberEntity giveMember = memberChecker.findFilterBySessionId(request.getGiveId());
+        MemberEntity takeMember = memberChecker.findById(request.getTakeId());
         VoteCategory voteCategory = findVoteCategoryById(request.getCategoryId());
 
         Long giveMemberId = giveMember.getId();
@@ -64,7 +64,7 @@ public class VoteService {
         }
     }
 
-    private void createVote(Member giveMember, Member takeMember, VoteCategory voteCategory, String hint) {
+    private void createVote(MemberEntity giveMember, MemberEntity takeMember, VoteCategory voteCategory, String hint) {
         voteRepository.save(Vote.builder()
                             .giveId(giveMember.getId())
                             .member(takeMember)
@@ -75,7 +75,7 @@ public class VoteService {
     }
 
     public VoteListResponse get(Long sessionId) {
-        Member findTakeMember = memberChecker.findFilterBySessionId(sessionId);
+        MemberEntity findTakeMember = memberChecker.findFilterBySessionId(sessionId);
         return VoteListResponse.of(getVoteList(findTakeMember.getId()));
     }
 

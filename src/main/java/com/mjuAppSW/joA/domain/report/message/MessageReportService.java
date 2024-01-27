@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.mjuAppSW.joA.common.auth.MemberChecker;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.message.Message;
 import com.mjuAppSW.joA.domain.message.MessageRepository;
 import com.mjuAppSW.joA.domain.message.exception.MessageNotFoundException;
@@ -65,7 +65,7 @@ public class MessageReportService {
 
         messageReportRepository.save(messageReport);
 
-        Member member = memberChecker.findById(message.getMember().getId());
+        MemberEntity member = memberChecker.findById(message.getMember().getId());
         member.addReportCount();
     }
 
@@ -90,8 +90,8 @@ public class MessageReportService {
         return false;
     }
     public void checkMessageReport(CheckMessageReportRequest request){
-        Member member1 = memberChecker.findBySessionId(request.getMemberId1());
-        Member member2 = memberChecker.findById(request.getMemberId2());
+        MemberEntity member1 = memberChecker.findBySessionId(request.getMemberId1());
+        MemberEntity member2 = memberChecker.findById(request.getMemberId2());
 
         List<MessageReport> myMessageReport = messageReportRepository.findByMemberId(member1.getId());
         List<MessageReport> opponentMessageReport = messageReportRepository.findByMemberId(member2.getId());

@@ -1,17 +1,15 @@
 package com.mjuAppSW.joA.geography.location;
 
-import com.mjuAppSW.joA.common.auth.MemberChecker;
 import com.mjuAppSW.joA.domain.heart.HeartRepository;
 import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.geography.block.exception.LocationNotFoundException;
 import com.mjuAppSW.joA.geography.college.PCollege;
-import com.mjuAppSW.joA.geography.college.PCollegeRepository;
 import com.mjuAppSW.joA.geography.college.PCollegeService;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByInfo;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByListResponse;
 import com.mjuAppSW.joA.geography.location.dto.request.UpdateRequest;
 import com.mjuAppSW.joA.geography.location.dto.response.UpdateResponse;
-import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
 import com.mjuAppSW.joA.geography.location.exception.OutOfCollegeException;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -34,7 +32,7 @@ public class LocationService {
     private final LocationRepository locationRepository;
     private final PCollegeService pCollegeService;
     private final HeartRepository heartRepository;
-    private final MemberChecker memberChecker;
+    private final MemberService memberService;
 
     @Transactional
     public void create(Member joinMember, PCollege pCollege) {
@@ -44,7 +42,7 @@ public class LocationService {
 
     @Transactional
     public UpdateResponse update(UpdateRequest request) {
-        Member member = memberChecker.findFilterBySessionId(request.getId());
+        Member member = memberService.findNormalBySessionId(request.getId());
         Location oldLocation = findByMemberId(member.getId());
         PCollege college = pCollegeService.findById(oldLocation.getCollege().getCollegeId());
 
@@ -88,7 +86,7 @@ public class LocationService {
 
     public NearByListResponse getNearByList
             (Long sessionId, Double latitude, Double longitude, Double altitude) {
-        Member member = memberChecker.findFilterBySessionId(sessionId);
+        Member member = memberService.findNormalBySessionId(sessionId);
         checkWithinCollege(findByMemberId(member.getId()));
 
         Point point = getPoint(latitude, longitude, altitude);
@@ -109,7 +107,7 @@ public class LocationService {
     private List<NearByInfo> makeNearByList(Member member, List<Long> nearMemberIds) {
         return nearMemberIds.stream()
                         .map(nearId -> {
-                            Member findMember = memberChecker.findById(nearId);
+                            Member findMember = memberService.findById(nearId);
                             boolean isLiked = heartRepository.findTodayHeart(member.getId(), nearId)
                                                             .isPresent();
                             return NearByInfo.builder()
@@ -125,12 +123,11 @@ public class LocationService {
     @Transactional
     public void updateIsContained(Long memberId, boolean isContained) {
         locationRepository.findById(memberId)
-                .ifPresent(location -> {
-                    locationRepository.save(Location.builder().id(location.getId())
-                            .college(location.getCollege())
-                            .point(location.getPoint())
-                            .isContained(isContained)
-                            .updateDate(location.getUpdateDate()).build());});
+                .ifPresent(location -> locationRepository.save(Location.builder().id(location.getId())
+                        .college(location.getCollege())
+                        .point(location.getPoint())
+                        .isContained(isContained)
+                        .updateDate(location.getUpdateDate()).build()));
     }
 
     @Transactional

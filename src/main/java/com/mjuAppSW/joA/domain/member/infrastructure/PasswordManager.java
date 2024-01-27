@@ -9,4 +9,6 @@ public interface PasswordManager {
     String createRandom();
 
     void validate(String rawPassword);
+
+    void compare(String originalPassword, String InputPassword);
 }

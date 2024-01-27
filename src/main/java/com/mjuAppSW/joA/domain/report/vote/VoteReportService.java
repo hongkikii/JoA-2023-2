@@ -1,7 +1,7 @@
 package com.mjuAppSW.joA.domain.report.vote;
 
 import com.mjuAppSW.joA.common.auth.MemberChecker;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.report.ReportCategory;
 import com.mjuAppSW.joA.domain.report.ReportCategoryRepository;
 import com.mjuAppSW.joA.domain.report.vote.dto.VoteReportRequest;
@@ -30,7 +30,7 @@ public class VoteReportService {
         ReportCategory reportCategory = findReportCategoryById(request.getReportId());
         Long voteId = request.getVoteId();
         Vote vote = findVoteById(voteId);
-        Member giveMember = memberChecker.findById(vote.getGiveId());
+        MemberEntity giveMember = memberChecker.findById(vote.getGiveId());
 
         checkEqualReport(voteId);
 

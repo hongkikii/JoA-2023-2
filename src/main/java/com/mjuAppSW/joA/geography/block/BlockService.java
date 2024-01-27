@@ -1,7 +1,7 @@
 package com.mjuAppSW.joA.geography.block;
 
 import com.mjuAppSW.joA.common.auth.MemberChecker;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.geography.block.dto.BlockRequest;
 import com.mjuAppSW.joA.geography.block.exception.BlockAlreadyExistedException;
 import com.mjuAppSW.joA.geography.block.exception.LocationNotFoundException;
@@ -21,8 +21,8 @@ public class BlockService {
 
     @Transactional
     public void create(BlockRequest request) {
-        Member blockerMember = memberChecker.findBySessionId(request.getBlockerId());
-        Member blockedMember = memberChecker.findById(request.getBlockedId());
+        MemberEntity blockerMember = memberChecker.findBySessionId(request.getBlockerId());
+        MemberEntity blockedMember = memberChecker.findById(request.getBlockedId());
 
         Location blockerLocation = findLocation(blockerMember.getId());
         Location blockedLocation = findLocation(blockedMember.getId());

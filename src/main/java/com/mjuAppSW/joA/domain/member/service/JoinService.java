@@ -8,15 +8,15 @@ import static com.mjuAppSW.joA.common.constant.Constants.EMAIL_SPLIT;
 import com.mjuAppSW.joA.domain.college.MCollegeEntity;
 import com.mjuAppSW.joA.domain.college.MCollegeService;
 import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.member.dto.request.JoinRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.VerifyIdRequest;
 import com.mjuAppSW.joA.domain.member.exception.InvalidLoginIdException;
 import com.mjuAppSW.joA.domain.member.exception.LoginIdAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.LoginIdNotAuthorizedException;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
-import com.mjuAppSW.joA.domain.member.infrastructure.MemberRepository;
+import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
 import com.mjuAppSW.joA.domain.member.infrastructure.PasswordManager;
-import com.mjuAppSW.joA.domain.member.service.port.CacheManagerImpl;
 import com.mjuAppSW.joA.geography.college.PCollege;
 import com.mjuAppSW.joA.geography.college.PCollegeService;
 import com.mjuAppSW.joA.geography.location.LocationService;
@@ -88,8 +88,9 @@ public class JoinService {
         MCollegeEntity mCollegeEntity = mCollegeService.findByDomain(splitEMail[1]);
         PCollege pCollege = pCollegeService.findById(mCollegeEntity.getId());
 
-        Member joinMember = createMember(request, uEmail, mCollegeEntity);
-        locationService.create(joinMember, pCollege);
+        Member member = Member.create(request, uEmail, mCollegeEntity);
+        memberRepository.save(member);
+        locationService.create(member, pCollege);
         emptyCache(sessionId);
     }
 
@@ -97,21 +98,6 @@ public class JoinService {
         if(!cacheManager.compare(ID + sessionId, loginId)){
             throw new LoginIdNotAuthorizedException();
         }
-    }
-
-    private Member createMember(JoinRequest request, String uEmail, MCollegeEntity mCollegeEntity) {
-        String salt = passwordManager.createSalt();
-        String hashedPassword = passwordManager.createHashed(request.getPassword(), salt);
-
-        Member joinMember = Member.builder().name(request.getName())
-                .loginId(request.getLoginId())
-                .password(hashedPassword)
-                .salt(salt)
-                .uEmail(uEmail)
-                .college(mCollegeEntity)
-                .sessionId(request.getId()).build();
-        memberRepository.save(joinMember);
-        return joinMember;
     }
 
     private void emptyCache(Long sessionId) {

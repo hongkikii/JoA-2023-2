@@ -1,8 +1,9 @@
 package com.mjuAppSW.joA.domain.member.service;
 
 import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.member.exception.SessionNotFoundException;
-import com.mjuAppSW.joA.domain.member.infrastructure.MemberRepository;
+import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
 import com.mjuAppSW.joA.domain.member.service.port.CacheManagerImpl;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SessionService {
 
+    private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final CacheManagerImpl cacheManager;
 
@@ -28,10 +30,10 @@ public class SessionService {
 
     @Transactional
     @Scheduled(cron = "0 0 0 1 * ?")
-    public void expire() {
+    public void update() {
         List<Member> members = memberRepository.findAll();
         for (Member member : members) {
-            member.makeSessionId(create());
+            memberService.updateSessionId(member, create());
         }
     }
 

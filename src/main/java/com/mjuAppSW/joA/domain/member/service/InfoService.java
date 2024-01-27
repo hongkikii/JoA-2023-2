@@ -5,6 +5,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.S3Uploader.ERROR;
 
 import com.mjuAppSW.joA.domain.heart.HeartRepository;
 import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.member.dto.request.BioRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.MyPageResponse;
 import com.mjuAppSW.joA.domain.member.dto.request.PictureRequest;
@@ -12,7 +13,6 @@ import com.mjuAppSW.joA.domain.member.dto.response.SettingPageResponse;
 import com.mjuAppSW.joA.domain.member.exception.InvalidS3Exception;
 import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import com.mjuAppSW.joA.domain.vote.VoteRepository;
-import com.mjuAppSW.joA.domain.member.service.port.ImageUploaderImpl;
 import com.mjuAppSW.joA.domain.member.dto.response.VotePageResponse;
 import com.mjuAppSW.joA.domain.member.dto.response.LocationPageResponse;
 import jakarta.transaction.Transactional;
@@ -25,10 +25,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class InfoService {
 
-    private final HeartRepository heartRepository;
-    private final VoteRepository voteRepository;
     private final MemberService memberService;
     private final ImageUploader imageUploader;
+    private final HeartRepository heartRepository;
+    private final VoteRepository voteRepository;
 
     public SettingPageResponse getSettingPage(Long sessionId) {
         Member member = memberService.findNormalBySessionId(sessionId);
@@ -56,13 +56,13 @@ public class InfoService {
     @Transactional
     public void transBio(BioRequest request) {
         Member member = memberService.findNormalBySessionId(request.getId());
-        member.changeBio(request.getBio());
+        memberService.updateBio(member, request.getBio());
     }
 
     @Transactional
     public void deleteBio(Long sessionId) {
         Member member = memberService.findNormalBySessionId(sessionId);
-        member.changeBio(EMPTY_STRING);
+        memberService.updateBio(member, EMPTY_STRING);
     }
 
     @Transactional
@@ -76,7 +76,7 @@ public class InfoService {
         if(newUrlCode.equals(ERROR)) {
             throw new InvalidS3Exception();
         }
-        member.changeUrlCode(newUrlCode);
+        memberService.updateUrlCode(member, newUrlCode);
     }
 
     private boolean isBasicPicture(String urlCode) {
@@ -90,7 +90,7 @@ public class InfoService {
             return;
         }
         if (imageUploader.delete(member.getUrlCode())) {
-            member.changeUrlCode(EMPTY_STRING);
+            memberService.updateUrlCode(member, EMPTY_STRING);
             return;
         }
         throw new InvalidS3Exception();

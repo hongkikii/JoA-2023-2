@@ -1,12 +1,12 @@
 package com.mjuAppSW.joA.domain.member.service;
 
-import static com.mjuAppSW.joA.common.constant.Constants.EMPTY_STRING;
 import static com.mjuAppSW.joA.common.constant.Constants.MAIL.TEMPORARY_PASSWORD_IS;
 import static com.mjuAppSW.joA.common.constant.Constants.MAIL.USER_ID_IS;
 
 import com.mjuAppSW.joA.domain.college.MCollegeEntity;
 import com.mjuAppSW.joA.domain.college.MCollegeService;
 import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.member.dto.request.FindIdRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.FindPasswordRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.LoginRequest;
@@ -15,11 +15,9 @@ import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
 import com.mjuAppSW.joA.domain.member.exception.PasswordNotFoundException;
 import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import com.mjuAppSW.joA.domain.member.infrastructure.MailSender;
-import com.mjuAppSW.joA.domain.member.infrastructure.MemberRepository;
+import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
 import com.mjuAppSW.joA.domain.member.infrastructure.PasswordManager;
-import com.mjuAppSW.joA.domain.member.service.port.ImageUploaderImpl;
 import com.mjuAppSW.joA.domain.member.exception.InvalidS3Exception;
-import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.geography.location.LocationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +28,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AccountService {
 
-    private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final LocationService locationService;
     private final MCollegeService mCollegeService;
@@ -41,32 +38,24 @@ public class AccountService {
 
     @Transactional
     public SessionIdResponse login(LoginRequest request) {
-        Member findMember = memberService.findByLoginId(request.getLoginId());
-        findMember.makeSessionId(sessionManager.create());
-        String hashedPassword = BCrypt.hashpw(request.getPassword(), findMember.getSalt());
+        Member member = memberService.findByLoginId(request.getLoginId());
+        memberService.updateSessionId(member, sessionManager.create());
+        String hashedPassword = passwordManager.createHashed(request.getPassword(), member.getSalt());
 
-        compare(findMember.getPassword(), hashedPassword);
-        return SessionIdResponse.of(findMember.getSessionId());
-    }
-
-    private void compare(String password, String hashedPassword) {
-        if (!password.equals(hashedPassword)) {
-            throw new PasswordNotFoundException();
-        }
+        passwordManager.compare(member.getPassword(), hashedPassword);
+        return SessionIdResponse.of(member.getSessionId());
     }
 
     @Transactional
     public void logout(Long sessionId) {
-        Member findMember = memberService.findBySessionId(sessionId);
-        locationService.updateIsContained(findMember.getId(), false);
-        findMember.expireSessionId();
+        Member member = memberService.findBySessionId(sessionId);
+        locationService.updateIsContained(member.getId(), false);
+        memberService.updateSessionId(member, null);
     }
 
     public void findLoginId(FindIdRequest request) {
         MCollegeEntity college = mCollegeService.findById(request.getCollegeId());
-
-        Member member = memberRepository.findByuEmailAndcollege(request.getCollegeEmail(), college)
-                .orElseThrow(MemberNotFoundException::new);
+        Member member = memberService.findByUEmailAndCollege(request.getCollegeEmail(), college);
 
         String email = member.getUEmail() + college.getDomain();
         mailSender.send(email, USER_ID_IS, member.getLoginId());
@@ -77,22 +66,22 @@ public class AccountService {
         Member member = memberService.findByLoginId(request.getLoginId());
 
         String randomPassword = passwordManager.createRandom();
-        String hashedRandomPassword = BCrypt.hashpw(randomPassword, member.getSalt());
+        String hashedRandomPassword = passwordManager.createHashed(randomPassword, member.getSalt());
 
         String email = member.getUEmail() + member.getCollege().getDomain();
         mailSender.send(email, TEMPORARY_PASSWORD_IS, randomPassword);
-        member.changePassword(hashedRandomPassword);
+        memberService.updatePassword(member, hashedRandomPassword);
     }
 
     @Transactional
     public void transPassword(TransPasswordRequest request) {
-        Member findMember = memberService.findBySessionId(request.getId());
+        Member member = memberService.findBySessionId(request.getId());
 
-        String hashedCurrentPassword = BCrypt.hashpw(request.getCurrentPassword(), findMember.getSalt());
-        if (findMember.getPassword().equals(hashedCurrentPassword)) {
+        String hashedCurrentPassword = BCrypt.hashpw(request.getCurrentPassword(), member.getSalt());
+        if (member.getPassword().equals(hashedCurrentPassword)) {
             passwordManager.validate(request.getNewPassword());
-            String hashedNewPassword = BCrypt.hashpw(request.getNewPassword(), findMember.getSalt());
-            findMember.changePassword(hashedNewPassword);
+            String hashedNewPassword = passwordManager.createHashed(request.getNewPassword(), member.getSalt());
+            memberService.updatePassword(member, hashedNewPassword);
             return;
         }
         throw new PasswordNotFoundException();
@@ -104,9 +93,7 @@ public class AccountService {
 
         if (imageUploader.delete(member.getUrlCode())) {
             locationService.delete(member.getId());
-            member.expireSessionId();
-            member.changeWithdrawal(true);
-            member.changeUrlCode(EMPTY_STRING);
+            memberService.updateWithdrawal(member);
             return;
         }
         throw new InvalidS3Exception();

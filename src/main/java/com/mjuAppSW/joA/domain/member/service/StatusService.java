@@ -1,11 +1,8 @@
 package com.mjuAppSW.joA.domain.member.service;
 
-import static com.mjuAppSW.joA.common.constant.Constants.EMPTY_STRING;
-
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
-import com.mjuAppSW.joA.domain.member.infrastructure.MemberRepository;
-import com.mjuAppSW.joA.domain.member.service.port.ImageUploaderImpl;
+import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
 import com.mjuAppSW.joA.geography.location.LocationRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
@@ -21,14 +18,15 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class StatusService {
 
-    private final ImageUploader imageUploader;
+    private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final LocationRepository locationRepository;
+    private final ImageUploader imageUploader;
 
     @Scheduled(cron = "0 0 4 * * ?")
 //    @Scheduled(cron = "0 */10 * * * *")
     @Transactional
-    public void check() {
+    public void punish() {
         List<Member> joiningAll = memberRepository.findJoiningAll();
         for (Member member : joiningAll) {
             if(member.getStatus() == 1 || member.getStatus() == 2) {
@@ -50,15 +48,15 @@ public class StatusService {
 
     private void executeStopPolicy(Member member, int reportCount) {
         LocalDateTime today = LocalDateTime.now();
-        member.changeStopStartDate(today);
+        memberService.updateStopStartDate(member, today);
         if (reportCount == 5) {
-            member.changeStopEndDate(today.plusDays(1));
-            member.changeStatus(1);
+            memberService.updateStopEndDate(member, today.plusDays(1));
+            memberService.updateStatus(member, 1);
             log.info("account stop start : id = {}, reportCount = 5", member.getId());
         }
         if (reportCount == 10) {
-            member.changeStopEndDate(today.plusDays(7));
-            member.changeStatus(2);
+            memberService.updateStopEndDate(member, today.plusDays(7));
+            memberService.updateStatus(member, 1);
             log.info("account stop start : id = {}, reportCount = 10", member.getId());
         }
     }
@@ -69,23 +67,22 @@ public class StatusService {
             return;
         }
         if (member.getStatus() == 1) {
-            member.changeStatus(11);
+            memberService.updateStatus(member, 11);
             log.info("account stop end : id = {}, reportCount = 5", member.getId());
         }
         if (member.getStatus() == 2) {
-            member.changeStatus(22);
+            memberService.updateStatus(member, 22);
             log.info("account stop end : id = {}, reportCount = 10", member.getId());
         }
-        member.deleteStopDate();
+        memberService.updateStopStartDate(member, null);
+        memberService.updateStopEndDate(member, null);
     }
 
     private void executeOutPolicy(Member member) {
-        member.expireSessionId();
-        member.changeWithdrawal(true);
-        member.changeStatus(3);
-        member.changeUrlCode(EMPTY_STRING);
-        locationRepository.deleteById(member.getId());
+        memberService.updateStatus(member, 3);
+        memberService.updateWithdrawal(member);
         imageUploader.delete(member.getUrlCode());
+        locationRepository.deleteById(member.getId());
         log.info("account delete : id = {}, reportCount = 15", member.getId());
     }
 }

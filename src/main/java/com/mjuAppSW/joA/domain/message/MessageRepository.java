@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.message;
 
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.message.dto.vo.CurrentMessageVO;
 import com.mjuAppSW.joA.domain.room.Room;
 import jakarta.transaction.Transactional;
@@ -20,11 +20,11 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findByRoom(@Param("room") Room room);
 
     @Query("SELECT m FROM Message m WHERE m.room = :room AND m.isChecked = '1' AND m.member <> :member")
-    List<Message> findMessage(@Param("room") Room room, @Param("member") Member member);
+    List<Message> findMessage(@Param("room") Room room, @Param("member") MemberEntity member);
 
 
     @Query("SELECT COUNT(m) FROM Message m WHERE m.room = :room AND m.member = :member AND m.isChecked = '1'")
-    Integer countUnCheckedMessage(@Param("room") Room room, @Param("member") Member member);
+    Integer countUnCheckedMessage(@Param("room") Room room, @Param("member") MemberEntity member);
 
 
     @Query("SELECT m.content AS content, m.time AS time FROM Message m WHERE m.room = :room " +

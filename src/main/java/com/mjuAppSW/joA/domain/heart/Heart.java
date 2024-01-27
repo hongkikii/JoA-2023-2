@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.heart;
 
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.MemberEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -30,13 +29,13 @@ public class Heart {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Take_id", nullable = false)
-    private Member member;
+    private MemberEntity member;
 
     @Column(nullable = false)
     private LocalDateTime date;
 
     @Builder
-    public Heart(Long giveId, Member member, LocalDateTime date) {
+    public Heart(Long giveId, MemberEntity member, LocalDateTime date) {
         this.giveId = giveId;
         this.member = member;
         this.date = date;

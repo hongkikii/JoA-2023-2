@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.heart.dto;
 
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.MemberEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,7 +19,7 @@ public class HeartResponse {
     private final String giveUrlCode;
     private final String takeUrlCode;
 
-    public static HeartResponse of(Boolean isMatched, Member giveMember, Member takeMember) {
+    public static HeartResponse of(Boolean isMatched, MemberEntity giveMember, MemberEntity takeMember) {
         return HeartResponse.builder()
                 .isMatched(isMatched)
                 .giveName(giveMember.getName())

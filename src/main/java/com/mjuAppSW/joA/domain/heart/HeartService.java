@@ -6,7 +6,7 @@ import com.mjuAppSW.joA.domain.heart.dto.HeartResponse;
 import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
 import com.mjuAppSW.joA.domain.heart.exception.HeartAlreadyExistedException;
 import com.mjuAppSW.joA.domain.heart.exception.RoomAlreadyExistedException;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberRepository;
 import com.mjuAppSW.joA.geography.block.BlockRepository;
 import jakarta.transaction.Transactional;
@@ -27,10 +27,10 @@ public class HeartService {
 
     @Transactional
     public HeartResponse sendHeart(HeartRequest request) {
-        Member giveMember = memberChecker.findFilterBySessionId(request.getGiveId());
+        MemberEntity giveMember = memberChecker.findFilterBySessionId(request.getGiveId());
         Long giveMemberId = giveMember.getId();
         Long takeMemberId = request.getTakeId();
-        Member takeMember = memberChecker.findById(takeMemberId);
+        MemberEntity takeMember = memberChecker.findById(takeMemberId);
 
         checkBlock(giveMemberId, takeMemberId);
         checkEqualHeart(giveMemberId, takeMemberId);
@@ -55,7 +55,7 @@ public class HeartService {
                         throw new HeartAlreadyExistedException();});
     }
 
-    private Heart createHeart(Long giveId, Member takeMember) {
+    private Heart createHeart(Long giveId, MemberEntity takeMember) {
         return Heart.builder()
                 .giveId(giveId)
                 .member(takeMember)
@@ -63,7 +63,7 @@ public class HeartService {
                 .build();
     }
 
-    private void checkExistedRoom(Member giveMember, Member takeMember) {
+    private void checkExistedRoom(MemberEntity giveMember, MemberEntity takeMember) {
         if (roomInMemberRepository.checkRoomInMember(giveMember, takeMember).size() != 0) {
             throw new RoomAlreadyExistedException();
         }
