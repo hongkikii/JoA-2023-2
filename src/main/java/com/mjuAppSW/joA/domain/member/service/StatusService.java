@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class StatusService {
+public class StatusService { //FIXME
 
     private final MemberService memberService;
     private final MemberRepository memberRepository;
