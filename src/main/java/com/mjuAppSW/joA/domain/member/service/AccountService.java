@@ -13,10 +13,11 @@ import com.mjuAppSW.joA.domain.member.dto.request.LoginRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.TransPasswordRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
 import com.mjuAppSW.joA.domain.member.exception.PasswordNotFoundException;
+import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import com.mjuAppSW.joA.domain.member.infrastructure.MailSender;
 import com.mjuAppSW.joA.domain.member.infrastructure.MemberRepository;
 import com.mjuAppSW.joA.domain.member.infrastructure.PasswordManager;
-import com.mjuAppSW.joA.domain.member.service.port.S3Uploader;
+import com.mjuAppSW.joA.domain.member.service.port.ImageUploaderImpl;
 import com.mjuAppSW.joA.domain.member.exception.InvalidS3Exception;
 import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.geography.location.LocationService;
@@ -35,7 +36,7 @@ public class AccountService {
     private final MCollegeService mCollegeService;
     private final SessionService sessionManager;
     private final MailSender mailSender;
-    private final S3Uploader s3Uploader;
+    private final ImageUploader imageUploader;
     private final PasswordManager passwordManager;
 
     @Transactional
@@ -101,7 +102,7 @@ public class AccountService {
     public void withdrawal(Long sessionId) {
         Member member = memberService.findBySessionId(sessionId);
 
-        if (s3Uploader.deletePicture(member.getUrlCode())) {
+        if (imageUploader.delete(member.getUrlCode())) {
             locationService.delete(member.getId());
             member.expireSessionId();
             member.changeWithdrawal(true);

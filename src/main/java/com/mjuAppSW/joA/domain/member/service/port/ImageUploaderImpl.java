@@ -2,6 +2,7 @@ package com.mjuAppSW.joA.domain.member.service.port;
 
 import static com.mjuAppSW.joA.common.constant.Constants.S3Uploader.ERROR;
 
+import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import java.nio.ByteBuffer;
 import java.util.Base64;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,14 +20,14 @@ import software.amazon.awssdk.services.s3.model.S3Exception;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class S3Uploader {
+public class ImageUploaderImpl implements ImageUploader {
 
     private final S3Client s3Client;
 
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucketName;
 
-    public String putPicture(Long memberId, String base64Picture) {
+    public String put(Long memberId, String base64Picture) {
         String key = String.valueOf(memberId);
         byte[] pictureBytes = Base64.getDecoder().decode(base64Picture);
         ByteBuffer byteBuffer = ByteBuffer.wrap(pictureBytes);
@@ -50,7 +51,7 @@ public class S3Uploader {
         }
     }
 
-    public boolean deletePicture(String key) {
+    public boolean delete(String key) {
         if(key.equals("")) return true;
         try {
             DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()

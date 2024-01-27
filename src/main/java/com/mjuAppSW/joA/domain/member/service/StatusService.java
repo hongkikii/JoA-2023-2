@@ -3,8 +3,9 @@ package com.mjuAppSW.joA.domain.member.service;
 import static com.mjuAppSW.joA.common.constant.Constants.EMPTY_STRING;
 
 import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import com.mjuAppSW.joA.domain.member.infrastructure.MemberRepository;
-import com.mjuAppSW.joA.domain.member.service.port.S3Uploader;
+import com.mjuAppSW.joA.domain.member.service.port.ImageUploaderImpl;
 import com.mjuAppSW.joA.geography.location.LocationRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class StatusService {
 
-    private final S3Uploader s3Uploader;
+    private final ImageUploader imageUploader;
     private final MemberRepository memberRepository;
     private final LocationRepository locationRepository;
 
@@ -84,7 +85,7 @@ public class StatusService {
         member.changeStatus(3);
         member.changeUrlCode(EMPTY_STRING);
         locationRepository.deleteById(member.getId());
-        s3Uploader.deletePicture(member.getUrlCode());
+        imageUploader.delete(member.getUrlCode());
         log.info("account delete : id = {}, reportCount = 15", member.getId());
     }
 }

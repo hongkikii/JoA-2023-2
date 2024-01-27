@@ -1,5 +1,6 @@
 package com.mjuAppSW.joA.domain.member.service.port;
 
+import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class CacheManager {
+public class CacheManagerImpl implements CacheManager {
 
     private final Map<String, DataAndTime> expireDataMap = new ConcurrentHashMap<>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -40,10 +41,6 @@ public class CacheManager {
     private String getRandomValue() {
         int random = ThreadLocalRandom.current().nextInt(100000, 1000000);
         return String.valueOf(random);
-    }
-
-    public boolean isExistedKey(String key) {
-        return expireDataMap.containsKey(key);
     }
 
     public boolean isNotExistedKey(String key) {

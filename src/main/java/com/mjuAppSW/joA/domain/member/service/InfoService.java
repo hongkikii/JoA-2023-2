@@ -10,8 +10,9 @@ import com.mjuAppSW.joA.domain.member.dto.response.MyPageResponse;
 import com.mjuAppSW.joA.domain.member.dto.request.PictureRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SettingPageResponse;
 import com.mjuAppSW.joA.domain.member.exception.InvalidS3Exception;
+import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import com.mjuAppSW.joA.domain.vote.VoteRepository;
-import com.mjuAppSW.joA.domain.member.service.port.S3Uploader;
+import com.mjuAppSW.joA.domain.member.service.port.ImageUploaderImpl;
 import com.mjuAppSW.joA.domain.member.dto.response.VotePageResponse;
 import com.mjuAppSW.joA.domain.member.dto.response.LocationPageResponse;
 import jakarta.transaction.Transactional;
@@ -27,7 +28,7 @@ public class InfoService {
     private final HeartRepository heartRepository;
     private final VoteRepository voteRepository;
     private final MemberService memberService;
-    private final S3Uploader s3Uploader;
+    private final ImageUploader imageUploader;
 
     public SettingPageResponse getSettingPage(Long sessionId) {
         Member member = memberService.findNormalBySessionId(sessionId);
@@ -69,9 +70,9 @@ public class InfoService {
         Member member = memberService.findNormalBySessionId(request.getId());
 
         if (!isBasicPicture(member.getUrlCode())){
-            s3Uploader.deletePicture(member.getUrlCode());
+            imageUploader.delete(member.getUrlCode());
         }
-        String newUrlCode = s3Uploader.putPicture(member.getId(), request.getBase64Picture());
+        String newUrlCode = imageUploader.put(member.getId(), request.getBase64Picture());
         if(newUrlCode.equals(ERROR)) {
             throw new InvalidS3Exception();
         }
@@ -88,7 +89,7 @@ public class InfoService {
         if(isBasicPicture(member.getUrlCode())) {
             return;
         }
-        if (s3Uploader.deletePicture(member.getUrlCode())) {
+        if (imageUploader.delete(member.getUrlCode())) {
             member.changeUrlCode(EMPTY_STRING);
             return;
         }

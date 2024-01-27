@@ -16,9 +16,10 @@ import com.mjuAppSW.joA.domain.member.exception.InvalidCertifyNumberException;
 import com.mjuAppSW.joA.domain.member.exception.JoiningMailException;
 import com.mjuAppSW.joA.domain.member.exception.MemberAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.PermanentBanException;
+import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.MailSender;
 import com.mjuAppSW.joA.domain.member.infrastructure.MemberRepository;
-import com.mjuAppSW.joA.domain.member.service.port.CacheManager;
+import com.mjuAppSW.joA.domain.member.service.port.CacheManagerImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
