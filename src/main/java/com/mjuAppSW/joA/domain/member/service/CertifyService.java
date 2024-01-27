@@ -5,7 +5,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.Cache.AFTER_EMAIL;
 import static com.mjuAppSW.joA.common.constant.Constants.Cache.BEFORE_CERTIFY_TIME;
 import static com.mjuAppSW.joA.common.constant.Constants.Cache.BEFORE_EMAIL;
 import static com.mjuAppSW.joA.common.constant.Constants.Cache.CERTIFY_NUMBER;
-import static com.mjuAppSW.joA.common.constant.Constants.MAIL.CERTIFY_NUMBER_IS;
+import static com.mjuAppSW.joA.common.constant.Constants.Mail.CERTIFY_NUMBER_IS;
 
 import com.mjuAppSW.joA.domain.college.MCollegeEntity;
 import com.mjuAppSW.joA.domain.college.MCollegeService;

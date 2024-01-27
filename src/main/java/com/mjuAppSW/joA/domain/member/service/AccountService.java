@@ -1,7 +1,7 @@
 package com.mjuAppSW.joA.domain.member.service;
 
-import static com.mjuAppSW.joA.common.constant.Constants.MAIL.TEMPORARY_PASSWORD_IS;
-import static com.mjuAppSW.joA.common.constant.Constants.MAIL.USER_ID_IS;
+import static com.mjuAppSW.joA.common.constant.Constants.Mail.TEMPORARY_PASSWORD_IS;
+import static com.mjuAppSW.joA.common.constant.Constants.Mail.USER_ID_IS;
 
 import com.mjuAppSW.joA.domain.college.MCollegeEntity;
 import com.mjuAppSW.joA.domain.college.MCollegeService;

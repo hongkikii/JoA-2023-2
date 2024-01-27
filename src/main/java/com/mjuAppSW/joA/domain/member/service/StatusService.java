@@ -1,5 +1,7 @@
 package com.mjuAppSW.joA.domain.member.service;
 
+import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.*;
+
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
@@ -16,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class StatusService { //FIXME
+public class StatusService {
 
     private final MemberService memberService;
     private final MemberRepository memberRepository;
@@ -29,35 +31,29 @@ public class StatusService { //FIXME
     public void punish() {
         List<Member> joiningAll = memberRepository.findJoiningAll();
         for (Member member : joiningAll) {
-            if(member.getStatus() == 1 || member.getStatus() == 2) {
+            if(member.getStatus() == STEP_1_STOP_STATUS
+            || member.getStatus() == STEP_2_STOP_STATUS) {
+
                 completeStopPolicy(member);
             }
-            if (member.getReportCount() >= 5 && member.getStatus() != 1 && member.getStatus() != 2
-                    && member.getStatus() != 11 && member.getStatus() != 22) {
-                executeStopPolicy(member, 5);
+            if (member.getReportCount() >= STEP_1_REPORT_COUNT
+                && member.getStatus() != STEP_1_STOP_STATUS
+                && member.getStatus() != STEP_1_COMPLETE_STATUS
+                && member.getStatus() != STEP_2_STOP_STATUS
+                && member.getStatus() != STEP_2_COMPLETE_STATUS) {
+
+                executeStopPolicy(member, STEP_1_REPORT_COUNT);
             }
-            if (member.getReportCount() >= 10 && member.getStatus() != 1 && member.getStatus() != 2
-                    && member.getStatus() != 22) {
-                executeStopPolicy(member, 10);
+            if (member.getReportCount() >= STEP_2_REPORT_COUNT
+                && member.getStatus() != STEP_1_STOP_STATUS
+                && member.getStatus() != STEP_2_STOP_STATUS
+                && member.getStatus() != STEP_2_COMPLETE_STATUS) {
+
+                executeStopPolicy(member, STEP_2_REPORT_COUNT);
             }
-            if (member.getReportCount() >= 15) {
+            if (member.getReportCount() >= STEP_3_REPORT_COUNT) {
                 executeOutPolicy(member);
             }
-        }
-    }
-
-    private void executeStopPolicy(Member member, int reportCount) {
-        LocalDateTime today = LocalDateTime.now();
-        memberService.updateStopStartDate(member, today);
-        if (reportCount == 5) {
-            memberService.updateStopEndDate(member, today.plusDays(1));
-            memberService.updateStatus(member, 1);
-            log.info("account stop start : id = {}, reportCount = 5", member.getId());
-        }
-        if (reportCount == 10) {
-            memberService.updateStopEndDate(member, today.plusDays(7));
-            memberService.updateStatus(member, 1);
-            log.info("account stop start : id = {}, reportCount = 10", member.getId());
         }
     }
 
@@ -66,20 +62,35 @@ public class StatusService { //FIXME
             log.info("account stop ing : id = {}", member.getId());
             return;
         }
-        if (member.getStatus() == 1) {
-            memberService.updateStatus(member, 11);
+        if (member.getStatus() == STEP_1_STOP_STATUS) {
+            memberService.updateStatus(member, STEP_1_COMPLETE_STATUS);
             log.info("account stop end : id = {}, reportCount = 5", member.getId());
         }
-        if (member.getStatus() == 2) {
-            memberService.updateStatus(member, 22);
+        if (member.getStatus() == STEP_2_STOP_STATUS) {
+            memberService.updateStatus(member, STEP_2_COMPLETE_STATUS);
             log.info("account stop end : id = {}, reportCount = 10", member.getId());
         }
         memberService.updateStopStartDate(member, null);
         memberService.updateStopEndDate(member, null);
     }
 
+    private void executeStopPolicy(Member member, int reportCount) {
+        LocalDateTime today = LocalDateTime.now();
+        memberService.updateStopStartDate(member, today);
+        if (reportCount == STEP_1_REPORT_COUNT) {
+            memberService.updateStopEndDate(member, today.plusDays(STEP_1_DATE));
+            memberService.updateStatus(member, STEP_1_STOP_STATUS);
+            log.info("account stop start : id = {}, reportCount = 5", member.getId());
+        }
+        if (reportCount == STEP_2_REPORT_COUNT) {
+            memberService.updateStopEndDate(member, today.plusDays(STEP_2_DATE));
+            memberService.updateStatus(member, STEP_2_STOP_STATUS);
+            log.info("account stop start : id = {}, reportCount = 10", member.getId());
+        }
+    }
+
     private void executeOutPolicy(Member member) {
-        memberService.updateStatus(member, 3);
+        memberService.updateStatus(member, STEP_3_STOP_STATUS);
         imageUploader.delete(member.getUrlCode());
         locationRepository.deleteById(member.getId());
         memberService.updateWithdrawal(member);

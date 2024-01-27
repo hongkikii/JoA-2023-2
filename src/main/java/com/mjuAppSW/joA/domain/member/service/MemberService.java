@@ -1,5 +1,9 @@
 package com.mjuAppSW.joA.domain.member.service;
 
+import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_1_STOP_STATUS;
+import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_2_STOP_STATUS;
+import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_3_STOP_STATUS;
+
 import com.mjuAppSW.joA.domain.college.MCollegeEntity;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.exception.MemberAlreadyExistedException;
@@ -28,10 +32,11 @@ public class MemberService {
     public Member findNormalBySessionId(Long sessionId) {
         return memberRepository.findBysessionId(sessionId)
                 .filter(member -> {
-                    if (member.getStatus() == 1 || member.getStatus() == 2) {
+                    if (member.getStatus() == STEP_1_STOP_STATUS
+                        || member.getStatus() == STEP_2_STOP_STATUS) {
                         throw new AccessStoppedException();
                     }
-                    if (member.getStatus() == 3) {
+                    if (member.getStatus() == STEP_3_STOP_STATUS) {
                         throw new PermanentBanException();
                     }
                     return true;
@@ -67,8 +72,12 @@ public class MemberService {
     }
 
     public void checkStopped(Member member) {
-        if (member.getStatus() == 1 || member.getStatus() == 2 || member.getStatus() == 3) {
+        if (member.getStatus() == STEP_1_STOP_STATUS
+            || member.getStatus() == STEP_2_STOP_STATUS) {
             throw new AccessStoppedException();
+        }
+        if(member.getStatus() == STEP_3_STOP_STATUS) {
+            throw new PermanentBanException();
         }
     }
 
