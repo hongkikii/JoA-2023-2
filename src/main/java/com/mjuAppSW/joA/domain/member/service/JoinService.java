@@ -8,7 +8,6 @@ import static com.mjuAppSW.joA.common.constant.Constants.EMAIL_SPLIT;
 import com.mjuAppSW.joA.domain.college.MCollegeEntity;
 import com.mjuAppSW.joA.domain.college.MCollegeService;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.member.dto.request.JoinRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.VerifyIdRequest;
 import com.mjuAppSW.joA.domain.member.exception.InvalidLoginIdException;
@@ -42,7 +41,7 @@ public class JoinService {
         String loginId = request.getLoginId();
         Long sessionId = request.getSessionId();
         validateLoginId(loginId);
-        sessionManager.isCached(AFTER_EMAIL, sessionId);
+        sessionManager.checkCached(AFTER_EMAIL, sessionId);
         checkExistedLoginId(sessionId, loginId);
         cacheLoginId(sessionId, loginId);
     }
@@ -79,7 +78,7 @@ public class JoinService {
     public void join(JoinRequest request) {
         passwordManager.validate(request.getPassword());
         Long sessionId = request.getId();
-        sessionManager.isCached(AFTER_EMAIL, sessionId);
+        sessionManager.checkCached(AFTER_EMAIL, sessionId);
         checkNotCachedLoginId(sessionId, request.getLoginId());
 
         String eMail = cacheManager.getData(AFTER_EMAIL + sessionId);

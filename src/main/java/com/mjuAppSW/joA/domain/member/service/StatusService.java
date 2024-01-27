@@ -80,9 +80,9 @@ public class StatusService {
 
     private void executeOutPolicy(Member member) {
         memberService.updateStatus(member, 3);
-        memberService.updateWithdrawal(member);
         imageUploader.delete(member.getUrlCode());
         locationRepository.deleteById(member.getId());
+        memberService.updateWithdrawal(member);
         log.info("account delete : id = {}, reportCount = 15", member.getId());
     }
 }

@@ -1,7 +1,6 @@
 package com.mjuAppSW.joA.domain.member.service;
 
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.member.exception.SessionNotFoundException;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
 import com.mjuAppSW.joA.domain.member.service.port.CacheManagerImpl;
@@ -37,10 +36,9 @@ public class SessionService {
         }
     }
 
-    public boolean isCached(String key, Long sessionId) {
+    public void checkCached(String key, Long sessionId) {
         if (cacheManager.isNotExistedKey(key + sessionId)) {
             throw new SessionNotFoundException();
         }
-        return true;
     }
 }

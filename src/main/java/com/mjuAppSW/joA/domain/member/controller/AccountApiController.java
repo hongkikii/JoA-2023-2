@@ -2,7 +2,6 @@ package com.mjuAppSW.joA.domain.member.controller;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
 import com.mjuAppSW.joA.domain.member.service.AccountService;
-import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.member.dto.request.FindIdRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.FindPasswordRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.LoginRequest;

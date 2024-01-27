@@ -1,16 +1,13 @@
 package com.mjuAppSW.joA.domain.member.service;
 
 import static com.mjuAppSW.joA.common.constant.Constants.EMPTY_STRING;
-import static com.mjuAppSW.joA.common.constant.Constants.S3Uploader.ERROR;
 
 import com.mjuAppSW.joA.domain.heart.HeartRepository;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.member.dto.request.BioRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.MyPageResponse;
 import com.mjuAppSW.joA.domain.member.dto.request.PictureRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SettingPageResponse;
-import com.mjuAppSW.joA.domain.member.exception.InvalidS3Exception;
 import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import com.mjuAppSW.joA.domain.vote.VoteRepository;
 import com.mjuAppSW.joA.domain.member.dto.response.VotePageResponse;
@@ -40,7 +37,8 @@ public class InfoService {
 
         int todayHeart = heartRepository.countTodayHeartsById(member.getId());
         int totalHeart = heartRepository.countTotalHeartsById(member.getId());
-        List<String> voteTop3 = voteRepository.findVoteCategoryById(member.getId(), PageRequest.of(0, 3));
+        List<String> voteTop3 = voteRepository.findVoteCategoryById(
+                member.getId(), PageRequest.of(0, 3));
 
         return MyPageResponse.of(member, todayHeart, totalHeart, voteTop3);
     }
@@ -73,9 +71,6 @@ public class InfoService {
             imageUploader.delete(member.getUrlCode());
         }
         String newUrlCode = imageUploader.put(member.getId(), request.getBase64Picture());
-        if(newUrlCode.equals(ERROR)) {
-            throw new InvalidS3Exception();
-        }
         memberService.updateUrlCode(member, newUrlCode);
     }
 
@@ -89,10 +84,7 @@ public class InfoService {
         if(isBasicPicture(member.getUrlCode())) {
             return;
         }
-        if (imageUploader.delete(member.getUrlCode())) {
-            memberService.updateUrlCode(member, EMPTY_STRING);
-            return;
-        }
-        throw new InvalidS3Exception();
+        imageUploader.delete(member.getUrlCode());
+        memberService.updateUrlCode(member, EMPTY_STRING);
     }
 }

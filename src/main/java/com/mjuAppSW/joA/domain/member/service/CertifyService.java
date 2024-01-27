@@ -14,49 +14,37 @@ import com.mjuAppSW.joA.domain.member.dto.request.VerifyCertifyNumRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
 import com.mjuAppSW.joA.domain.member.exception.InvalidCertifyNumberException;
 import com.mjuAppSW.joA.domain.member.exception.JoiningMailException;
-import com.mjuAppSW.joA.domain.member.exception.MemberAlreadyExistedException;
-import com.mjuAppSW.joA.domain.member.exception.PermanentBanException;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.MailSender;
-import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CertifyService {
+public class CertifyService { //FIXME
 
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
     private final MCollegeService mCollegeService;
-    private final CacheManager cacheManager;
     private final SessionService sessionManager;
+    private final CacheManager cacheManager;
     private final MailSender mailSender;
 
     public SessionIdResponse send(SendCertifyNumRequest request) {
         MCollegeEntity college = mCollegeService.findById(request.getCollegeId());
         String uEmail = request.getCollegeEmail();
 
-        checkExisted(uEmail, college);
-        checkForbidden(uEmail, college);
+        memberService.checkExist(uEmail, college);
+        memberService.checkForbidden(uEmail, college);
         String eMail = uEmail + college.getDomain();
         checkJoining(eMail);
 
         long sessionId = sessionManager.create();
-        String certifyNum = cache(sessionId, eMail);
+        String certifyNum = cacheManager.addRandomValue(
+                CERTIFY_NUMBER + sessionId, BEFORE_CERTIFY_TIME);
+        cacheManager.add(BEFORE_EMAIL + sessionId, eMail, BEFORE_CERTIFY_TIME);
+
         mailSender.send(eMail, CERTIFY_NUMBER_IS,certifyNum);
         return SessionIdResponse.of(sessionId);
-    }
-
-    private void checkForbidden(String uEmail, MCollegeEntity mCollegeEntity) {
-        memberRepository.findForbidden(uEmail, mCollegeEntity)
-                .ifPresent(forbiddenMember -> {
-                    throw new PermanentBanException();});
-    }
-
-    private void checkExisted(String uEmail, MCollegeEntity college) {
-        memberRepository.findByuEmailAndcollege(uEmail, college)
-                .ifPresent(member -> {
-                    throw new MemberAlreadyExistedException();});
     }
 
     private void checkJoining(String eMail) {
@@ -66,16 +54,9 @@ public class CertifyService {
         }
     }
 
-    private String cache(Long sessionId, String totalEmail) {
-        String certifyNum = cacheManager.addRandomValue
-                (CERTIFY_NUMBER + sessionId, BEFORE_CERTIFY_TIME);
-        cacheManager.add(BEFORE_EMAIL + sessionId, totalEmail, BEFORE_CERTIFY_TIME);
-        return certifyNum;
-    }
-
     public void verify(VerifyCertifyNumRequest request) {
         Long sessionId = request.getId();
-        sessionManager.isCached(CERTIFY_NUMBER, sessionId);
+        sessionManager.checkCached(CERTIFY_NUMBER, sessionId);
 
         if (!cacheManager.compare(CERTIFY_NUMBER + sessionId, request.getCertifyNum())) {
             throw new InvalidCertifyNumberException();

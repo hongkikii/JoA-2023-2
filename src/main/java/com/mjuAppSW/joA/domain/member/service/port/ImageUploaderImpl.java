@@ -1,7 +1,9 @@
 package com.mjuAppSW.joA.domain.member.service.port;
 
+import static com.mjuAppSW.joA.common.constant.Constants.EMPTY_STRING;
 import static com.mjuAppSW.joA.common.constant.Constants.S3Uploader.ERROR;
 
+import com.mjuAppSW.joA.domain.member.exception.InvalidS3Exception;
 import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import java.nio.ByteBuffer;
 import java.util.Base64;
@@ -31,7 +33,6 @@ public class ImageUploaderImpl implements ImageUploader {
         String key = String.valueOf(memberId);
         byte[] pictureBytes = Base64.getDecoder().decode(base64Picture);
         ByteBuffer byteBuffer = ByteBuffer.wrap(pictureBytes);
-        String result = ERROR;
         int random = ThreadLocalRandom.current().nextInt(10000000, 100000000);
 
         try {
@@ -41,18 +42,19 @@ public class ImageUploaderImpl implements ImageUploader {
                     .build();
             s3Client.putObject(putObjectRequest, RequestBody.fromByteBuffer(byteBuffer));
             log.info("Picture uploaded successfully to S3");
-            result = key + ":" + random;
+            String address = key + ":" + random;
+            return address;
         }
         catch (S3Exception e) {
             log.error("Error uploading picture to S3: " + e.getMessage());
-        }
-        finally {
-            return result;
+            throw new InvalidS3Exception();
         }
     }
 
     public boolean delete(String key) {
-        if(key.equals("")) return true;
+        if(key.equals(EMPTY_STRING)) {
+            return true;
+        }
         try {
             DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
                     .bucket(bucketName)
@@ -64,7 +66,7 @@ public class ImageUploaderImpl implements ImageUploader {
         }
         catch (Exception e) {
             log.error("Error deleting picture from S3: " + e.getMessage());
-            return false;
+            throw new InvalidS3Exception();
         }
     }
 }

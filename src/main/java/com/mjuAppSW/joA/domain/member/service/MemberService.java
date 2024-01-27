@@ -2,7 +2,7 @@ package com.mjuAppSW.joA.domain.member.service;
 
 import com.mjuAppSW.joA.domain.college.MCollegeEntity;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.MemberEntity;
+import com.mjuAppSW.joA.domain.member.exception.MemberAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.PermanentBanException;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
 import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
@@ -54,7 +54,19 @@ public class MemberService {
                 .orElseThrow(MemberNotFoundException::new);
     }
 
-    public void checkStopped(MemberEntity member) {
+    public void checkExist(String uEmail, MCollegeEntity college) {
+        memberRepository.findByuEmailAndcollege(uEmail, college)
+                .ifPresent(member -> {
+                    throw new MemberAlreadyExistedException();});
+    }
+
+    public void checkForbidden(String uEmail, MCollegeEntity mCollegeEntity) {
+        memberRepository.findForbidden(uEmail, mCollegeEntity)
+                .ifPresent(forbiddenMember -> {
+                    throw new PermanentBanException();});
+    }
+
+    public void checkStopped(Member member) {
         if (member.getStatus() == 1 || member.getStatus() == 2 || member.getStatus() == 3) {
             throw new AccessStoppedException();
         }
