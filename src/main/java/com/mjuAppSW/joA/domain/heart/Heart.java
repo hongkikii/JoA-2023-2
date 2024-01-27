@@ -1,5 +1,6 @@
 package com.mjuAppSW.joA.domain.heart;
 
+import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.MemberEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,9 +36,9 @@ public class Heart {
     private LocalDateTime date;
 
     @Builder
-    public Heart(Long giveId, MemberEntity member, LocalDateTime date) {
+    public Heart(Long giveId, Member member, LocalDateTime date) {
         this.giveId = giveId;
-        this.member = member;
+        this.member = MemberEntity.fromModel(member);
         this.date = date;
     }
 }

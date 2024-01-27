@@ -121,7 +121,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateReportCount(Member member, int add) {
+    public void addReportCount(Member member, int add) {
         memberRepository.save(Member.updateReportCount(member, add));
     }
 }

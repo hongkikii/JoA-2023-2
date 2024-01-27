@@ -1,7 +1,7 @@
 package com.mjuAppSW.joA.domain.report.vote;
 
-import com.mjuAppSW.joA.common.auth.MemberChecker;
-import com.mjuAppSW.joA.domain.member.MemberEntity;
+import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.report.ReportCategory;
 import com.mjuAppSW.joA.domain.report.ReportCategoryRepository;
 import com.mjuAppSW.joA.domain.report.vote.dto.VoteReportRequest;
@@ -23,20 +23,20 @@ public class VoteReportService {
     private final VoteRepository voteRepository;
     private final VoteReportRepository voteReportRepository;
     private final ReportCategoryRepository reportCategoryRepository;
-    private final MemberChecker memberChecker;
+    private final MemberService memberService;
 
     @Transactional
     public void execute(VoteReportRequest request) {
         ReportCategory reportCategory = findReportCategoryById(request.getReportId());
         Long voteId = request.getVoteId();
         Vote vote = findVoteById(voteId);
-        MemberEntity giveMember = memberChecker.findById(vote.getGiveId());
+        Member giveMember = memberService.findById(vote.getGiveId());
 
         checkEqualReport(voteId);
 
         createVoteReport(vote, reportCategory, request.getContent());
         vote.changeInvalid();
-        giveMember.addReportCount();
+        memberService.addReportCount(giveMember, 1);
     }
 
     private ReportCategory findReportCategoryById(Long id) {

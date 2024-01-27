@@ -1,9 +1,9 @@
 package com.mjuAppSW.joA.domain.message;
 
-import com.mjuAppSW.joA.common.auth.MemberChecker;
 import com.mjuAppSW.joA.common.encryption.EncryptManager;
+import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.MemberEntity;
-import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
+import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.message.dto.vo.MessageVO;
 import com.mjuAppSW.joA.domain.message.dto.response.MessageResponse;
 import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
@@ -32,21 +32,20 @@ import java.util.stream.Collectors;
 public class MessageService {
     private final MessageRepository messageRepository;
     private final RoomRepository roomRepository;
-    private final MemberRepository memberRepository;
     private final RoomInMemberRepository roomInMemberRepository;
-    private final MemberChecker memberChecker;
+    private final MemberService memberService;
     private final EncryptManager encryptManager;
 
     @Transactional
     public Long saveMessage(Long roomId, Long memberId, String content, String isChecked, LocalDateTime createdMessageDate) {
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
-        MemberEntity member = memberChecker.findById(memberId);
+        Member member = memberService.findById(memberId);
         String encryptedMessage = encryptManager.encrypt(content, room.getEncryptKey());
         if(encryptedMessage == null){
             throw new FailEncryptException();
         }
         Message message = Message.builder()
-            .member(member)
+            .member(MemberEntity.fromModel(member))
             .room(room)
             .content(encryptedMessage)
             .date(createdMessageDate)
@@ -58,15 +57,15 @@ public class MessageService {
 
     public MessageResponse loadMessage(Long roomId, Long memberId) {
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
-        MemberEntity member = memberChecker.findBySessionId(memberId);
-        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, member).orElseThrow(
+        Member member = memberService.findBySessionId(memberId);
+        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, MemberEntity.fromModel(member)).orElseThrow(
             RoomInMemberNotFoundException::new);
 
         List<Message> messageList = messageRepository.findByRoom(room);
         if(messageList.isEmpty()){ return MessageResponse.of(new ArrayList<>());}
 
         List<MessageVO> messageVOList = messageList.stream()
-            .map(message -> makeMessageContent(message, member, room))
+            .map(message -> makeMessageContent(message, MemberEntity.fromModel(member), room))
             .map(MessageVO::new)
             .collect(Collectors.toList());
 
@@ -85,9 +84,9 @@ public class MessageService {
     @Transactional
     public void updateIsChecked(String roomId, String memberId){
         Room room = roomRepository.findById(Long.parseLong(roomId)).orElseThrow(RoomNotFoundException::new);
-        MemberEntity member = memberChecker.findById(Long.parseLong(memberId));
+        Member member = memberService.findById(Long.parseLong(memberId));
 
-        List<Message> getMessages = messageRepository.findMessage(room, member);
+        List<Message> getMessages = messageRepository.findMessage(room, MemberEntity.fromModel(member));
         if(!getMessages.isEmpty()){
             for(Message message : getMessages){
                 message.updateIsChecked();
