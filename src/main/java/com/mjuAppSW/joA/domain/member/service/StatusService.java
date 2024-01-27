@@ -1,11 +1,11 @@
-package com.mjuAppSW.joA.common.auth;
+package com.mjuAppSW.joA.domain.member.service;
 
 import static com.mjuAppSW.joA.common.constant.Constants.EMPTY_STRING;
 
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.infrastructure.MemberRepository;
-import com.mjuAppSW.joA.geography.location.LocationRepository;
 import com.mjuAppSW.joA.domain.member.service.port.S3Uploader;
+import com.mjuAppSW.joA.geography.location.LocationRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,12 +13,12 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 @Slf4j
-public class MemberStatusManager {
+public class StatusService {
 
     private final S3Uploader s3Uploader;
     private final MemberRepository memberRepository;

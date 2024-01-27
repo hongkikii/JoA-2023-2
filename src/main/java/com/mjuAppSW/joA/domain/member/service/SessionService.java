@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.common.auth;
+package com.mjuAppSW.joA.domain.member.service;
 
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.exception.SessionNotFoundException;
@@ -15,12 +15,12 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class SessionManager {
+public class SessionService {
 
     private final MemberRepository memberRepository;
     private final CacheManager cacheManager;
 
-    public long makeSessionId() {
+    public long create() {
         long min = 1000000000L;
         long max = 9999999999L;
         return ThreadLocalRandom.current().nextLong(min, max + 1);
@@ -28,10 +28,10 @@ public class SessionManager {
 
     @Transactional
     @Scheduled(cron = "0 0 0 1 * ?")
-    public void expiredSessionId() {
+    public void expire() {
         List<Member> members = memberRepository.findAll();
         for (Member member : members) {
-            member.makeSessionId(makeSessionId());
+            member.makeSessionId(create());
         }
     }
 

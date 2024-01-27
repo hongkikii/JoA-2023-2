@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.memberProfile.dto.response;
+package com.mjuAppSW.joA.domain.member.dto.response;
 
 import com.mjuAppSW.joA.domain.member.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,16 +8,15 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@Schema(description = "설정 페이지 Response")
+@Schema(description = "투표 화면 사용자 정보 Response")
 @Builder(access = AccessLevel.PRIVATE)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class SettingPageResponse {
+public class VotePageResponse {
     private final String name;
-    @Schema(description = "S3 객체(이미지) URL 고유 코드, 기본 이미지일 시 빈 문자열 반환")
     private final String urlCode;
 
-    public static SettingPageResponse of(Member member) {
-        return SettingPageResponse.builder()
+    public static VotePageResponse of(Member member) {
+        return VotePageResponse.builder()
                 .name(member.getName())
                 .urlCode(member.getUrlCode())
                 .build();

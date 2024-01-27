@@ -5,6 +5,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
 import com.mjuAppSW.joA.common.auth.MemberChecker;
 import com.mjuAppSW.joA.common.encryption.EncryptManager;
 import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.message.MessageRepository;
 import com.mjuAppSW.joA.domain.message.dto.vo.CurrentMessageVO;
 import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
@@ -41,7 +42,7 @@ public class RoomInMemberService {
     private final RoomInMemberRepository roomInMemberRepository;
     private final RoomRepository roomRepository;
     private final MessageRepository messageRepository;
-    private final MemberChecker memberChecker;
+    private final MemberService memberService;
     private final EncryptManager encryptManager;
 
     public void findByRoom(Long roomId){
@@ -56,8 +57,8 @@ public class RoomInMemberService {
     }
 
     public RoomListResponse getRoomList(Long memberId) {
-        Member member = memberChecker.findBySessionId(memberId);
-        memberChecker.checkStopped(member);
+        Member member = memberService.findBySessionId(memberId);
+        memberService.checkStopped(member);
 
         List<RoomInMember> memberList = roomInMemberRepository.findByAllMember(member);
         if (memberList.isEmpty()) {return RoomListResponse.of(new ArrayList<>());}

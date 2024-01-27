@@ -1,12 +1,13 @@
-package com.mjuAppSW.joA.domain.memberProfile;
+package com.mjuAppSW.joA.domain.member.controller;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
-import com.mjuAppSW.joA.domain.memberProfile.dto.request.BioRequest;
-import com.mjuAppSW.joA.domain.memberProfile.dto.response.MyPageResponse;
-import com.mjuAppSW.joA.domain.memberProfile.dto.request.PictureRequest;
-import com.mjuAppSW.joA.domain.memberProfile.dto.response.SettingPageResponse;
-import com.mjuAppSW.joA.domain.memberProfile.dto.response.VotePageResponse;
-import com.mjuAppSW.joA.domain.memberProfile.dto.response.LocationPageResponse;
+import com.mjuAppSW.joA.domain.member.service.InfoService;
+import com.mjuAppSW.joA.domain.member.dto.request.BioRequest;
+import com.mjuAppSW.joA.domain.member.dto.response.MyPageResponse;
+import com.mjuAppSW.joA.domain.member.dto.request.PictureRequest;
+import com.mjuAppSW.joA.domain.member.dto.response.SettingPageResponse;
+import com.mjuAppSW.joA.domain.member.dto.response.VotePageResponse;
+import com.mjuAppSW.joA.domain.member.dto.response.LocationPageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -31,9 +32,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/joa/member-profiles")
-public class MemberProfileApiController {
+public class InfoApiController {
 
-    private final MemberProfileService memberProfileService;
+    private final InfoService memberProfileService;
 
     @Operation(summary = "설정 페이지 정보 조회", description = "설정 페이지에서 필요한 정보 조회 API")
     @ApiResponses(value = {

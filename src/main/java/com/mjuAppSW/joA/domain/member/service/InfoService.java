@@ -1,20 +1,19 @@
-package com.mjuAppSW.joA.domain.memberProfile;
+package com.mjuAppSW.joA.domain.member.service;
 
 import static com.mjuAppSW.joA.common.constant.Constants.EMPTY_STRING;
 import static com.mjuAppSW.joA.common.constant.Constants.S3Uploader.ERROR;
 
-import com.mjuAppSW.joA.common.auth.MemberChecker;
 import com.mjuAppSW.joA.domain.heart.HeartRepository;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.memberProfile.dto.request.BioRequest;
-import com.mjuAppSW.joA.domain.memberProfile.dto.response.MyPageResponse;
-import com.mjuAppSW.joA.domain.memberProfile.dto.request.PictureRequest;
-import com.mjuAppSW.joA.domain.memberProfile.dto.response.SettingPageResponse;
-import com.mjuAppSW.joA.domain.memberProfile.exception.InvalidS3Exception;
+import com.mjuAppSW.joA.domain.member.dto.request.BioRequest;
+import com.mjuAppSW.joA.domain.member.dto.response.MyPageResponse;
+import com.mjuAppSW.joA.domain.member.dto.request.PictureRequest;
+import com.mjuAppSW.joA.domain.member.dto.response.SettingPageResponse;
+import com.mjuAppSW.joA.domain.member.exception.InvalidS3Exception;
 import com.mjuAppSW.joA.domain.vote.VoteRepository;
 import com.mjuAppSW.joA.domain.member.service.port.S3Uploader;
-import com.mjuAppSW.joA.domain.memberProfile.dto.response.VotePageResponse;
-import com.mjuAppSW.joA.domain.memberProfile.dto.response.LocationPageResponse;
+import com.mjuAppSW.joA.domain.member.dto.response.VotePageResponse;
+import com.mjuAppSW.joA.domain.member.dto.response.LocationPageResponse;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,20 +22,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class MemberProfileService {
+public class InfoService {
 
     private final HeartRepository heartRepository;
     private final VoteRepository voteRepository;
-    private final MemberChecker memberChecker;
+    private final MemberService memberService;
     private final S3Uploader s3Uploader;
 
     public SettingPageResponse getSettingPage(Long sessionId) {
-        Member member = memberChecker.findFilterBySessionId(sessionId);
+        Member member = memberService.findNormalBySessionId(sessionId);
         return SettingPageResponse.of(member);
     }
 
     public MyPageResponse getMyPage(Long sessionId) {
-        Member member = memberChecker.findFilterBySessionId(sessionId);
+        Member member = memberService.findNormalBySessionId(sessionId);
 
         int todayHeart = heartRepository.countTodayHeartsById(member.getId());
         int totalHeart = heartRepository.countTotalHeartsById(member.getId());
@@ -46,28 +45,28 @@ public class MemberProfileService {
     }
 
     public VotePageResponse getVotePage(Long sessionId) {
-        return VotePageResponse.of(memberChecker.findFilterBySessionId(sessionId));
+        return VotePageResponse.of(memberService.findNormalBySessionId(sessionId));
     }
 
     public LocationPageResponse getLocationPage(Long sessionId) {
-        return LocationPageResponse.of(memberChecker.findFilterBySessionId(sessionId));
+        return LocationPageResponse.of(memberService.findNormalBySessionId(sessionId));
     }
 
     @Transactional
     public void transBio(BioRequest request) {
-        Member member = memberChecker.findFilterBySessionId(request.getId());
+        Member member = memberService.findNormalBySessionId(request.getId());
         member.changeBio(request.getBio());
     }
 
     @Transactional
     public void deleteBio(Long sessionId) {
-        Member member = memberChecker.findFilterBySessionId(sessionId);
+        Member member = memberService.findNormalBySessionId(sessionId);
         member.changeBio(EMPTY_STRING);
     }
 
     @Transactional
     public void transPicture(PictureRequest request) {
-        Member member = memberChecker.findFilterBySessionId(request.getId());
+        Member member = memberService.findNormalBySessionId(request.getId());
 
         if (!isBasicPicture(member.getUrlCode())){
             s3Uploader.deletePicture(member.getUrlCode());
@@ -85,7 +84,7 @@ public class MemberProfileService {
 
     @Transactional
     public void deletePicture(Long sessionId) {
-        Member member = memberChecker.findFilterBySessionId(sessionId);
+        Member member = memberService.findNormalBySessionId(sessionId);
         if(isBasicPicture(member.getUrlCode())) {
             return;
         }

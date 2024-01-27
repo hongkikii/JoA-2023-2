@@ -7,7 +7,6 @@ import static com.mjuAppSW.joA.common.constant.Constants.Cache.BEFORE_EMAIL;
 import static com.mjuAppSW.joA.common.constant.Constants.Cache.CERTIFY_NUMBER;
 import static com.mjuAppSW.joA.common.constant.Constants.MAIL.CERTIFY_NUMBER_IS;
 
-import com.mjuAppSW.joA.common.auth.SessionManager;
 import com.mjuAppSW.joA.domain.college.MCollegeEntity;
 import com.mjuAppSW.joA.domain.college.MCollegeService;
 import com.mjuAppSW.joA.domain.member.dto.request.SendCertifyNumRequest;
@@ -30,7 +29,7 @@ public class CertifyService {
     private final MemberRepository memberRepository;
     private final MCollegeService mCollegeService;
     private final CacheManager cacheManager;
-    private final SessionManager sessionManager;
+    private final SessionService sessionManager;
     private final MailSender mailSender;
 
     public SessionIdResponse send(SendCertifyNumRequest request) {
@@ -42,7 +41,7 @@ public class CertifyService {
         String eMail = uEmail + college.getDomain();
         checkJoining(eMail);
 
-        long sessionId = sessionManager.makeSessionId();
+        long sessionId = sessionManager.create();
         String certifyNum = cache(sessionId, eMail);
         mailSender.send(eMail, CERTIFY_NUMBER_IS,certifyNum);
         return SessionIdResponse.of(sessionId);

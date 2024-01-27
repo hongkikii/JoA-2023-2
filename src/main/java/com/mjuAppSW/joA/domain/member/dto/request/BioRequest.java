@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.memberProfile.dto.request;
+package com.mjuAppSW.joA.domain.member.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@Schema(description = "프로필 사진 변경 Request")
+@Schema(description = "한 줄 소개 변경 Request")
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public class PictureRequest {
+public class BioRequest {
     @NotNull
     private final Long id;
     @NotBlank
-    private String base64Picture;
+    private final String bio;
 }

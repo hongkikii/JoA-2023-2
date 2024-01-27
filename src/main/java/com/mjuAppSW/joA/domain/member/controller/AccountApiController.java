@@ -1,17 +1,13 @@
 package com.mjuAppSW.joA.domain.member.controller;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
-import com.mjuAppSW.joA.domain.member.service.CertifyService;
+import com.mjuAppSW.joA.domain.member.service.AccountService;
 import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.member.dto.request.FindIdRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.FindPasswordRequest;
-import com.mjuAppSW.joA.domain.member.dto.request.JoinRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.LoginRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.TransPasswordRequest;
-import com.mjuAppSW.joA.domain.member.dto.request.SendCertifyNumRequest;
-import com.mjuAppSW.joA.domain.member.dto.request.VerifyIdRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
-import com.mjuAppSW.joA.domain.member.dto.request.VerifyCertifyNumRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,65 +32,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/joa/members")
-public class MemberApiController {
+public class AccountApiController {
 
-    private final MemberService memberService;
-    private final CertifyService certifyService;
-
-    @Operation(summary = "인증 번호 전송", description = "회원가입 시 학교 웹메일을 확인하기 위해 해당 웹메일로 인증번호를 전송하는 API")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "인증 번호 웹메일 전송 후 확인 코드 반환"),
-            @ApiResponse(responseCode = "404", description = "P001: 학교 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "409-1", description = "M005: 이미 존재하는 사용자입니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "409-2", description = "M006: 사용 중인 이메일입니다.", content = @Content(schema = @Schema(hidden = true))),
-    })
-    @PostMapping("/certify-num/send")
-    public ResponseEntity<SuccessResponse<SessionIdResponse>> sendCertifyNum(@RequestBody @Valid SendCertifyNumRequest request) {
-        return SuccessResponse.of(certifyService.send(request))
-                .asHttp(HttpStatus.OK);
-    }
-
-    @Operation(summary = "인증 번호 검증", description = "회원가입 시 학교 웹메일을 확인하기 위해 전송된 인증번호를 확인하는 API")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "404", description = "M007: 세션 id가 유효하지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "400", description = "M009: 인증번호가 올바르지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
-    })
-    @PostMapping("/certify-num/verify")
-    public ResponseEntity<Void> verifyCertifyNum(@RequestBody @Valid VerifyCertifyNumRequest request) {
-        certifyService.verify(request);
-        return ResponseEntity.ok().build();
-    }
-
-    @Operation(summary = "아이디 중복 검증", description = "회원가입 시 중복 아이디가 존재하는지 확인하는 API")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "400-1", description = "M010: 올바른 아이디 형식이 아닙니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "400-2", description = "M008: 이메일 인증이 완료되지 않았습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "409", description = "M011: 이미 사용 중인 아이디입니다.", content = @Content(schema = @Schema(hidden = true))),
-
-    })
-    @PostMapping("/id/verify")
-    public ResponseEntity<Void> verifyId(@RequestBody @Valid VerifyIdRequest request) {
-        memberService.verifyId(request);
-        return ResponseEntity.ok().build();
-    }
-
-    @Operation(summary = "회원 가입", description = "회원 가입 API")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "400-1", description = "M012: 올바른 비밀번호 형식이 아닙니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "404-1", description = "M007: 세션 id가 유효하지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "400-2", description = "M013: 아이디 중복 확인이 완료되지 않았습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "404-2", description = "P001: 학교 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
-
-    })
-    @PostMapping
-    public ResponseEntity<Void> join(@RequestBody @Valid JoinRequest request) {
-        memberService.join(request);
-        return ResponseEntity.ok().build();
-    }
+    private final AccountService accountService;
 
     @Operation(summary = "로그인", description = "로그인 API")
     @ApiResponses(value = {
@@ -104,7 +44,7 @@ public class MemberApiController {
     })
     @PostMapping("/login")
     public ResponseEntity<SuccessResponse<SessionIdResponse>> login(@RequestBody @Valid LoginRequest request) {
-        return SuccessResponse.of(memberService.login(request))
+        return SuccessResponse.of(accountService.login(request))
                 .asHttp(HttpStatus.OK);
     }
 
@@ -115,7 +55,7 @@ public class MemberApiController {
     })
     @PostMapping("/{id}/logout")
     public ResponseEntity<Void> logout(@PathVariable("id") @NotNull Long sessionId) {
-        memberService.logout(sessionId);
+        accountService.logout(sessionId);
         return ResponseEntity.ok().build();
     }
 
@@ -127,7 +67,7 @@ public class MemberApiController {
     })
     @GetMapping("/id/find")
     public ResponseEntity<Void> findId(@RequestBody @Valid FindIdRequest request) {
-        memberService.findId(request);
+        accountService.findLoginId(request);
         return ResponseEntity.ok().build();
     }
 
@@ -138,7 +78,7 @@ public class MemberApiController {
     })
     @GetMapping("/password/find")
     public ResponseEntity<Void> findPassword(@RequestBody @Valid FindPasswordRequest request) {
-        memberService.findPassword(request);
+        accountService.findPassword(request);
         return ResponseEntity.ok().build();
     }
 
@@ -151,7 +91,7 @@ public class MemberApiController {
     })
     @PatchMapping("/password")
     public ResponseEntity<Void> transPassword(@RequestBody @Valid TransPasswordRequest request) {
-        memberService.transPassword(request);
+        accountService.transPassword(request);
         return ResponseEntity.ok().build();
     }
 
@@ -163,7 +103,7 @@ public class MemberApiController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> withdrawal(@PathVariable("id") @NotNull Long sessionId) {
-        memberService.withdrawal(sessionId);
+        accountService.withdrawal(sessionId);
         return ResponseEntity.ok().build();
     }
 }

@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.memberProfile.dto.response;
+package com.mjuAppSW.joA.domain.member.dto.response;
 
 import com.mjuAppSW.joA.domain.member.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
