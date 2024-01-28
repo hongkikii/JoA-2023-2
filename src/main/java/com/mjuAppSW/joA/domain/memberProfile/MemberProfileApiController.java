@@ -7,6 +7,8 @@ import com.mjuAppSW.joA.domain.memberProfile.dto.request.PictureRequest;
 import com.mjuAppSW.joA.domain.memberProfile.dto.response.SettingPageResponse;
 import com.mjuAppSW.joA.domain.memberProfile.dto.response.VotePageResponse;
 import com.mjuAppSW.joA.domain.memberProfile.dto.response.LocationPageResponse;
+import com.mjuAppSW.joA.domain.memberProfile.dto.response.UserInfoResponse;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -148,5 +150,18 @@ public class MemberProfileApiController {
             @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH) @PathVariable("id") Long sessionId) {
         memberProfileService.deletePicture(sessionId);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "채팅방 입장시 상대방 정보 조회", description = "상대방 정보 조회 API")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "상대방 정보 반환"),
+        @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다.")
+    })
+    @GetMapping("/{roomId}/{memberId}/userinfo")
+    public ResponseEntity<SuccessResponse<UserInfoResponse>> getUserInfo(@PathVariable("roomId") Long roomId, @PathVariable("memberId") Long memberId){
+        return SuccessResponse.of(memberProfileService.getUserInfo(roomId, memberId))
+            .asHttp(HttpStatus.OK);
     }
 }

@@ -126,8 +126,8 @@ public class MemberApiController {
             @ApiResponse(responseCode = "404-2", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @GetMapping("/id/find")
-    public ResponseEntity<Void> findId(@RequestBody @Valid FindIdRequest request) {
-        memberService.findId(request);
+    public ResponseEntity<Void> findId(@RequestParam("collegeEmail") String collegeEmail, @RequestParam("collegeId") Long collegeId) {
+        memberService.findId(collegeEmail, collegeId);
         return ResponseEntity.ok().build();
     }
 
@@ -137,8 +137,8 @@ public class MemberApiController {
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @GetMapping("/password/find")
-    public ResponseEntity<Void> findPassword(@RequestBody @Valid FindPasswordRequest request) {
-        memberService.findPassword(request);
+    public ResponseEntity<Void> findPassword(@RequestParam("loginId") String loginId) {
+        memberService.findPassword(loginId);
         return ResponseEntity.ok().build();
     }
 

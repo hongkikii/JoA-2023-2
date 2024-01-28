@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +44,7 @@ public class RoomApiController {
         @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
         @ApiResponse(responseCode = "400", description = "R002: 방이 생성된지 24시간이 지났습니다.")
     })
-    @PostMapping("/{id}/status")
+    @GetMapping("/{id}")
     public ResponseEntity<Void> checkCreateAtRoom(
             @Parameter(description = "방 id", in = ParameterIn.PATH) @PathVariable("id") Long roomId){
         roomService.checkCreateAtRoom(roomId);
@@ -53,9 +54,9 @@ public class RoomApiController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "방 연장 완료"),
         @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
-        @ApiResponse(responseCode = "409", description = "R004: 이미 연장된 채팅방입니다.")
+        @ApiResponse(responseCode = "409", description = "R004: 이미 연장된 방입니다.")
     })
-    @PatchMapping("/{id}/status")
+    @PatchMapping("/{id}")
     public ResponseEntity<Void> updateStatusAndDate(
          @Parameter(description = "방 id", in = ParameterIn.PATH) @PathVariable("id") Long roomId){
         LocalDateTime updateRoomStatusDate = LocalDateTime.now();
