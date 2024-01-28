@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.member.infrastructure;
 
-public interface CacheManager {
+public interface CacheManager { //FIXME
 
     void add(String key, String value, int minute);
 

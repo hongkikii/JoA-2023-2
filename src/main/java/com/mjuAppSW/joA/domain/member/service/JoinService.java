@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class JoinService {
+public class JoinService { //FIXME
 
     private final MemberRepository memberRepository;
     private final LocationService locationService;
