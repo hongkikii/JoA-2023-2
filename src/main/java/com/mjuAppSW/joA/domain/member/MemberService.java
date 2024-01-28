@@ -291,18 +291,18 @@ public class MemberService {
         findMember.expireSessionId();
     }
 
-    public void findId(FindIdRequest request) {
-        MCollege college = findByMCollegeId(request.getCollegeId());
+    public void findId(String collegeEmail, Long collegeId) {
+        MCollege college = findByMCollegeId(collegeId);
 
-        Member member = memberRepository.findByuEmailAndcollege(request.getCollegeEmail(), college)
+        Member member = memberRepository.findByuEmailAndcollege(collegeEmail, college)
                 .orElseThrow(MemberNotFoundException::new);
 
         mail(USER_ID_IS, member.getName(), member.getUEmail(), college.getDomain(), member.getLoginId());
     }
 
     @Transactional
-    public void findPassword(FindPasswordRequest request) {
-        Member member = memberChecker.findByLoginId(request.getLoginId());
+    public void findPassword(String loginId) {
+        Member member = memberChecker.findByLoginId(loginId);
 
         String randomPassword = randomPassword();
         String hashedRandomPassword = BCrypt.hashpw(randomPassword, member.getSalt());
