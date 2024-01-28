@@ -11,10 +11,8 @@ import com.mjuAppSW.joA.domain.member.dto.request.FindPasswordRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.LoginRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.TransPasswordRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
-import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import com.mjuAppSW.joA.domain.member.infrastructure.MailSender;
 import com.mjuAppSW.joA.domain.member.infrastructure.PasswordManager;
-import com.mjuAppSW.joA.geography.location.LocationService;
 import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +24,9 @@ import org.springframework.stereotype.Service;
 public class AccountService {
 
     private final MemberService memberService;
-    private final LocationService locationService;
     private final MCollegeService mCollegeService;
     private final SessionService sessionManager;
     private final MailSender mailSender;
-    private final ImageUploader imageUploader;
     private final PasswordManager passwordManager;
 
     @Transactional
@@ -46,7 +42,6 @@ public class AccountService {
     @Transactional
     public void logout(Long sessionId) {
         Member member = memberService.getBySessionId(sessionId);
-        locationService.updateIsContained(member.getId(), false);
         member.expireSessionId();
     }
 
@@ -88,9 +83,6 @@ public class AccountService {
     @Transactional
     public void withdrawal(Long sessionId) {
         Member member = memberService.getBySessionId(sessionId);
-
-        imageUploader.delete(member.getUrlCode());
-        locationService.delete(member.getId());
-        member.setWithdrawal();
+        memberService.delete(member);
     }
 }

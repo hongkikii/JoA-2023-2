@@ -4,6 +4,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.Cache.ID;
 
 import com.mjuAppSW.joA.domain.member.exception.InvalidLoginIdException;
 import com.mjuAppSW.joA.domain.member.exception.LoginIdAlreadyExistedException;
+import com.mjuAppSW.joA.domain.member.exception.LoginIdNotAuthorizedException;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.LoginIdManager;
 import com.mjuAppSW.joA.domain.member.service.MemberService;
@@ -28,6 +29,13 @@ public class LoginIdManagerImpl implements LoginIdManager {
         Matcher matcher = pattern.matcher(id);
         if(!matcher.matches()){
             throw new InvalidLoginIdException();
+        }
+    }
+
+    @Override
+    public void checkNotCache(Long key, String loginId) {
+        if(!cacheManager.compare(ID + key, loginId)){
+            throw new LoginIdNotAuthorizedException();
         }
     }
 

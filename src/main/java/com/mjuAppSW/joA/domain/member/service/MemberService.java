@@ -5,12 +5,18 @@ import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_2_STO
 import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_3_STOP_STATUS;
 
 import com.mjuAppSW.joA.domain.college.MCollege;
+import com.mjuAppSW.joA.domain.college.MCollegeRepository;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.exception.LoginIdAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.MemberAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.PermanentBanException;
+import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
+import com.mjuAppSW.joA.domain.member.infrastructure.PasswordManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
 import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
+import com.mjuAppSW.joA.geography.college.PCollege;
+import com.mjuAppSW.joA.geography.college.PCollegeService;
+import com.mjuAppSW.joA.geography.location.LocationService;
 import com.mjuAppSW.joA.geography.location.exception.AccessStoppedException;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -24,6 +30,30 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PCollegeService pCollegeService;
+    private final LocationService locationService;
+    private final ImageUploader imageUploader;
+    private final PasswordManager passwordManager;
+
+    @Transactional
+    public Member create(Long sessionId, String name, String loginId,
+                         String password, String uEmail, MCollege mCollege) {
+        passwordManager.validate(password);
+        String salt = passwordManager.createSalt();
+        String hashedPassword = passwordManager.createHashed(password, salt);
+        Member member = Member.builder()
+                            .name(name)
+                            .loginId(loginId)
+                            .password(hashedPassword)
+                            .salt(salt)
+                            .uEmail(uEmail)
+                            .college(mCollege)
+                            .sessionId(sessionId).build();
+        memberRepository.save(member);
+        PCollege pCollege = pCollegeService.findById(mCollege.getId());
+        locationService.create(member, pCollege);
+        return member;
+    }
 
     public Member getBySessionId(Long sessionId) {
         return memberRepository.findBysessionId(sessionId)
@@ -86,5 +116,11 @@ public class MemberService {
         if(member.getStatus() == STEP_3_STOP_STATUS) {
             throw new PermanentBanException();
         }
+    }
+
+    public void delete(Member member) {
+        imageUploader.delete(member.getUrlCode());
+        locationService.delete(member.getId());
+        member.setWithdrawal();
     }
 }

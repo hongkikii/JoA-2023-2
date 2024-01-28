@@ -3,9 +3,7 @@ package com.mjuAppSW.joA.domain.member.service;
 import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.*;
 
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
-import com.mjuAppSW.joA.geography.location.LocationRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,19 +18,17 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class StatusService {
 
+    private final MemberService memberService;
     private final MemberRepository memberRepository;
-    private final LocationRepository locationRepository;
-    private final ImageUploader imageUploader;
 
     @Scheduled(cron = "0 0 4 * * ?")
 //    @Scheduled(cron = "0 */10 * * * *")
     @Transactional
-    public void punish() {
+    public void translate() {
         List<Member> joiningAll = memberRepository.findJoiningAll();
         for (Member member : joiningAll) {
             if(member.getStatus() == STEP_1_STOP_STATUS
             || member.getStatus() == STEP_2_STOP_STATUS) {
-
                 completeStopPolicy(member);
             }
             if (member.getReportCount() >= STEP_1_REPORT_COUNT
@@ -40,14 +36,12 @@ public class StatusService {
                 && member.getStatus() != STEP_1_COMPLETE_STATUS
                 && member.getStatus() != STEP_2_STOP_STATUS
                 && member.getStatus() != STEP_2_COMPLETE_STATUS) {
-
                 executeStopPolicy(member, STEP_1_REPORT_COUNT);
             }
             if (member.getReportCount() >= STEP_2_REPORT_COUNT
                 && member.getStatus() != STEP_1_STOP_STATUS
                 && member.getStatus() != STEP_2_STOP_STATUS
                 && member.getStatus() != STEP_2_COMPLETE_STATUS) {
-
                 executeStopPolicy(member, STEP_2_REPORT_COUNT);
             }
             if (member.getReportCount() >= STEP_3_REPORT_COUNT) {
@@ -89,9 +83,7 @@ public class StatusService {
 
     private void executeOutPolicy(Member member) {
         member.updateStatus(STEP_3_STOP_STATUS);
-        imageUploader.delete(member.getUrlCode());
-        locationRepository.deleteById(member.getId());
-        member.setWithdrawal();
+        memberService.delete(member);
         log.info("account delete : id = {}, reportCount = 15", member.getId());
     }
 }

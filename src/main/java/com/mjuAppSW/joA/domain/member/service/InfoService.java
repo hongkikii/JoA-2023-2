@@ -34,7 +34,6 @@ public class InfoService {
 
     public MyPageResponse getMyPage(Long sessionId) {
         Member member = memberService.getNormalBySessionId(sessionId);
-
         int todayHeart = heartRepository.countTodayHeartsById(member.getId());
         int totalHeart = heartRepository.countTotalHeartsById(member.getId());
         List<String> voteTop3 = voteRepository.findVoteCategoryById(
@@ -66,25 +65,23 @@ public class InfoService {
     @Transactional
     public void transPicture(PictureRequest request) {
         Member member = memberService.getNormalBySessionId(request.getId());
-
-        if (!isBasicPicture(member.getUrlCode())){
+        if (isNotBasicPicture(member.getUrlCode())){
             imageUploader.delete(member.getUrlCode());
         }
         String newUrlCode = imageUploader.put(member.getId(), request.getBase64Picture());
         member.updateUrlCode(newUrlCode);
     }
 
-    private boolean isBasicPicture(String urlCode) {
-        return urlCode.equals(EMPTY_STRING);
-    }
-
     @Transactional
     public void deletePicture(Long sessionId) {
         Member member = memberService.getNormalBySessionId(sessionId);
-        if(isBasicPicture(member.getUrlCode())) {
-            return;
+        if(isNotBasicPicture(member.getUrlCode())) {
+            imageUploader.delete(member.getUrlCode());
+            member.deleteUrlCode();
         }
-        imageUploader.delete(member.getUrlCode());
-        member.deleteUrlCode();
+    }
+
+    private boolean isNotBasicPicture(String urlCode) {
+        return !urlCode.equals(EMPTY_STRING);
     }
 }
