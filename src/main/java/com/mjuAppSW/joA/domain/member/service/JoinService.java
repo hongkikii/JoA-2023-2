@@ -10,18 +10,15 @@ import com.mjuAppSW.joA.domain.college.MCollegeService;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.dto.request.JoinRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.VerifyIdRequest;
-import com.mjuAppSW.joA.domain.member.exception.InvalidLoginIdException;
-import com.mjuAppSW.joA.domain.member.exception.LoginIdAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.LoginIdNotAuthorizedException;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
+import com.mjuAppSW.joA.domain.member.infrastructure.LoginIdManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
 import com.mjuAppSW.joA.domain.member.infrastructure.PasswordManager;
 import com.mjuAppSW.joA.geography.college.PCollege;
 import com.mjuAppSW.joA.geography.college.PCollegeService;
 import com.mjuAppSW.joA.geography.location.LocationService;
 import jakarta.transaction.Transactional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,37 +33,16 @@ public class JoinService { //FIXME
     private final SessionService sessionManager;
     private final CacheManager cacheManager;
     private final PasswordManager passwordManager;
+    private final LoginIdManager loginIdManager;
 
     public void verifyLoginId(VerifyIdRequest request) {
         String loginId = request.getLoginId();
         Long sessionId = request.getSessionId();
-        validateLoginId(loginId);
-        sessionManager.checkCached(AFTER_EMAIL, sessionId);
-        checkExistedLoginId(sessionId, loginId);
+        loginIdManager.validate(loginId);
+        sessionManager.checkInCache(AFTER_EMAIL, sessionId);
+        loginIdManager.checkInCache(sessionId, loginId);
+        loginIdManager.checkInDb(loginId);
         cacheLoginId(sessionId, loginId);
-    }
-
-    private void validateLoginId(String id) {
-        if (id.length() < 5 || id.length() > 20) {
-            throw new InvalidLoginIdException();
-        }
-        String regex = "^[a-z0-9-_]+$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(id);
-        if(!matcher.matches()){
-            throw new InvalidLoginIdException();
-        }
-    }
-
-    private void checkExistedLoginId(Long sessionId, String loginId) {
-        memberRepository.findByloginId(loginId).ifPresent(existingMember -> {
-            throw new LoginIdAlreadyExistedException();});
-
-        if (cacheManager.isExistedValue(ID, loginId)) {
-            if(!cacheManager.compare(ID + sessionId, loginId)) {
-                throw new LoginIdAlreadyExistedException();
-            }
-        }
     }
 
     private void cacheLoginId(Long sessionId, String loginId) {
@@ -78,7 +54,7 @@ public class JoinService { //FIXME
     public void join(JoinRequest request) {
         passwordManager.validate(request.getPassword());
         Long sessionId = request.getId();
-        sessionManager.checkCached(AFTER_EMAIL, sessionId);
+        sessionManager.checkInCache(AFTER_EMAIL, sessionId);
         checkNotCachedLoginId(sessionId, request.getLoginId());
 
         String eMail = cacheManager.getData(AFTER_EMAIL + sessionId);

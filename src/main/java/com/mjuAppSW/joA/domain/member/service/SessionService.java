@@ -35,7 +35,7 @@ public class SessionService {
         }
     }
 
-    public void checkCached(String key, Long sessionId) {
+    public void checkInCache(String key, Long sessionId) {
         if (cacheManager.isNotExistedKey(key + sessionId)) {
             throw new SessionNotFoundException();
         }

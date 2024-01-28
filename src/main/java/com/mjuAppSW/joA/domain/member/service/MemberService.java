@@ -6,6 +6,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_3_STO
 
 import com.mjuAppSW.joA.domain.college.MCollege;
 import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.exception.LoginIdAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.MemberAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.PermanentBanException;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
@@ -69,6 +70,12 @@ public class MemberService {
         memberRepository.findForbidden(uEmail, mCollege)
                 .ifPresent(forbiddenMember -> {
                     throw new PermanentBanException();});
+    }
+
+    public void checkExistedLoginId(String loginId) {
+        memberRepository.findByloginId(loginId)
+                .ifPresent(existingMember -> {
+                    throw new LoginIdAlreadyExistedException();});
     }
 
     public void checkStopped(Member member) {
