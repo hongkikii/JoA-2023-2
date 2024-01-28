@@ -65,7 +65,7 @@ public class MessageReportService {
 
         messageReportRepository.save(messageReport);
 
-        Member member = memberService.findById(message.getMember().getId());
+        Member member = memberService.getById(message.getMember().getId());
         memberService.addReportCount(member, 1);
     }
 
@@ -90,8 +90,8 @@ public class MessageReportService {
         return false;
     }
     public void checkMessageReport(CheckMessageReportRequest request){
-        Member member1 = memberService.findBySessionId(request.getMemberId1());
-        Member member2 = memberService.findById(request.getMemberId2());
+        Member member1 = memberService.getBySessionId(request.getMemberId1());
+        Member member2 = memberService.getById(request.getMemberId2());
 
         List<MessageReport> myMessageReport = messageReportRepository.findByMemberId(member1.getId());
         List<MessageReport> opponentMessageReport = messageReportRepository.findByMemberId(member2.getId());

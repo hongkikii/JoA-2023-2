@@ -24,12 +24,12 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public Member findBySessionId(Long sessionId) {
+    public Member getBySessionId(Long sessionId) {
         return memberRepository.findBysessionId(sessionId)
                 .orElseThrow(MemberNotFoundException::new);
     }
 
-    public Member findNormalBySessionId(Long sessionId) {
+    public Member getNormalBySessionId(Long sessionId) {
         return memberRepository.findBysessionId(sessionId)
                 .filter(member -> {
                     if (member.getStatus() == STEP_1_STOP_STATUS
@@ -44,17 +44,17 @@ public class MemberService {
                 .orElseThrow(MemberNotFoundException::new);
     }
 
-    public Member findById(Long id) {
+    public Member getById(Long id) {
         return memberRepository.findById(id)
                 .orElseThrow(MemberNotFoundException::new);
     }
 
-    public Member findByLoginId(String loginId) {
+    public Member getByLoginId(String loginId) {
         return memberRepository.findByloginId(loginId)
                 .orElseThrow(MemberNotFoundException::new);
     }
 
-    public Member findByUEmailAndCollege(String uEmail, MCollegeEntity mCollegeEntity) {
+    public Member getByUEmailAndCollege(String uEmail, MCollegeEntity mCollegeEntity) {
         return memberRepository.findByuEmailAndcollege(uEmail, mCollegeEntity)
                 .orElseThrow(MemberNotFoundException::new);
     }

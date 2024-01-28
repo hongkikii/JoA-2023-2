@@ -21,8 +21,8 @@ public class BlockService {
 
     @Transactional
     public void create(BlockRequest request) {
-        Member blockerMember = memberService.findBySessionId(request.getBlockerId());
-        Member blockedMember = memberService.findById(request.getBlockedId());
+        Member blockerMember = memberService.getBySessionId(request.getBlockerId());
+        Member blockedMember = memberService.getById(request.getBlockedId());
 
         Location blockerLocation = findLocation(blockerMember.getId());
         Location blockedLocation = findLocation(blockedMember.getId());

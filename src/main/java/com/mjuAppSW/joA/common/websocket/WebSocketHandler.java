@@ -64,7 +64,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
     public String sessionIdToMemberId(String session){
-        Member member = memberService.findBySessionId(Long.parseLong(session));
+        Member member = memberService.getBySessionId(Long.parseLong(session));
         String memberId = String.valueOf(member.getId());
         return memberId;
     }
@@ -174,7 +174,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     public void updateCurrentMessage(String roomId, String memberId) throws Exception {
         Room room = roomRepository.findById(Long.parseLong(roomId)).orElseThrow(RoomNotFoundException::new);
-        Member member = memberService.findById(Long.parseLong(memberId));
+        Member member = memberService.getById(Long.parseLong(memberId));
 
         RoomInMember roomInMember = roomInMemberRepository.checkOpponentExpired(room, MemberEntity.fromModel(member), NOT_EXIT).orElseThrow(
             RoomInMemberNotFoundException::new);
@@ -255,7 +255,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         switch (length) {
             case 1:
                 Long onlyMemberId = Long.parseLong(getOnlyMemberId(session));
-                Member member = memberService.findBySessionId(onlyMemberId);
+                Member member = memberService.getBySessionId(onlyMemberId);
 
                 memberId = String.valueOf(member.getId());
                 if (checkURIOfMemberId(session, memberId)) memberSessions.computeIfAbsent(memberId, key -> new ArrayList<>()).add(session);
@@ -263,7 +263,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
             case 2:
                 String roomId = getRoomId(session);
                 Long memberOfSessionId = Long.parseLong(getMemberId(session));
-                Member mem = memberService.findBySessionId(memberOfSessionId);
+                Member mem = memberService.getBySessionId(memberOfSessionId);
 
                 memberId = String.valueOf(mem.getId());
                 if (checkURI(session, roomId)) {
@@ -297,7 +297,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         switch (length){
             case 1 :
                 Long onlyMemberId = Long.parseLong(getOnlyMemberId(session));
-                Member member = memberService.findBySessionId(onlyMemberId);
+                Member member = memberService.getBySessionId(onlyMemberId);
 
                 memberId = String.valueOf(member.getId());
                 List<WebSocketSession> memberSessionsList = memberSessions.get(memberId);
@@ -312,7 +312,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
             case 2 :
                 String roomId = getRoomId(session);
                 Long memberOfSessionId = Long.parseLong(getMemberId(session));
-                Member mem = memberService.findBySessionId(memberOfSessionId);
+                Member mem = memberService.getBySessionId(memberOfSessionId);
 
                 memberId = String.valueOf(mem.getId());
                 List<WebSocketSession> roomSessionsList = roomSessions.get(roomId);

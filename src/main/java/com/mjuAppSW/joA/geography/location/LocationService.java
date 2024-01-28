@@ -42,7 +42,7 @@ public class LocationService {
 
     @Transactional
     public UpdateResponse update(UpdateRequest request) {
-        Member member = memberService.findNormalBySessionId(request.getId());
+        Member member = memberService.getNormalBySessionId(request.getId());
         Location oldLocation = findByMemberId(member.getId());
         PCollege college = pCollegeService.findById(oldLocation.getCollege().getCollegeId());
 
@@ -86,7 +86,7 @@ public class LocationService {
 
     public NearByListResponse getNearByList
             (Long sessionId, Double latitude, Double longitude, Double altitude) {
-        Member member = memberService.findNormalBySessionId(sessionId);
+        Member member = memberService.getNormalBySessionId(sessionId);
         checkWithinCollege(findByMemberId(member.getId()));
 
         Point point = getPoint(latitude, longitude, altitude);
@@ -107,7 +107,7 @@ public class LocationService {
     private List<NearByInfo> makeNearByList(Member member, List<Long> nearMemberIds) {
         return nearMemberIds.stream()
                         .map(nearId -> {
-                            Member findMember = memberService.findById(nearId);
+                            Member findMember = memberService.getById(nearId);
                             boolean isLiked = heartRepository.findTodayHeart(member.getId(), nearId)
                                                             .isPresent();
                             return NearByInfo.builder()

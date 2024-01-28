@@ -39,7 +39,7 @@ public class MessageService {
     @Transactional
     public Long saveMessage(Long roomId, Long memberId, String content, String isChecked, LocalDateTime createdMessageDate) {
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
-        Member member = memberService.findById(memberId);
+        Member member = memberService.getById(memberId);
         String encryptedMessage = encryptManager.encrypt(content, room.getEncryptKey());
         if(encryptedMessage == null){
             throw new FailEncryptException();
@@ -57,7 +57,7 @@ public class MessageService {
 
     public MessageResponse loadMessage(Long roomId, Long memberId) {
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
-        Member member = memberService.findBySessionId(memberId);
+        Member member = memberService.getBySessionId(memberId);
         RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, MemberEntity.fromModel(member)).orElseThrow(
             RoomInMemberNotFoundException::new);
 
@@ -84,7 +84,7 @@ public class MessageService {
     @Transactional
     public void updateIsChecked(String roomId, String memberId){
         Room room = roomRepository.findById(Long.parseLong(roomId)).orElseThrow(RoomNotFoundException::new);
-        Member member = memberService.findById(Long.parseLong(memberId));
+        Member member = memberService.getById(Long.parseLong(memberId));
 
         List<Message> getMessages = messageRepository.findMessage(room, MemberEntity.fromModel(member));
         if(!getMessages.isEmpty()){

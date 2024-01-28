@@ -28,10 +28,10 @@ public class HeartService {
 
     @Transactional
     public HeartResponse sendHeart(HeartRequest request) {
-        Member giveMember = memberService.findNormalBySessionId(request.getGiveId());
+        Member giveMember = memberService.getNormalBySessionId(request.getGiveId());
         Long giveMemberId = giveMember.getId();
         Long takeMemberId = request.getTakeId();
-        Member takeMember = memberService.findById(takeMemberId);
+        Member takeMember = memberService.getById(takeMemberId);
 
         checkBlock(giveMemberId, takeMemberId);
         checkEqualHeart(giveMemberId, takeMemberId);

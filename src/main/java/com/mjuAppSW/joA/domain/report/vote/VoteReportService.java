@@ -30,7 +30,7 @@ public class VoteReportService {
         ReportCategory reportCategory = findReportCategoryById(request.getReportId());
         Long voteId = request.getVoteId();
         Vote vote = findVoteById(voteId);
-        Member giveMember = memberService.findById(vote.getGiveId());
+        Member giveMember = memberService.getById(vote.getGiveId());
 
         checkEqualReport(voteId);
 

@@ -34,8 +34,8 @@ public class VoteService {
 
     @Transactional
     public void send(VoteRequest request) {
-        Member giveMember = memberService.findNormalBySessionId(request.getGiveId());
-        Member takeMember = memberService.findById(request.getTakeId());
+        Member giveMember = memberService.getNormalBySessionId(request.getGiveId());
+        Member takeMember = memberService.getById(request.getTakeId());
         VoteCategory voteCategory = findVoteCategoryById(request.getCategoryId());
 
         Long giveMemberId = giveMember.getId();
@@ -76,7 +76,7 @@ public class VoteService {
     }
 
     public VoteListResponse get(Long sessionId) {
-        Member findTakeMember = memberService.findNormalBySessionId(sessionId);
+        Member findTakeMember = memberService.getNormalBySessionId(sessionId);
         return VoteListResponse.of(getVoteList(findTakeMember.getId()));
     }
 
