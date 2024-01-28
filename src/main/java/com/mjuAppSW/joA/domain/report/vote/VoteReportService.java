@@ -36,7 +36,7 @@ public class VoteReportService {
 
         createVoteReport(vote, reportCategory, request.getContent());
         vote.changeInvalid();
-        memberService.addReportCount(giveMember, 1);
+        giveMember.addReportCount();
     }
 
     private ReportCategory findReportCategoryById(Long id) {

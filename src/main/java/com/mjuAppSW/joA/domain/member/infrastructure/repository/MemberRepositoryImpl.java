@@ -1,9 +1,7 @@
 package com.mjuAppSW.joA.domain.member.infrastructure.repository;
 
-import com.mjuAppSW.joA.domain.college.MCollegeEntity;
+import com.mjuAppSW.joA.domain.college.MCollege;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.MemberEntity;
-import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -17,52 +15,42 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     @Override
     public Member save(Member member) {
-        return memberJpaRepository.save(
-                MemberEntity.fromModel(member))
-                .toModel();
+        return memberJpaRepository.save(member);
     }
 
     @Override
     public Optional<Member> findById(Long id) {
-        return memberJpaRepository.findById(id)
-                .map(MemberEntity::toModel);
+        return memberJpaRepository.findById(id);
     }
 
     @Override
     public Optional<Member> findByloginId(String loginId) {
-        return memberJpaRepository.findByloginId(loginId)
-                .map(MemberEntity::toModel);
+        return memberJpaRepository.findByloginId(loginId);
     }
 
     @Override
     public Optional<Member> findBysessionId(Long sessionId) {
-        return memberJpaRepository.findBysessionId(sessionId)
-                .map(MemberEntity::toModel);
+        return memberJpaRepository.findBysessionId(sessionId);
     }
 
     @Override
-    public Optional<Member> findByuEmailAndcollege(String uEmail, MCollegeEntity college) {
-        return memberJpaRepository.findByuEmailAndcollege(uEmail, college)
-                .map(MemberEntity::toModel);
+    public Optional<Member> findByuEmailAndcollege(String uEmail, MCollege college) {
+        return memberJpaRepository.findByuEmailAndcollege(uEmail, college);
     }
 
     @Override
-    public Optional<Member> findForbidden(String uEmail, MCollegeEntity college) {
-        return memberJpaRepository.findForbidden(uEmail, college)
-                .map(MemberEntity::toModel);
+    public Optional<Member> findForbidden(String uEmail, MCollege college) {
+        return memberJpaRepository.findForbidden(uEmail, college);
     }
+
 
     @Override
     public List<Member> findAll() {
-        return memberJpaRepository.findAll()
-                .stream().map(MemberEntity::toModel)
-                .toList();
+        return memberJpaRepository.findAll();
     }
 
     @Override
     public List<Member> findJoiningAll() {
-        return memberJpaRepository.findJoiningAll()
-                .stream().map(MemberEntity::toModel)
-                .toList();
+        return memberJpaRepository.findJoiningAll();
     }
 }

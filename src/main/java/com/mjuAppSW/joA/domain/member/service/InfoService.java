@@ -54,13 +54,13 @@ public class InfoService {
     @Transactional
     public void transBio(BioRequest request) {
         Member member = memberService.getNormalBySessionId(request.getId());
-        memberService.updateBio(member, request.getBio());
+        member.updateBio(request.getBio());
     }
 
     @Transactional
     public void deleteBio(Long sessionId) {
         Member member = memberService.getNormalBySessionId(sessionId);
-        memberService.updateBio(member, EMPTY_STRING);
+        member.deleteBio();
     }
 
     @Transactional
@@ -71,7 +71,7 @@ public class InfoService {
             imageUploader.delete(member.getUrlCode());
         }
         String newUrlCode = imageUploader.put(member.getId(), request.getBase64Picture());
-        memberService.updateUrlCode(member, newUrlCode);
+        member.updateUrlCode(newUrlCode);
     }
 
     private boolean isBasicPicture(String urlCode) {
@@ -85,6 +85,6 @@ public class InfoService {
             return;
         }
         imageUploader.delete(member.getUrlCode());
-        memberService.updateUrlCode(member, EMPTY_STRING);
+        member.deleteUrlCode();
     }
 }

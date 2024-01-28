@@ -12,12 +12,12 @@ public class MCollegeService {
 
     private final MCollegeRepository mCollegeRepository;
 
-    public MCollegeEntity findById(Long collegeId) {
+    public MCollege findById(Long collegeId) {
         return mCollegeRepository.findById(collegeId)
                 .orElseThrow(CollegeNotFoundException::new);
     }
 
-    public MCollegeEntity findByDomain(String domain) {
+    public MCollege findByDomain(String domain) {
         return mCollegeRepository.findBydomain(EMAIL_SPLIT + domain)
                 .orElseThrow(CollegeNotFoundException::new);
     }

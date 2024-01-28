@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.member.infrastructure.repository;
 
-import com.mjuAppSW.joA.domain.college.MCollegeEntity;
+import com.mjuAppSW.joA.domain.college.MCollege;
 import com.mjuAppSW.joA.domain.member.Member;
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +14,9 @@ public interface MemberRepository {
 
     Optional<Member> findBysessionId(Long sessionId);
 
-    Optional<Member> findByuEmailAndcollege(String uEmail, MCollegeEntity college);
+    Optional<Member> findByuEmailAndcollege(String uEmail, MCollege college);
 
-    Optional<Member> findForbidden(String uEmail, MCollegeEntity college);
+    Optional<Member> findForbidden(String uEmail, MCollege college);
 
     List<Member> findAll();
     

@@ -4,7 +4,6 @@ import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
 
 import com.mjuAppSW.joA.common.encryption.EncryptManager;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.message.MessageRepository;
 import com.mjuAppSW.joA.domain.message.dto.vo.CurrentMessageVO;
@@ -60,7 +59,7 @@ public class RoomInMemberService {
         Member member = memberService.getBySessionId(memberId);
         memberService.checkStopped(member);
 
-        List<RoomInMember> memberList = roomInMemberRepository.findByAllMember(MemberEntity.fromModel(member));
+        List<RoomInMember> memberList = roomInMemberRepository.findByAllMember(member);
         if (memberList.isEmpty()) {return RoomListResponse.of(new ArrayList<>());}
 
         List<RoomInfoVO> roomWithoutMessageList = new ArrayList<>();
@@ -111,7 +110,7 @@ public class RoomInMemberService {
     }
 
     public RoomInfoExceptDateVO getUpdateRoom(Room room, Member member){
-        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, MemberEntity.fromModel(member)).orElseThrow(RoomInMemberNotFoundException::new);
+        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, member).orElseThrow(RoomInMemberNotFoundException::new);
         RoomInfoIncludeMessageVO rlr = roomInMemberRepository.findRoomInfoIncludeMessage(roomInMember.getRoom(), roomInMember.getMember())
             .orElseThrow(RoomInMemberNotFoundException::new);
         Integer unCheckedMessageCount = messageRepository.countUnCheckedMessage(roomInMember.getRoom(), roomInMember.getMember());
@@ -131,7 +130,7 @@ public class RoomInMemberService {
             Member member = memberService.getById(Long.parseLong(memberId));
             RoomInMember roomInMember = RoomInMember.builder()
                 .room(room)
-                .member(MemberEntity.fromModel(member))
+                .member(member)
                 .expired(NOT_EXIT)
                 .result(DISAPPROVE_OR_BEFORE_VOTE)
                 .build();
@@ -144,17 +143,17 @@ public class RoomInMemberService {
     public VoteResponse saveVoteResult(VoteRequest request){
         Room room = roomRepository.findById(request.getRoomId()).orElseThrow(RoomNotFoundException::new);
         Member member = memberService.getBySessionId(request.getMemberId());
-        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, MemberEntity.fromModel(member)).orElseThrow(RoomInMemberNotFoundException::new);
+        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, member).orElseThrow(RoomInMemberNotFoundException::new);
 
         roomInMember.saveResult(request.getResult());
-        RoomInMember anotherRoomInMember = roomInMemberRepository.findByRoomAndExceptMember(room, MemberEntity.fromModel(member)).orElseThrow(RoomInMemberNotFoundException::new);
+        RoomInMember anotherRoomInMember = roomInMemberRepository.findByRoomAndExceptMember(room, member).orElseThrow(RoomInMemberNotFoundException::new);
         return VoteResponse.of(anotherRoomInMember.getRoom().getId(), anotherRoomInMember.getMember().getId(), anotherRoomInMember.getResult());
     }
 
     public void checkRoomInMember(CheckRoomInMemberRequest request){
         Member member1 = memberService.getBySessionId(request.getMemberId1());
         Member member2 = memberService.getById(request.getMemberId2());
-        List<RoomInMember> getRoomInMembers = roomInMemberRepository.checkRoomInMember(MemberEntity.fromModel(member1), MemberEntity.fromModel(member2));
+        List<RoomInMember> getRoomInMembers = roomInMemberRepository.checkRoomInMember(member1, member2);
         for(RoomInMember rim : getRoomInMembers){
             if(rim.getExpired().equals(NOT_EXIT)){throw new RoomInMemberAlreadyExistedException();}
         }
@@ -163,9 +162,9 @@ public class RoomInMemberService {
     public UserInfoResponse getUserInfo(Long roomId, Long memberId){
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
         Member member = memberService.getBySessionId(memberId);
-        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, MemberEntity.fromModel(member)).orElseThrow(RoomInMemberNotFoundException::new);
+        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, member).orElseThrow(RoomInMemberNotFoundException::new);
 
-        UserInfoVO userInfoVO = roomInMemberRepository.getUserInfo(room, MemberEntity.fromModel(member));
+        UserInfoVO userInfoVO = roomInMemberRepository.getUserInfo(room, member);
         return UserInfoResponse.of(userInfoVO.getName(), userInfoVO.getUrlCode(), userInfoVO.getBio());
     }
 
@@ -173,7 +172,7 @@ public class RoomInMemberService {
     public void updateExpired(UpdateExpiredRequest request) {
         Room room = roomRepository.findById(request.getRoomId()).orElseThrow(RoomNotFoundException::new);
         Member member = memberService.getBySessionId(request.getMemberId());
-        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, MemberEntity.fromModel(member)).orElseThrow(RoomInMemberNotFoundException::new);
+        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, member).orElseThrow(RoomInMemberNotFoundException::new);
 
         roomInMember.updateExpired(request.getExpired());
     }
@@ -182,7 +181,7 @@ public class RoomInMemberService {
     public void updateEntryTime(String sRoomId, String sMemberId){
         Room room = roomRepository.findById(Long.parseLong(sRoomId)).orElseThrow(RoomNotFoundException::new);
         Member member = memberService.getById(Long.parseLong(sMemberId));
-        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, MemberEntity.fromModel(member)).orElseThrow(RoomInMemberNotFoundException::new);
+        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, member).orElseThrow(RoomInMemberNotFoundException::new);
 
         roomInMember.updateEntryTime(LocalDateTime.now());
     }
@@ -191,7 +190,7 @@ public class RoomInMemberService {
     public void updateExitTime(String sRoomId, String sMemberId){
         Room room = roomRepository.findById(Long.parseLong(sRoomId)).orElseThrow(RoomNotFoundException::new);
         Member member = memberService.getById(Long.parseLong(sMemberId));
-        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, MemberEntity.fromModel(member)).orElseThrow(RoomInMemberNotFoundException::new);
+        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, member).orElseThrow(RoomInMemberNotFoundException::new);
 
         roomInMember.updateExitTime(LocalDateTime.now());
     }
@@ -199,7 +198,7 @@ public class RoomInMemberService {
     public Boolean checkExpired(Long roomId, Long memberId){
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
         Member member = memberService.getById(memberId);
-        RoomInMember roomInMember = roomInMemberRepository.findOpponentByRoomAndMember(room, MemberEntity.fromModel(member)).orElseThrow(RoomInMemberNotFoundException::new);
+        RoomInMember roomInMember = roomInMemberRepository.findOpponentByRoomAndMember(room, member).orElseThrow(RoomInMemberNotFoundException::new);
 
         if(roomInMember.getExpired().equals(NOT_EXIT)){return true;}
         return false;
@@ -208,7 +207,7 @@ public class RoomInMemberService {
     public Boolean checkIsWithDrawal(Long roomId, Long memberId){
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
         Member member = memberService.getById(memberId);
-        RoomInMember rim = roomInMemberRepository.findOpponentByRoomAndMember(room, MemberEntity.fromModel(member)).orElseThrow(RoomInMemberNotFoundException::new);
+        RoomInMember rim = roomInMemberRepository.findOpponentByRoomAndMember(room, member).orElseThrow(RoomInMemberNotFoundException::new);
 
         Member opponentMember = memberService.getById(rim.getMember().getId());
         if (opponentMember != null) return true;

@@ -63,37 +63,36 @@ public class StatusService {
             return;
         }
         if (member.getStatus() == STEP_1_STOP_STATUS) {
-            memberService.updateStatus(member, STEP_1_COMPLETE_STATUS);
+            member.updateStatus(STEP_1_COMPLETE_STATUS);
             log.info("account stop end : id = {}, reportCount = 5", member.getId());
         }
         if (member.getStatus() == STEP_2_STOP_STATUS) {
-            memberService.updateStatus(member, STEP_2_COMPLETE_STATUS);
+            member.updateStatus(STEP_2_COMPLETE_STATUS);
             log.info("account stop end : id = {}, reportCount = 10", member.getId());
         }
-        memberService.updateStopStartDate(member, null);
-        memberService.updateStopEndDate(member, null);
+        member.expireStopDate();
     }
 
     private void executeStopPolicy(Member member, int reportCount) {
         LocalDateTime today = LocalDateTime.now();
-        memberService.updateStopStartDate(member, today);
+        member.updateStopStartDate(today);
         if (reportCount == STEP_1_REPORT_COUNT) {
-            memberService.updateStopEndDate(member, today.plusDays(STEP_1_DATE));
-            memberService.updateStatus(member, STEP_1_STOP_STATUS);
+            member.updateStopEndDate(today.plusDays(STEP_1_DATE));
+            member.updateStatus(STEP_1_STOP_STATUS);
             log.info("account stop start : id = {}, reportCount = 5", member.getId());
         }
         if (reportCount == STEP_2_REPORT_COUNT) {
-            memberService.updateStopEndDate(member, today.plusDays(STEP_2_DATE));
-            memberService.updateStatus(member, STEP_2_STOP_STATUS);
+            member.updateStopEndDate(today.plusDays(STEP_2_DATE));
+            member.updateStatus(STEP_2_STOP_STATUS);
             log.info("account stop start : id = {}, reportCount = 10", member.getId());
         }
     }
 
     private void executeOutPolicy(Member member) {
-        memberService.updateStatus(member, STEP_3_STOP_STATUS);
+        member.updateStatus(STEP_3_STOP_STATUS);
         imageUploader.delete(member.getUrlCode());
         locationRepository.deleteById(member.getId());
-        memberService.updateWithdrawal(member);
+        member.setWithdrawal();
         log.info("account delete : id = {}, reportCount = 15", member.getId());
     }
 }

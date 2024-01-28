@@ -66,7 +66,7 @@ public class MessageReportService {
         messageReportRepository.save(messageReport);
 
         Member member = memberService.getById(message.getMember().getId());
-        memberService.addReportCount(member, 1);
+        member.addReportCount();
     }
 
     public boolean check(List<MessageReport> messageReports, Long memberId1, Long memberId2){

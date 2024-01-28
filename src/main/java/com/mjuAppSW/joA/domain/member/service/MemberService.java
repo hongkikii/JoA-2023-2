@@ -4,7 +4,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_1_STO
 import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_2_STOP_STATUS;
 import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_3_STOP_STATUS;
 
-import com.mjuAppSW.joA.domain.college.MCollegeEntity;
+import com.mjuAppSW.joA.domain.college.MCollege;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.exception.MemberAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.PermanentBanException;
@@ -54,19 +54,19 @@ public class MemberService {
                 .orElseThrow(MemberNotFoundException::new);
     }
 
-    public Member getByUEmailAndCollege(String uEmail, MCollegeEntity mCollegeEntity) {
-        return memberRepository.findByuEmailAndcollege(uEmail, mCollegeEntity)
+    public Member getByUEmailAndCollege(String uEmail, MCollege mCollege) {
+        return memberRepository.findByuEmailAndcollege(uEmail, mCollege)
                 .orElseThrow(MemberNotFoundException::new);
     }
 
-    public void checkExist(String uEmail, MCollegeEntity college) {
+    public void checkExist(String uEmail, MCollege college) {
         memberRepository.findByuEmailAndcollege(uEmail, college)
                 .ifPresent(member -> {
                     throw new MemberAlreadyExistedException();});
     }
 
-    public void checkForbidden(String uEmail, MCollegeEntity mCollegeEntity) {
-        memberRepository.findForbidden(uEmail, mCollegeEntity)
+    public void checkForbidden(String uEmail, MCollege mCollege) {
+        memberRepository.findForbidden(uEmail, mCollege)
                 .ifPresent(forbiddenMember -> {
                     throw new PermanentBanException();});
     }
@@ -79,59 +79,5 @@ public class MemberService {
         if(member.getStatus() == STEP_3_STOP_STATUS) {
             throw new PermanentBanException();
         }
-    }
-
-    @Transactional
-    public void updateUrlCode(Member member, String urlCode) {
-        memberRepository.save(
-                Member.updateUrlCode(member, urlCode));
-    }
-
-    @Transactional
-    public void updateBio(Member member, String bio) {
-        memberRepository.save(
-                Member.updateBio(member, bio));
-    }
-
-    @Transactional
-    public void updatePassword(Member member, String password) {
-        memberRepository.save(
-                Member.updatePassword(member, password));
-    }
-
-    @Transactional
-    public void updateWithdrawal(Member member) {
-        memberRepository.save(
-                Member.withdrawal(member));
-    }
-
-    @Transactional
-    public void updateSessionId(Member member, Long sessionId) {
-        memberRepository.save(
-                Member.updateSessionId(member, sessionId));
-    }
-
-    @Transactional
-    public void updateStopStartDate(Member member, LocalDateTime date) {
-        memberRepository.save(
-                Member.updateStopStartDate(member, date));
-    }
-
-    @Transactional
-    public void updateStopEndDate(Member member, LocalDateTime date) {
-        memberRepository.save(
-                Member.updateStopEndDate(member, date));
-    }
-
-    @Transactional
-    public void updateStatus(Member member, int status) {
-        memberRepository.save(
-                Member.updateStatus(member, status));
-    }
-
-    @Transactional
-    public void addReportCount(Member member, int add) {
-        memberRepository.save(
-                Member.updateReportCount(member, add));
     }
 }

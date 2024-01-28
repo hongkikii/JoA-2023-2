@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.vote;
 
-import com.mjuAppSW.joA.domain.member.MemberEntity;
+import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.vote.voteCategory.VoteCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,7 +30,7 @@ public class Vote {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Take_id", nullable = false)
-    private MemberEntity member;
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Category_id", nullable = false)
@@ -45,7 +45,7 @@ public class Vote {
     private Boolean isValid;
 
     @Builder
-    public Vote(Long giveId, MemberEntity member, VoteCategory voteCategory, LocalDateTime date, String hint) {
+    public Vote(Long giveId, Member member, VoteCategory voteCategory, LocalDateTime date, String hint) {
         this.giveId = giveId;
         this.member = member;
         this.voteCategory = voteCategory;

@@ -4,7 +4,6 @@ import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.vote.exception.InvalidVoteExistedException;
 import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
-import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.vote.dto.request.VoteRequest;
 import com.mjuAppSW.joA.domain.vote.dto.response.VoteContent;
 import com.mjuAppSW.joA.domain.vote.dto.response.VoteListResponse;
@@ -68,7 +67,7 @@ public class VoteService {
     private void createVote(Member giveMember, Member takeMember, VoteCategory voteCategory, String hint) {
         voteRepository.save(Vote.builder()
                             .giveId(giveMember.getId())
-                            .member(MemberEntity.fromModel(takeMember))
+                            .member(takeMember)
                             .voteCategory(voteCategory)
                             .date(LocalDateTime.now())
                             .hint(hint)

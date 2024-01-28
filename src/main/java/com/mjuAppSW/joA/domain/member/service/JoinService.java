@@ -5,7 +5,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.Cache.AFTER_SAVE_LOGIN_
 import static com.mjuAppSW.joA.common.constant.Constants.Cache.ID;
 import static com.mjuAppSW.joA.common.constant.Constants.EMAIL_SPLIT;
 
-import com.mjuAppSW.joA.domain.college.MCollegeEntity;
+import com.mjuAppSW.joA.domain.college.MCollege;
 import com.mjuAppSW.joA.domain.college.MCollegeService;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.dto.request.JoinRequest;
@@ -84,10 +84,10 @@ public class JoinService {
         String eMail = cacheManager.getData(AFTER_EMAIL + sessionId);
         String[] splitEMail = eMail.split(EMAIL_SPLIT);
         String uEmail = splitEMail[0];
-        MCollegeEntity mCollegeEntity = mCollegeService.findByDomain(splitEMail[1]);
-        PCollege pCollege = pCollegeService.findById(mCollegeEntity.getId());
+        MCollege mCollege = mCollegeService.findByDomain(splitEMail[1]);
+        PCollege pCollege = pCollegeService.findById(mCollege.getId());
 
-        Member member = Member.create(request, uEmail, mCollegeEntity);
+        Member member = create(request, uEmail, mCollege);
         memberRepository.save(member);
         locationService.create(member, pCollege);
         emptyCache(sessionId);
@@ -97,6 +97,20 @@ public class JoinService {
         if(!cacheManager.compare(ID + sessionId, loginId)){
             throw new LoginIdNotAuthorizedException();
         }
+    }
+
+    private Member create(JoinRequest request, String uEmail, MCollege mCollege) {
+        String salt = passwordManager.createSalt();
+        String hashedPassword = passwordManager.createHashed(request.getPassword(), salt);
+        Member member = Member.builder().name(request.getName())
+                .loginId(request.getLoginId())
+                .password(hashedPassword)
+                .salt(salt)
+                .uEmail(uEmail)
+                .college(mCollege)
+                .sessionId(request.getId()).build();
+        memberRepository.save(member);
+        return member;
     }
 
     private void emptyCache(Long sessionId) {

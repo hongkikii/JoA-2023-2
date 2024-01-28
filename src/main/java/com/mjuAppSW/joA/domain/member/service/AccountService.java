@@ -3,7 +3,7 @@ package com.mjuAppSW.joA.domain.member.service;
 import static com.mjuAppSW.joA.common.constant.Constants.Mail.TEMPORARY_PASSWORD_IS;
 import static com.mjuAppSW.joA.common.constant.Constants.Mail.USER_ID_IS;
 
-import com.mjuAppSW.joA.domain.college.MCollegeEntity;
+import com.mjuAppSW.joA.domain.college.MCollege;
 import com.mjuAppSW.joA.domain.college.MCollegeService;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.dto.request.FindIdRequest;
@@ -39,7 +39,7 @@ public class AccountService {
         String hashedPassword = passwordManager.createHashed (
                 request.getPassword(), member.getSalt());
         passwordManager.compare(member.getPassword(), hashedPassword);
-        memberService.updateSessionId(member, sessionManager.create());
+        member.updateSessionId(sessionManager.create());
         return SessionIdResponse.of(member.getSessionId());
     }
 
@@ -47,11 +47,11 @@ public class AccountService {
     public void logout(Long sessionId) {
         Member member = memberService.getBySessionId(sessionId);
         locationService.updateIsContained(member.getId(), false);
-        memberService.updateSessionId(member, null);
+        member.expireSessionId();
     }
 
     public void findLoginId(FindIdRequest request) {
-        MCollegeEntity college = mCollegeService.findById(request.getCollegeId());
+        MCollege college = mCollegeService.findById(request.getCollegeId());
         Member member = memberService.getByUEmailAndCollege(request.getCollegeEmail(), college);
 
         String email = member.getUEmail() + college.getDomain();
@@ -68,7 +68,7 @@ public class AccountService {
 
         String email = member.getUEmail() + member.getCollege().getDomain();
         mailSender.send(email, TEMPORARY_PASSWORD_IS, randomPassword);
-        memberService.updatePassword(member, hashedRandomPassword);
+        member.updatePassword(hashedRandomPassword);
     }
 
     @Transactional
@@ -82,7 +82,7 @@ public class AccountService {
         passwordManager.validate(request.getNewPassword());
         String hashedNewPassword = passwordManager.createHashed(
                 request.getNewPassword(), member.getSalt());
-        memberService.updatePassword(member, hashedNewPassword);
+        member.updatePassword(hashedNewPassword);
     }
 
     @Transactional
@@ -91,6 +91,6 @@ public class AccountService {
 
         imageUploader.delete(member.getUrlCode());
         locationService.delete(member.getId());
-        memberService.updateWithdrawal(member);
+        member.setWithdrawal();
     }
 }

@@ -7,7 +7,6 @@ import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
 import com.mjuAppSW.joA.domain.heart.exception.HeartAlreadyExistedException;
 import com.mjuAppSW.joA.domain.heart.exception.RoomAlreadyExistedException;
-import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberRepository;
 import com.mjuAppSW.joA.geography.block.BlockRepository;
 import jakarta.transaction.Transactional;
@@ -65,8 +64,7 @@ public class HeartService {
     }
 
     private void checkExistedRoom(Member giveMember, Member takeMember) {
-        if (roomInMemberRepository.checkRoomInMember(MemberEntity.fromModel(giveMember),
-                MemberEntity.fromModel(takeMember)).size() != 0) {
+        if (roomInMemberRepository.checkRoomInMember(giveMember, takeMember).size() != 0) {
             throw new RoomAlreadyExistedException();
         }
     }

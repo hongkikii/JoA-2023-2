@@ -32,7 +32,7 @@ public class SessionService {
     public void update() {
         List<Member> members = memberRepository.findAll();
         for (Member member : members) {
-            memberService.updateSessionId(member, create());
+            member.updateSessionId(create());
         }
     }
 

@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.roomInMember;
 
-import com.mjuAppSW.joA.domain.member.MemberEntity;
+import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.room.Room;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -20,7 +20,7 @@ public class RoomInMember {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="Member_id", nullable = false)
-    private MemberEntity member;
+    private Member member;
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
@@ -42,7 +42,7 @@ public class RoomInMember {
     private LocalDateTime exitTime;
 
     @Builder
-    public RoomInMember(Room room, MemberEntity member, String expired, String result) {
+    public RoomInMember(Room room, Member member, String expired, String result) {
         this.room = room;
         this.member = member;
         this.expired = expired;

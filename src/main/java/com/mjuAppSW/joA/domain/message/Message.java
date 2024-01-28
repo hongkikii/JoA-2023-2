@@ -2,7 +2,7 @@ package com.mjuAppSW.joA.domain.message;
 
 import static com.mjuAppSW.joA.common.constant.Constants.Message.*;
 
-import com.mjuAppSW.joA.domain.member.MemberEntity;
+import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.room.Room;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -24,7 +24,7 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name="Member_id", nullable = false)
-    private MemberEntity member;
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name="Room_id", nullable = false)
@@ -41,7 +41,7 @@ public class Message {
     private String isChecked;
 
     @Builder
-    public Message(MemberEntity member, Room room, String content, LocalDateTime date, String isChecked) {
+    public Message(Member member, Room room, String content, LocalDateTime date, String isChecked) {
         this.member = member;
         this.room = room;
         this.content = content;

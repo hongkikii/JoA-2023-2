@@ -6,7 +6,6 @@ import static com.mjuAppSW.joA.common.constant.Constants.WebSocketHandler.*;
 import com.mjuAppSW.joA.common.websocket.exception.MemberSessionListNullException;
 import com.mjuAppSW.joA.common.websocket.exception.RoomSessionListNullException;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.MemberEntity;
 import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.message.MessageService;
 import com.mjuAppSW.joA.domain.report.message.MessageReport;
@@ -176,7 +175,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         Room room = roomRepository.findById(Long.parseLong(roomId)).orElseThrow(RoomNotFoundException::new);
         Member member = memberService.getById(Long.parseLong(memberId));
 
-        RoomInMember roomInMember = roomInMemberRepository.checkOpponentExpired(room, MemberEntity.fromModel(member), NOT_EXIT).orElseThrow(
+        RoomInMember roomInMember = roomInMemberRepository.checkOpponentExpired(room, member, NOT_EXIT).orElseThrow(
             RoomInMemberNotFoundException::new);
         List<WebSocketSession> memberSessionsList = memberSessions.get(String.valueOf(roomInMember.getMember().getId()));
 

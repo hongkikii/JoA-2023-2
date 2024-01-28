@@ -7,7 +7,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.Cache.BEFORE_EMAIL;
 import static com.mjuAppSW.joA.common.constant.Constants.Cache.CERTIFY_NUMBER;
 import static com.mjuAppSW.joA.common.constant.Constants.Mail.CERTIFY_NUMBER_IS;
 
-import com.mjuAppSW.joA.domain.college.MCollegeEntity;
+import com.mjuAppSW.joA.domain.college.MCollege;
 import com.mjuAppSW.joA.domain.college.MCollegeService;
 import com.mjuAppSW.joA.domain.member.dto.request.SendCertifyNumRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.VerifyCertifyNumRequest;
@@ -30,7 +30,7 @@ public class CertifyService { //FIXME
     private final MailSender mailSender;
 
     public SessionIdResponse send(SendCertifyNumRequest request) {
-        MCollegeEntity college = mCollegeService.findById(request.getCollegeId());
+        MCollege college = mCollegeService.findById(request.getCollegeId());
         String uEmail = request.getCollegeEmail();
 
         memberService.checkExist(uEmail, college);
