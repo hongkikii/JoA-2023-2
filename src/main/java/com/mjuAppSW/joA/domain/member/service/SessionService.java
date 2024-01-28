@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SessionService {
 
-    private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final CacheManagerImpl cacheManager;
 

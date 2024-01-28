@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class StatusService {
 
-    private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final LocationRepository locationRepository;
     private final ImageUploader imageUploader;
