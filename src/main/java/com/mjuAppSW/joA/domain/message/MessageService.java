@@ -3,7 +3,6 @@ package com.mjuAppSW.joA.domain.message;
 import com.mjuAppSW.joA.common.auth.MemberChecker;
 import com.mjuAppSW.joA.common.encryption.EncryptManager;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.MemberRepository;
 import com.mjuAppSW.joA.domain.message.dto.vo.MessageVO;
 import com.mjuAppSW.joA.domain.message.dto.response.MessageResponse;
 import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
@@ -32,14 +31,13 @@ import java.util.stream.Collectors;
 public class MessageService {
     private final MessageRepository messageRepository;
     private final RoomRepository roomRepository;
-    private final MemberRepository memberRepository;
     private final RoomInMemberRepository roomInMemberRepository;
     private final MemberChecker memberChecker;
     private final EncryptManager encryptManager;
 
     @Transactional
     public Long saveMessage(Long roomId, Long memberId, String content, String isChecked, LocalDateTime createdMessageDate) {
-        Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
+        Room room = findByRoomId(roomId);
         Member member = memberChecker.findById(memberId);
         String encryptedMessage = encryptManager.encrypt(content, room.getEncryptKey());
         if(encryptedMessage == null){
@@ -56,35 +54,9 @@ public class MessageService {
         return saveMessage.getId();
     }
 
-    public MessageResponse loadMessage(Long roomId, Long memberId) {
-        Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
-        Member member = memberChecker.findBySessionId(memberId);
-        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, member).orElseThrow(
-            RoomInMemberNotFoundException::new);
-
-        List<Message> messageList = messageRepository.findByRoom(room);
-        if(messageList.isEmpty()){ return MessageResponse.of(new ArrayList<>());}
-
-        List<MessageVO> messageVOList = messageList.stream()
-            .map(message -> makeMessageContent(message, member, room))
-            .map(MessageVO::new)
-            .collect(Collectors.toList());
-
-        return MessageResponse.of(messageVOList);
-    }
-
-    private String makeMessageContent(Message message, Member member, Room room) {
-        String decryptedMessage = encryptManager.decrypt(message.getContent(), room.getEncryptKey());
-        if(decryptedMessage == null){
-            throw new FailDecryptException();
-        }
-        String messageType = (message.getMember() == member) ? "R" : "L";
-        return messageType + " " + message.getId() + " " + message.getIsChecked() + " " + decryptedMessage;
-    }
-
     @Transactional
     public void updateIsChecked(String roomId, String memberId){
-        Room room = roomRepository.findById(Long.parseLong(roomId)).orElseThrow(RoomNotFoundException::new);
+        Room room = findByRoomId(Long.parseLong(roomId));
         Member member = memberChecker.findById(Long.parseLong(memberId));
 
         List<Message> getMessages = messageRepository.findMessage(room, member);
@@ -93,5 +65,40 @@ public class MessageService {
                 message.updateIsChecked();
             }
         }
+    }
+
+    public MessageResponse loadMessage(Long roomId, Long memberId) {
+        Room room = findByRoomId(roomId);
+        Member member = memberChecker.findBySessionId(memberId);
+        RoomInMember roomInMember = findByRoomAndMember(room, member);
+
+        List<Message> messageList = messageRepository.findByRoom(roomInMember.getRoom());
+        if(messageList.isEmpty()){ return MessageResponse.of(new ArrayList<>());}
+
+        List<MessageVO> messageVOList = messageList.stream()
+            .map(message -> getMessage(message, roomInMember.getMember(), roomInMember.getRoom()))
+            .map(MessageVO::new)
+            .collect(Collectors.toList());
+
+        return MessageResponse.of(messageVOList);
+    }
+
+    private String getMessage(Message message, Member member, Room room) {
+        String decryptedMessage = encryptManager.decrypt(message.getContent(), room.getEncryptKey());
+        if(decryptedMessage == null){
+            throw new FailDecryptException();
+        }
+        String messageType = (message.getMember() == member) ? "R" : "L";
+        return messageType + " " + message.getId() + " " + message.getIsChecked() + " " + decryptedMessage;
+    }
+
+    private Room findByRoomId(Long roomId){
+        return roomRepository.findById(roomId)
+            .orElseThrow(RoomNotFoundException::new);
+    }
+
+    private RoomInMember findByRoomAndMember(Room room, Member member){
+        return roomInMemberRepository.findByRoomAndMember(room, member)
+            .orElseThrow(RoomInMemberNotFoundException::new);
     }
 }
