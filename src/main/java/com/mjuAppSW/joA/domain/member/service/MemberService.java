@@ -49,10 +49,9 @@ public class MemberService {
                             .uEmail(uEmail)
                             .college(mCollege)
                             .sessionId(sessionId).build();
-        memberRepository.save(member);
         PCollege pCollege = pCollegeService.findById(mCollege.getId());
         locationService.create(member, pCollege);
-        return member;
+        return memberRepository.save(member);
     }
 
     public Member getBySessionId(Long sessionId) {
