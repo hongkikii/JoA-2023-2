@@ -20,11 +20,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoomInMemberRepository extends JpaRepository<RoomInMember, Long> {
 
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM RoomInMember rim WHERE rim.room = :room")
-    void deleteByRoom(@Param("room") Room room);
-
     @Query("SELECT rim FROM RoomInMember rim WHERE rim.room = :room AND rim.member = :member")
     Optional<RoomInMember> findByRoomAndMember(@Param("room") Room room, @Param("member") Member member);
 
@@ -33,9 +28,6 @@ public interface RoomInMemberRepository extends JpaRepository<RoomInMember, Long
 
     @Query("SELECT rim FROM RoomInMember rim WHERE rim.room = :room")
     List<RoomInMember> findByAllRoom(@Param("room") Room room);
-
-    @Query("SELECT rim From RoomInMember rim WHERE rim.room = :room AND NOT rim.member = :member")
-    Optional<RoomInMember> findByRoomAndExceptMember(@Param("room") Room room, @Param("member") Member member);
 
     @Query("SELECT rm FROM RoomInMember rm " +
             "WHERE rm.room.id IN (SELECT r.id FROM Room r " +
@@ -53,12 +45,9 @@ public interface RoomInMemberRepository extends JpaRepository<RoomInMember, Long
             "AND (mes.time IS NULL OR mes.time = (SELECT MAX(mes2.time) FROM Message mes2 WHERE mes2.member = :member AND mes2.room = :room))")
     Optional<RoomInfoIncludeMessageVO> findRoomInfoIncludeMessage(@Param("room") Room room, @Param("member") Member member);
 
-    @Query("SELECT rim.room AS room, rim.room.date AS date, m.name AS name, m.urlCode AS urlCode " +
-            "From RoomInMember rim " +
-            "LEFT JOIN Member m ON rim.member.id = m.id " +
-            "LEFT JOIN Room r ON rim.room.id = r.id " +
-            "WHERE rim.member = :member AND rim.room = :room ")
-    Optional<RoomInfoExceptMessageVO> findRoomInfoExceptMessage(@Param("room") Room room, @Param("member") Member member);
+    @Query("SELECT rim.room AS room, rim.room.date AS date, rim.member.name AS name, rim.member.urlCode AS urlCode " +
+        "From RoomInMember rim WHERE rim.member = :member AND rim.room = :room")
+    Optional<RoomInfoExceptMessageVO> findRoomInfoExceptMessageByRoomAndMember(@Param("room") Room room, @Param("member") Member member);
 
     @Query("SELECT rim FROM RoomInMember rim Where rim.room = :room")
     List<RoomInMember> findAllRoom(@Param("room") Room room);
@@ -69,9 +58,13 @@ public interface RoomInMemberRepository extends JpaRepository<RoomInMember, Long
     @Query("SELECT rim FROM RoomInMember rim Where rim.room = :room AND rim.member <> :member AND rim.expired = :expired")
     Optional<RoomInMember> checkOpponentExpired(@Param("room") Room room, @Param("member") Member member, @Param("expired") String expired);
 
-    @Query("SELECT rim.room.id AS roomId ,m.id AS memberId, m.name AS name, m.urlCode AS urlCode, m.bio AS bio " +
-            "From RoomInMember rim LEFT JOIN Member m ON rim.member.id = m.id " +
-            "WHERE rim.room = :room AND rim.member <> :member")
-    UserInfoVO getUserInfo(@Param("room") Room room, @Param("member") Member member);
+    @Query("SELECT rim.room.id AS roomId ,rim.member.id AS memberId, rim.member.name AS name, rim.member.urlCode AS urlCode, rim.member.bio AS bio " +
+            "FROM RoomInMember rim WHERE rim.room = :room AND rim.member <> :member")
+    Optional<UserInfoVO> findOpponentUserInfoByRoomAndMember(@Param("room") Room room, @Param("member") Member member);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM RoomInMember rim WHERE rim.room = :room")
+    void deleteByRoom(@Param("room") Room room);
 }
 

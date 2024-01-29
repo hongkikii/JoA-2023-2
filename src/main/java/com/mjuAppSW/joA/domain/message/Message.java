@@ -15,7 +15,6 @@ import java.util.Date;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @Table(name = "Message")
 public class Message {

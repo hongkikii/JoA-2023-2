@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Setter
 @Getter
 @NoArgsConstructor
 @Table(name="Room")

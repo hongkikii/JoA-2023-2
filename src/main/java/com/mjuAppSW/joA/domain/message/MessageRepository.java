@@ -26,7 +26,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     @Query("SELECT COUNT(m) FROM Message m WHERE m.room = :room AND m.member = :member AND m.isChecked = '1'")
     Integer countUnCheckedMessage(@Param("room") Room room, @Param("member") Member member);
 
-
     @Query("SELECT m.content AS content, m.time AS time FROM Message m WHERE m.room = :room " +
             "AND m.content IS NULL OR m.content IS NOT NULL " +
             "AND (m.time IS NULL OR m.time = (SELECT MAX(mes2.time) FROM Message mes2 WHERE mes2.room = :room))")
