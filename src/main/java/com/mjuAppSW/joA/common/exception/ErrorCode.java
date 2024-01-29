@@ -62,6 +62,7 @@ public enum ErrorCode {
     // RoomInMember
     RIM_NOT_FOUND(404, "RIM001", "채팅방을 찾을 수 없습니다."),
     RIM_ALREADY_EXISTED(409, "RIM002", "이미 두 사용자의 채팅방이 존재합니다."),
+    RIM_ALREADY_VOTE_RESULT(409, "RIM003", "이미 채팅방 연장에 대한 투표가 존재합니다."),
 
     // MessageReport
     MESSAGE_REPORT_ALREADY_EXISTED(409, "MR001", "이미 신고된 메시지가 존재합니다."),

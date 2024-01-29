@@ -133,7 +133,7 @@ public class SwaggerConfig {
 
         return GroupedOpenApi
                 .builder()
-                .group("방 API")
+                .group("채팅방 API")
                 .pathsToMatch(paths)
                 .build();
     }
@@ -144,7 +144,7 @@ public class SwaggerConfig {
 
         return GroupedOpenApi
                 .builder()
-                .group("채팅방 API")
+                .group("채팅방 사용자 API")
                 .pathsToMatch(paths)
                 .build();
     }
