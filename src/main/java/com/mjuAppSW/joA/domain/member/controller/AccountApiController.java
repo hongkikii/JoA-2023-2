@@ -2,8 +2,6 @@ package com.mjuAppSW.joA.domain.member.controller;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
 import com.mjuAppSW.joA.domain.member.service.AccountService;
-import com.mjuAppSW.joA.domain.member.dto.request.FindIdRequest;
-import com.mjuAppSW.joA.domain.member.dto.request.FindPasswordRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.LoginRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.TransPasswordRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
@@ -13,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -65,8 +65,8 @@ public class AccountApiController {
             @ApiResponse(responseCode = "404-2", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @GetMapping("/id/find")
-    public ResponseEntity<Void> findId(@RequestBody @Valid FindIdRequest request) {
-        accountService.findLoginId(request);
+    public ResponseEntity<Void> findId(@RequestParam @NotBlank String collegeEmail, @RequestParam @NotNull Long collegeId) {
+        accountService.findLoginId(collegeEmail, collegeId);
         return ResponseEntity.ok().build();
     }
 
@@ -76,8 +76,8 @@ public class AccountApiController {
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @GetMapping("/password/find")
-    public ResponseEntity<Void> findPassword(@RequestBody @Valid FindPasswordRequest request) {
-        accountService.findPassword(request);
+    public ResponseEntity<Void> findPassword(@RequestParam @NotBlank String loginId) {
+        accountService.findPassword(loginId);
         return ResponseEntity.ok().build();
     }
 

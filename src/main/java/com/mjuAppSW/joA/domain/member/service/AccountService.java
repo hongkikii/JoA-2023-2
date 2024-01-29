@@ -6,8 +6,6 @@ import static com.mjuAppSW.joA.common.constant.Constants.Mail.USER_ID_IS;
 import com.mjuAppSW.joA.domain.college.MCollege;
 import com.mjuAppSW.joA.domain.college.MCollegeService;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.dto.request.FindIdRequest;
-import com.mjuAppSW.joA.domain.member.dto.request.FindPasswordRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.LoginRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.TransPasswordRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
@@ -45,17 +43,17 @@ public class AccountService {
         member.expireSessionId();
     }
 
-    public void findLoginId(FindIdRequest request) {
-        MCollege college = mCollegeService.findById(request.getCollegeId());
-        Member member = memberService.getByUEmailAndCollege(request.getCollegeEmail(), college);
+    public void findLoginId(String collegeEmail, Long collegeId) {
+        MCollege college = mCollegeService.findById(collegeId);
+        Member member = memberService.getByUEmailAndCollege(collegeEmail, college);
 
         String email = member.getUEmail() + college.getDomain();
         mailSender.send(email, USER_ID_IS, member.getLoginId());
     }
 
     @Transactional
-    public void findPassword(FindPasswordRequest request) {
-        Member member = memberService.getByLoginId(request.getLoginId());
+    public void findPassword(String loginId) {
+        Member member = memberService.getByLoginId(loginId);
 
         String randomPassword = passwordManager.createRandom();
         String hashedRandomPassword = passwordManager.createHashed(

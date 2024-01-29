@@ -8,7 +8,15 @@ import com.mjuAppSW.joA.domain.member.dto.request.BioRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.MyPageResponse;
 import com.mjuAppSW.joA.domain.member.dto.request.PictureRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SettingPageResponse;
+import com.mjuAppSW.joA.domain.member.dto.response.UserInfoResponse;
 import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
+import com.mjuAppSW.joA.domain.member.vo.UserInfoVO;
+import com.mjuAppSW.joA.domain.room.Room;
+import com.mjuAppSW.joA.domain.room.RoomRepository;
+import com.mjuAppSW.joA.domain.room.exception.RoomNotFoundException;
+import com.mjuAppSW.joA.domain.roomInMember.RoomInMember;
+import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberRepository;
+import com.mjuAppSW.joA.domain.roomInMember.exception.RoomInMemberNotFoundException;
 import com.mjuAppSW.joA.domain.vote.VoteRepository;
 import com.mjuAppSW.joA.domain.member.dto.response.VotePageResponse;
 import com.mjuAppSW.joA.domain.member.dto.response.LocationPageResponse;
@@ -26,6 +34,8 @@ public class InfoService {
     private final ImageUploader imageUploader;
     private final HeartRepository heartRepository;
     private final VoteRepository voteRepository;
+    private final RoomRepository roomRepository;
+    private final RoomInMemberRepository roomInMemberRepository;
 
     public SettingPageResponse getSettingPage(Long sessionId) {
         Member member = memberService.getNormalBySessionId(sessionId);
@@ -40,6 +50,16 @@ public class InfoService {
                 member.getId(), PageRequest.of(0, 3));
 
         return MyPageResponse.of(member, todayHeart, totalHeart, voteTop3);
+    }
+
+    public UserInfoResponse getUserInfo(Long roomId, Long memberId){
+        Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
+        Member member = memberService.getBySessionId(memberId);
+        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, member).orElseThrow(
+                RoomInMemberNotFoundException::new);
+
+        UserInfoVO userInfoVO = roomInMemberRepository.getUserInfo(roomInMember.getRoom(), roomInMember.getMember());
+        return UserInfoResponse.of(userInfoVO.getName(), userInfoVO.getUrlCode(), userInfoVO.getBio());
     }
 
     public VotePageResponse getVotePage(Long sessionId) {

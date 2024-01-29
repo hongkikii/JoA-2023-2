@@ -15,13 +15,11 @@ import com.mjuAppSW.joA.domain.roomInMember.dto.request.CheckRoomInMemberRequest
 import com.mjuAppSW.joA.domain.roomInMember.dto.request.UpdateExpiredRequest;
 import com.mjuAppSW.joA.domain.roomInMember.dto.request.VoteRequest;
 import com.mjuAppSW.joA.domain.roomInMember.dto.response.RoomListResponse;
-import com.mjuAppSW.joA.domain.roomInMember.dto.response.UserInfoResponse;
 import com.mjuAppSW.joA.domain.roomInMember.dto.response.VoteResponse;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoExceptMessageVO;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoIncludeMessageVO;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoVO;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoExceptDateVO;
-import com.mjuAppSW.joA.domain.roomInMember.vo.UserInfoVO;
 import com.mjuAppSW.joA.domain.roomInMember.exception.RoomInMemberAlreadyExistedException;
 import com.mjuAppSW.joA.domain.roomInMember.exception.RoomInMemberNotFoundException;
 
@@ -157,15 +155,6 @@ public class RoomInMemberService {
         for(RoomInMember rim : getRoomInMembers){
             if(rim.getExpired().equals(NOT_EXIT)){throw new RoomInMemberAlreadyExistedException();}
         }
-    }
-
-    public UserInfoResponse getUserInfo(Long roomId, Long memberId){
-        Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
-        Member member = memberService.getBySessionId(memberId);
-        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, member).orElseThrow(RoomInMemberNotFoundException::new);
-
-        UserInfoVO userInfoVO = roomInMemberRepository.getUserInfo(room, member);
-        return UserInfoResponse.of(userInfoVO.getName(), userInfoVO.getUrlCode(), userInfoVO.getBio());
     }
 
     @Transactional

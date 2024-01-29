@@ -3,6 +3,8 @@ package com.mjuAppSW.joA.domain.report.message;
 import java.time.LocalDateTime;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,8 +43,8 @@ public class MessageReportApiController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "신고 메시지 삭제", description = "신고 메시지 삭제 API")
-    @PostMapping("/{messageReportId}/message/admin-delete")
+    @Operation(summary = "신고 메시지 삭제, 프론트에 적용되는 코드 X", description = "신고 메시지 삭제 API, 프론트에 적용되는 코드X")
+    @DeleteMapping("/{messageReportId}/message")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "상태 코드 응답"),
         @ApiResponse(responseCode = "404", description = "MR002: 신고된 메시지를 찾을 수 없습니다."),
@@ -59,7 +61,7 @@ public class MessageReportApiController {
         @ApiResponse(responseCode = "409", description = "MR003: 상대방을 신고한 메시지가 존재합니다."),
         @ApiResponse(responseCode = "409", description = "MR004: 상대방에게 신고된 메시지가 존재합니다."),
     })
-    @PostMapping("/message/check")
+    @GetMapping("/message")
     public ResponseEntity<Void> checkMessageReport(@RequestBody @Valid CheckMessageReportRequest request){
         messageReportService.checkMessageReport(request);
         return ResponseEntity.ok().build();

@@ -1,6 +1,7 @@
 package com.mjuAppSW.joA.domain.member.controller;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
+import com.mjuAppSW.joA.domain.member.dto.response.UserInfoResponse;
 import com.mjuAppSW.joA.domain.member.service.InfoService;
 import com.mjuAppSW.joA.domain.member.dto.request.BioRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.MyPageResponse;
@@ -8,6 +9,7 @@ import com.mjuAppSW.joA.domain.member.dto.request.PictureRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SettingPageResponse;
 import com.mjuAppSW.joA.domain.member.dto.response.VotePageResponse;
 import com.mjuAppSW.joA.domain.member.dto.response.LocationPageResponse;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -34,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/joa/member-profiles")
 public class InfoApiController {
 
-    private final InfoService memberProfileService;
+    private final InfoService infoService;
 
     @Operation(summary = "설정 페이지 정보 조회", description = "설정 페이지에서 필요한 정보 조회 API")
     @ApiResponses(value = {
@@ -46,7 +48,7 @@ public class InfoApiController {
     @GetMapping("/{id}/setting-page")
     public ResponseEntity<SuccessResponse<SettingPageResponse>> getSettingPage(
             @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH) @PathVariable("id") Long sessionId) {
-        return SuccessResponse.of(memberProfileService.getSettingPage(sessionId))
+        return SuccessResponse.of(infoService.getSettingPage(sessionId))
                 .asHttp(HttpStatus.OK);
     }
 
@@ -60,7 +62,7 @@ public class InfoApiController {
     @GetMapping("/{id}/my-page")
     public ResponseEntity<SuccessResponse<MyPageResponse>> getMyPage(
             @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH) @PathVariable("id") Long sessionId) {
-        return SuccessResponse.of(memberProfileService.getMyPage(sessionId))
+        return SuccessResponse.of(infoService.getMyPage(sessionId))
                 .asHttp(HttpStatus.OK);
     }
 
@@ -75,7 +77,7 @@ public class InfoApiController {
     public ResponseEntity<SuccessResponse<VotePageResponse>> getVotePage(
             @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH)
             @PathVariable("id") Long sessionId) {
-        return SuccessResponse.of(memberProfileService.getVotePage(sessionId))
+        return SuccessResponse.of(infoService.getVotePage(sessionId))
                 .asHttp(HttpStatus.OK);
     }
 
@@ -90,7 +92,7 @@ public class InfoApiController {
     public ResponseEntity<SuccessResponse<LocationPageResponse>> getLocationPage(
             @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH)
             @PathVariable("id") @NotNull Long sessionId) {
-        return SuccessResponse.of(memberProfileService.getLocationPage(sessionId))
+        return SuccessResponse.of(infoService.getLocationPage(sessionId))
                 .asHttp(HttpStatus.OK);
     }
 
@@ -104,7 +106,7 @@ public class InfoApiController {
     })
     @PatchMapping("/bio")
     public ResponseEntity<Void> transBio(@RequestBody @Valid BioRequest request) {
-        memberProfileService.transBio(request);
+        infoService.transBio(request);
         return ResponseEntity.ok().build();
     }
 
@@ -118,7 +120,7 @@ public class InfoApiController {
     @PatchMapping("/{id}/bio")
     public ResponseEntity<Void> deleteBio(
             @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH) @PathVariable("id") Long sessionId) {
-        memberProfileService.deleteBio(sessionId);
+        infoService.deleteBio(sessionId);
         return ResponseEntity.ok().build();
     }
 
@@ -132,7 +134,7 @@ public class InfoApiController {
     })
     @PatchMapping("/picture")
     public ResponseEntity<Void> transPicture(@RequestBody @Valid PictureRequest request) {
-        memberProfileService.transPicture(request);
+        infoService.transPicture(request);
         return ResponseEntity.ok().build();
     }
 
@@ -147,7 +149,20 @@ public class InfoApiController {
     @PatchMapping("/{id}/picture")
     public ResponseEntity<Void> deletePicture(
             @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH) @PathVariable("id") Long sessionId) {
-        memberProfileService.deletePicture(sessionId);
+        infoService.deletePicture(sessionId);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "채팅방 입장시 상대방 정보 조회", description = "상대방 정보 조회 API")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "상대방 정보 반환"),
+        @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다.")
+    })
+    @GetMapping("/{roomId}/{memberId}/userinfo")
+    public ResponseEntity<SuccessResponse<UserInfoResponse>> getUserInfo(@PathVariable("roomId") Long roomId, @PathVariable("memberId") Long memberId){
+        return SuccessResponse.of(infoService.getUserInfo(roomId, memberId))
+            .asHttp(HttpStatus.OK);
     }
 }
