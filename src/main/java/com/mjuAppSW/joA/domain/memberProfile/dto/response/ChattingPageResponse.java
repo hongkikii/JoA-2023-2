@@ -10,13 +10,13 @@ import lombok.RequiredArgsConstructor;
 @Schema(description = "채팅방 입장시 상대방 정보 조회 Response")
 @Builder(access = AccessLevel.PRIVATE)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserInfoResponse {
+public class ChattingPageResponse {
 	private final String name;
 	private final String urlCode;
 	private final String bio;
 
-	public static UserInfoResponse of(String name, String urlCode, String bio) {
-		return UserInfoResponse.builder()
+	public static ChattingPageResponse of(String name, String urlCode, String bio) {
+		return ChattingPageResponse.builder()
 			.name(name)
 			.urlCode(urlCode)
 			.bio(bio)

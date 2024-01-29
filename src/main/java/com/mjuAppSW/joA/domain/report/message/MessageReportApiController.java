@@ -4,14 +4,12 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mjuAppSW.joA.domain.report.message.dto.request.CheckMessageReportRequest;
 import com.mjuAppSW.joA.domain.report.message.dto.request.ReportRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,19 +49,6 @@ public class MessageReportApiController {
     })
     public ResponseEntity<Void> deleteMessageReportAdmin(@PathVariable("messageReportId") Long messageReportId){
         messageReportService.deleteMessageReportAdmin(messageReportId);
-        return ResponseEntity.ok().build();
-    }
-
-    @Operation(summary = "채팅방 생성 전 신고된 메시지 확인", description = "채팅방 생성 전 신고된 메시지가 존재하는 사용자 조회 API")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "신고된 메시지가 없습니다."),
-        @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
-        @ApiResponse(responseCode = "409", description = "MR003: 상대방을 신고한 메시지가 존재합니다."),
-        @ApiResponse(responseCode = "409", description = "MR004: 상대방에게 신고된 메시지가 존재합니다."),
-    })
-    @GetMapping("/message")
-    public ResponseEntity<Void> checkMessageReport(@RequestBody @Valid CheckMessageReportRequest request){
-        messageReportService.checkMessageReport(request);
         return ResponseEntity.ok().build();
     }
 }

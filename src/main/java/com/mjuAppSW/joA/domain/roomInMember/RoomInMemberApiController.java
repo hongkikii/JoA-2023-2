@@ -1,11 +1,9 @@
 package com.mjuAppSW.joA.domain.roomInMember;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
-import com.mjuAppSW.joA.domain.roomInMember.dto.request.CheckRoomInMemberRequest;
 import com.mjuAppSW.joA.domain.roomInMember.dto.request.UpdateExpiredRequest;
 import com.mjuAppSW.joA.domain.roomInMember.dto.request.VoteRequest;
 import com.mjuAppSW.joA.domain.roomInMember.dto.response.RoomListResponse;
-import com.mjuAppSW.joA.domain.roomInMember.dto.response.UserInfoResponse;
 import com.mjuAppSW.joA.domain.roomInMember.dto.response.VoteResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +28,7 @@ public class RoomInMemberApiController {
         @ApiResponse(responseCode = "200", description = "채팅방 목록 정보 반환"),
         @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
         @ApiResponse(responseCode = "403", description = "M004: 정지된 계정입니다."),
+        @ApiResponse(responseCode = "403", description = "M014: 영구 정지된 계정입니다."),
         @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다."),
         @ApiResponse(responseCode = "500", description = "MG003: 메시지 복호화에 실패했습니다."),
     })
@@ -44,7 +43,8 @@ public class RoomInMemberApiController {
         @ApiResponse(responseCode = "200", description = "채팅방 연장 투표 저장 및 상대방 투표 유무 반환"),
         @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
         @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
-        @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다.")
+        @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "409", description = "RIM003: 이미 채팅방 연장에 대한 투표가 존재합니다."),
     })
     @PostMapping("/result")
     public ResponseEntity<SuccessResponse<VoteResponse>> saveVoteResult(@RequestBody @Valid VoteRequest request){
@@ -62,18 +62,6 @@ public class RoomInMemberApiController {
     @PatchMapping("/out")
     public ResponseEntity<Void> updateExpired(@RequestBody @Valid UpdateExpiredRequest request){
         roomInMemberService.updateExpired(request);
-        return ResponseEntity.ok().build();
-    }
-
-    @Operation(summary = "채팅방 생성 전 채팅방 유무 확인", description = "채팅 방 생성 전 이미 두 사용자의 채팅방이 존재하는지 확인 API")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "상태코드 반환"),
-        @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
-        @ApiResponse(responseCode = "400", description = "RIM002: 이미 두 사용자의 채팅방이 존재합니다.")
-    })
-    @GetMapping("/existence")
-    public ResponseEntity<Void> checkRoomInMember(@RequestBody @Valid CheckRoomInMemberRequest request){
-        roomInMemberService.checkRoomInMember(request);
         return ResponseEntity.ok().build();
     }
 }
