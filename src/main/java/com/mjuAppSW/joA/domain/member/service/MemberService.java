@@ -38,7 +38,7 @@ public class MemberService {
     private final PasswordManager passwordManager;
 
     @Transactional
-    public Member create(Long sessionId, String name, String loginId,
+    public void create(Long sessionId, String name, String loginId,
                          String password, String uEmail, MCollege mCollege) {
         passwordManager.validate(password);
         String salt = passwordManager.createSalt();
@@ -51,10 +51,10 @@ public class MemberService {
                             .uEmail(uEmail)
                             .college(mCollege)
                             .sessionId(sessionId).build();
+        memberRepository.save(member);
         PCollege pCollege = pCollegeService.findById(mCollege.getId());
         Location location = new Location(member.getId(), pCollege);
         locationRepository.save(location);
-        return memberRepository.save(member);
     }
 
     public Member getBySessionId(Long sessionId) {
