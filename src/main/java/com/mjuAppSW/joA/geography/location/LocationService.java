@@ -35,12 +35,6 @@ public class LocationService {
     private final MemberService memberService;
 
     @Transactional
-    public void create(Member member, PCollege pCollege) {
-        Location joinLocation = new Location(member.getId(), pCollege);
-        locationRepository.save(joinLocation);
-    }
-
-    @Transactional
     public UpdateResponse update(UpdateRequest request) {
         Member member = memberService.getNormalBySessionId(request.getId());
         Location oldLocation = findByMemberId(member.getId());

@@ -16,6 +16,8 @@ import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository
 import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.geography.college.PCollege;
 import com.mjuAppSW.joA.geography.college.PCollegeService;
+import com.mjuAppSW.joA.geography.location.Location;
+import com.mjuAppSW.joA.geography.location.LocationRepository;
 import com.mjuAppSW.joA.geography.location.LocationService;
 import com.mjuAppSW.joA.geography.location.exception.AccessStoppedException;
 import jakarta.transaction.Transactional;
@@ -31,7 +33,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PCollegeService pCollegeService;
-    private final LocationService locationService;
+    private final LocationRepository locationRepository;
     private final ImageUploader imageUploader;
     private final PasswordManager passwordManager;
 
@@ -50,7 +52,8 @@ public class MemberService {
                             .college(mCollege)
                             .sessionId(sessionId).build();
         PCollege pCollege = pCollegeService.findById(mCollege.getId());
-        locationService.create(member, pCollege);
+        Location location = new Location(member.getId(), pCollege);
+        locationRepository.save(location);
         return memberRepository.save(member);
     }
 
@@ -119,7 +122,7 @@ public class MemberService {
 
     public void delete(Member member) {
         imageUploader.delete(member.getUrlCode());
-        locationService.delete(member.getId());
+        locationRepository.deleteById(member.getId());
         member.setWithdrawal();
     }
 }
