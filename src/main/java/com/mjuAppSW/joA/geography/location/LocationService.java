@@ -35,8 +35,8 @@ public class LocationService {
     private final MemberService memberService;
 
     @Transactional
-    public void create(Member joinMember, PCollege pCollege) {
-        Location joinLocation = new Location(joinMember.getId(), pCollege);
+    public void create(Member member, PCollege pCollege) {
+        Location joinLocation = new Location(member.getId(), pCollege);
         locationRepository.save(joinLocation);
     }
 
