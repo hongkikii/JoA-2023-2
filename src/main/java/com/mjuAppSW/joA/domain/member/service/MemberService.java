@@ -5,7 +5,6 @@ import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_2_STO
 import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_3_STOP_STATUS;
 
 import com.mjuAppSW.joA.domain.college.MCollege;
-import com.mjuAppSW.joA.domain.college.MCollegeRepository;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.exception.LoginIdAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.MemberAlreadyExistedException;
@@ -18,17 +17,15 @@ import com.mjuAppSW.joA.geography.college.PCollege;
 import com.mjuAppSW.joA.geography.college.PCollegeService;
 import com.mjuAppSW.joA.geography.location.Location;
 import com.mjuAppSW.joA.geography.location.LocationRepository;
-import com.mjuAppSW.joA.geography.location.LocationService;
 import com.mjuAppSW.joA.geography.location.exception.AccessStoppedException;
 import jakarta.transaction.Transactional;
-import java.time.LocalDateTime;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Builder
 @RequiredArgsConstructor
-@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -65,7 +62,7 @@ public class MemberService {
     public Member getNormalBySessionId(Long sessionId) {
         return memberRepository.findBysessionId(sessionId)
                 .filter(member -> {
-                    if (member.getStatus() == STEP_1_STOP_STATUS
+                    if (member.getStatus().equals(STEP_1_STOP_STATUS)
                         || member.getStatus() == STEP_2_STOP_STATUS) {
                         throw new AccessStoppedException();
                     }
