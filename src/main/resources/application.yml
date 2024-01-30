@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: prod
+
+  datasource:
+    primary:
+      hibernate:
+        hbm2ddl:
+          auto: validate
+    secondary:
+      hibernate:
+        hbm2ddl:
+          auto: validate
