@@ -1,6 +1,7 @@
 package com.mjuAppSW.joA.geography.college;
 
 import com.mjuAppSW.joA.geography.college.dto.PolygonRequest;
+import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
@@ -32,4 +33,10 @@ public class PCollegeService {
         };
         return geometryFactory.createPolygon(coordinates);
     }
+
+    public PCollege findById(Long collegeId) {
+        return pCollegeRepository.findById(collegeId)
+                .orElseThrow(CollegeNotFoundException::new);
+    }
+
 }

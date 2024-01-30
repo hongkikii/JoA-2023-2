@@ -1,12 +1,12 @@
 package com.mjuAppSW.joA.domain.heart;
 
-import com.mjuAppSW.joA.common.auth.MemberChecker;
 import com.mjuAppSW.joA.domain.heart.dto.HeartRequest;
 import com.mjuAppSW.joA.domain.heart.dto.HeartResponse;
+import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
 import com.mjuAppSW.joA.domain.heart.exception.HeartAlreadyExistedException;
 import com.mjuAppSW.joA.domain.heart.exception.RoomAlreadyExistedException;
-import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberRepository;
 import com.mjuAppSW.joA.geography.block.BlockRepository;
 import jakarta.transaction.Transactional;
@@ -23,14 +23,14 @@ public class HeartService {
     private final HeartRepository heartRepository;
     private final RoomInMemberRepository roomInMemberRepository;
     private final BlockRepository blockRepository;
-    private final MemberChecker memberChecker;
+    private final MemberService memberService;
 
     @Transactional
     public HeartResponse sendHeart(HeartRequest request) {
-        Member giveMember = memberChecker.findFilterBySessionId(request.getGiveId());
+        Member giveMember = memberService.getNormalBySessionId(request.getGiveId());
         Long giveMemberId = giveMember.getId();
         Long takeMemberId = request.getTakeId();
-        Member takeMember = memberChecker.findById(takeMemberId);
+        Member takeMember = memberService.getById(takeMemberId);
 
         checkBlock(giveMemberId, takeMemberId);
         checkEqualHeart(giveMemberId, takeMemberId);

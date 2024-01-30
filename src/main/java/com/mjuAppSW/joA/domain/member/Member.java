@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -84,48 +83,58 @@ public class Member {
         this.status = ZERO;
     }
 
-    public void changeUrlCode(String urlCode) {
-        this.urlCode = urlCode;
-    }
-
-    public void changeBio(String bio) {
-        this.bio = bio;
-    }
-
-    public void changePassword(String password) {
-        this.password = password;
-    }
-
-    public void changeWithdrawal(boolean withdrawal) {
-        this.isWithdrawal = withdrawal;
+    public void updateSessionId(Long sessionId) {
+        this.sessionId = sessionId;
     }
 
     public void expireSessionId() {
         this.sessionId = null;
     }
 
-    public void makeSessionId(Long sessionId) {
-        this.sessionId = sessionId;
+    public void updatePassword(String password) {
+        this.password = password;
     }
 
-    public void changeStopStartDate(LocalDateTime date) {
-        this.stopStartDate = date;
+    public void updateBio(String bio) {
+        this.bio = bio;
     }
 
-    public void changeStopEndDate(LocalDateTime date) {
-        this.stopEndDate = date;
+    public void deleteBio() {
+        this.bio = EMPTY_STRING;
     }
 
-    public void changeStatus(int status) {
-        this.status = status;
+    public void updateUrlCode(String urlCode) {
+        this.urlCode = urlCode;
+    }
+
+    public void deleteUrlCode() {
+        this.urlCode = EMPTY_STRING;
     }
 
     public void addReportCount() {
         this.reportCount++;
     }
 
-    public void deleteStopDate() {
+    public void updateStatus(int status) {
+        this.status = status;
+    }
+
+    public void updateStopStartDate(LocalDateTime stopStartDate) {
+        this.stopStartDate = stopStartDate;
+    }
+
+    public void updateStopEndDate(LocalDateTime stopEndDate) {
+        this.stopEndDate = stopEndDate;
+    }
+
+    public void expireStopDate() {
         this.stopStartDate = null;
         this.stopEndDate = null;
+    }
+
+    public void setWithdrawal() {
+        expireSessionId();
+        deleteUrlCode();
+        this.isWithdrawal = true;
     }
 }

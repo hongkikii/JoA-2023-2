@@ -13,7 +13,7 @@ public class Constants {
         public static Integer AFTER_SAVE_LOGIN_ID_TIME = 30;
     }
 
-    public static class MAIL {
+    public static class Mail {
         public static String USER_ID_IS = "id";
         public static String TEMPORARY_PASSWORD_IS = "임시 비밀번호";
         public static String CERTIFY_NUMBER_IS = "인증번호";
@@ -67,6 +67,19 @@ public class Constants {
         public static String ALARM_OVER_ONE_DAY = "방 유효시간이 24시간을 초과하였습니다.";
         public static String ALARM_OVER_SEVEN_DAY = "방 유효시간이 7일을 초과하였습니다.";
         public static Integer MAX_CAPACITY_IN_ROOM = 2;
+    }
+
+    public static class MemberStatus {
+        public static Integer STEP_1_STOP_STATUS = 1;
+        public static Integer STEP_2_STOP_STATUS = 2;
+        public static Integer STEP_3_STOP_STATUS = 3;
+        public static Integer STEP_1_COMPLETE_STATUS = 11;
+        public static Integer STEP_2_COMPLETE_STATUS = 22;
+        public static Integer STEP_1_REPORT_COUNT = 5;
+        public static Integer STEP_2_REPORT_COUNT = 10;
+        public static Integer STEP_3_REPORT_COUNT = 15;
+        public static Integer STEP_1_DATE = 1;
+        public static Integer STEP_2_DATE = 7;
     }
 
     public static Integer ZERO = 0;

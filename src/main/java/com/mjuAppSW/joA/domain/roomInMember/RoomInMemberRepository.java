@@ -1,7 +1,7 @@
 package com.mjuAppSW.joA.domain.roomInMember;
 
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.memberProfile.vo.UserInfoVO;
+import com.mjuAppSW.joA.domain.member.vo.UserInfoVO;
 import com.mjuAppSW.joA.domain.room.Room;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoExceptMessageVO;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoIncludeMessageVO;

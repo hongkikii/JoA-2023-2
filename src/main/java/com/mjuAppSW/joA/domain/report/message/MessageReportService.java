@@ -2,6 +2,8 @@ package com.mjuAppSW.joA.domain.report.message;
 
 import static com.mjuAppSW.joA.common.constant.Constants.MessageReport.*;
 
+import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.service.MemberService;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,8 +14,6 @@ import java.util.Set;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.mjuAppSW.joA.common.auth.MemberChecker;
-import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.message.Message;
 import com.mjuAppSW.joA.domain.message.MessageRepository;
 import com.mjuAppSW.joA.domain.message.exception.MessageNotFoundException;
@@ -43,7 +43,7 @@ public class MessageReportService {
     private final MessageRepository messageRepository;
     private final ReportCategoryRepository reportCategoryRepository;
     private final RoomInMemberRepository roomInMemberRepository;
-    private final MemberChecker memberChecker;
+    private final MemberService memberService;
 
     @Transactional
     public void messageReport(ReportRequest request, LocalDateTime messageReportDate){
@@ -65,7 +65,7 @@ public class MessageReportService {
 
         messageReportRepository.save(messageReport);
 
-        Member member = memberChecker.findById(message.getMember().getId());
+        Member member = memberService.getById(message.getMember().getId());
         member.addReportCount();
     }
 
@@ -90,8 +90,8 @@ public class MessageReportService {
         return false;
     }
     public void checkMessageReport(CheckMessageReportRequest request){
-        Member member1 = memberChecker.findBySessionId(request.getMemberId1());
-        Member member2 = memberChecker.findById(request.getMemberId2());
+        Member member1 = memberService.getBySessionId(request.getMemberId1());
+        Member member2 = memberService.getById(request.getMemberId2());
 
         List<MessageReport> myMessageReport = messageReportRepository.findByMemberId(member1.getId());
         List<MessageReport> opponentMessageReport = messageReportRepository.findByMemberId(member2.getId());
