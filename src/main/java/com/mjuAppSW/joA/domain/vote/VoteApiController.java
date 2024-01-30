@@ -31,7 +31,7 @@ public class VoteApiController {
 
     @Operation(summary = "투표 전송", description = "투표 전송 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "상태 코드 반환"),
+            @ApiResponse(responseCode = "204", description = "상태 코드 반환"),
             @ApiResponse(responseCode = "404-1", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
@@ -43,7 +43,7 @@ public class VoteApiController {
     @PostMapping
     public ResponseEntity<Void> send(@RequestBody @Valid VoteRequest request) {
         voteService.send(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "받은 투표 목록 조회", description = "받은 투표 목록 조회 API")

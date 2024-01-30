@@ -27,7 +27,7 @@ public class JoinApiController {
 
     @Operation(summary = "아이디 중복 검증", description = "회원가입 시 중복 아이디가 존재하는지 확인하는 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "400-1", description = "M010: 올바른 아이디 형식이 아닙니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "400-2", description = "M008: 이메일 인증이 완료되지 않았습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "409", description = "M011: 이미 사용 중인 아이디입니다.", content = @Content(schema = @Schema(hidden = true))),
@@ -36,12 +36,12 @@ public class JoinApiController {
     @PostMapping("/id/verify")
     public ResponseEntity<Void> verifyId(@RequestBody @Valid VerifyIdRequest request) {
         joinService.verifyLoginId(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "회원 가입", description = "회원 가입 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "400-1", description = "M012: 올바른 비밀번호 형식이 아닙니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404-1", description = "M007: 세션 id가 유효하지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "400-2", description = "M013: 아이디 중복 확인이 완료되지 않았습니다.", content = @Content(schema = @Schema(hidden = true))),
@@ -51,6 +51,6 @@ public class JoinApiController {
     @PostMapping
     public ResponseEntity<Void> join(@RequestBody @Valid JoinRequest request) {
         joinService.join(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

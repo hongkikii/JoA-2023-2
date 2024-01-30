@@ -44,13 +44,13 @@ public class CertifyApiController {
 
     @Operation(summary = "인증 번호 검증", description = "회원가입 시 학교 웹메일을 확인하기 위해 전송된 인증번호를 확인하는 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", description = "M007: 세션 id가 유효하지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "400", description = "M009: 인증번호가 올바르지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PostMapping("/certify-num/verify")
     public ResponseEntity<Void> verifyCertifyNum(@RequestBody @Valid VerifyCertifyNumRequest request) {
         certifyService.verify(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
