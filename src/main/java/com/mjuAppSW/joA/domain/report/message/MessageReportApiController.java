@@ -28,7 +28,7 @@ public class MessageReportApiController {
     private final MessageReportService messageReportService;
     @Operation(summary = "메시지 신고", description = "메시지 신고 API")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "상태 코드 응답"),
+        @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환"),
         @ApiResponse(responseCode = "404", description = "RC001: 신고 카테고리가 존재하지 않습니다."),
         @ApiResponse(responseCode = "404", description = "MG001: 메시지를 찾을 수 없습니다."),
         @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
@@ -38,17 +38,17 @@ public class MessageReportApiController {
     public ResponseEntity<Void> messageReport(@RequestBody @Valid ReportRequest request){
         LocalDateTime messageReportDate = LocalDateTime.now();
         messageReportService.messageReport(request, messageReportDate);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "신고 메시지 삭제, 프론트에 적용되는 코드 X", description = "신고 메시지 삭제 API, 프론트에 적용되는 코드X")
+    @Operation(summary = "신고 메시지 삭제", description = "신고 메시지 삭제 API")
     @DeleteMapping("/{messageReportId}/message")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "상태 코드 응답"),
+        @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환"),
         @ApiResponse(responseCode = "404", description = "MR002: 신고된 메시지를 찾을 수 없습니다."),
     })
     public ResponseEntity<Void> deleteMessageReportAdmin(@PathVariable("messageReportId") Long messageReportId){
         messageReportService.deleteMessageReportAdmin(messageReportId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

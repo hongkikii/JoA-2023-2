@@ -54,7 +54,7 @@ public class RoomInMemberApiController {
 
     @Operation(summary = "채팅방 퇴장", description = "채팅방 퇴장 API")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "상태코드 반환"),
+        @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환"),
         @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
         @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
         @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다.")
@@ -62,6 +62,6 @@ public class RoomInMemberApiController {
     @PatchMapping("/out")
     public ResponseEntity<Void> updateExpired(@RequestBody @Valid UpdateExpiredRequest request){
         roomInMemberService.updateExpired(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
