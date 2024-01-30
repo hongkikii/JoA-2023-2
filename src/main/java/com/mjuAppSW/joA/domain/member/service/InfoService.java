@@ -22,11 +22,13 @@ import com.mjuAppSW.joA.domain.member.dto.response.VotePageResponse;
 import com.mjuAppSW.joA.domain.member.dto.response.LocationPageResponse;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
+@Builder
 @RequiredArgsConstructor
 public class InfoService {
 

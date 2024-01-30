@@ -16,7 +16,7 @@ import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.geography.college.PCollege;
 import com.mjuAppSW.joA.geography.college.PCollegeService;
 import com.mjuAppSW.joA.geography.location.Location;
-import com.mjuAppSW.joA.geography.location.LocationRepository;
+import com.mjuAppSW.joA.geography.location.LocationJpaRepository;
 import com.mjuAppSW.joA.geography.location.exception.AccessStoppedException;
 import jakarta.transaction.Transactional;
 import lombok.Builder;
@@ -30,7 +30,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PCollegeService pCollegeService;
-    private final LocationRepository locationRepository;
+    private final LocationJpaRepository locationJpaRepository;
     private final ImageUploader imageUploader;
     private final PasswordManager passwordManager;
 
@@ -51,7 +51,7 @@ public class MemberService {
         memberRepository.save(member);
         PCollege pCollege = pCollegeService.findById(mCollege.getId());
         Location location = new Location(member.getId(), pCollege);
-        locationRepository.save(location);
+        locationJpaRepository.save(location);
     }
 
     public Member getBySessionId(Long sessionId) {
@@ -119,7 +119,7 @@ public class MemberService {
 
     public void delete(Member member) {
         imageUploader.delete(member.getUrlCode());
-        locationRepository.deleteById(member.getId());
+        locationJpaRepository.deleteById(member.getId());
         member.setWithdrawal();
     }
 }

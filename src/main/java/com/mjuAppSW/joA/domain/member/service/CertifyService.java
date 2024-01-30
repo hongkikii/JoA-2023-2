@@ -16,10 +16,12 @@ import com.mjuAppSW.joA.domain.member.exception.InvalidCertifyNumberException;
 import com.mjuAppSW.joA.domain.member.exception.JoiningMailException;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.MailSender;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@Builder
 @RequiredArgsConstructor
 public class CertifyService { //FIXME
 

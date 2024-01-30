@@ -8,12 +8,14 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
+@Builder
 @RequiredArgsConstructor
 @Slf4j
 public class StatusService {
@@ -51,7 +53,7 @@ public class StatusService {
     }
 
     private void completeStopPolicy(Member member) {
-        if(member.getStopEndDate().toLocalDate() != LocalDate.now()) {
+        if(!member.getStopEndDate().toLocalDate().equals(LocalDate.now())) {
             log.info("account stop ing : id = {}", member.getId());
             return;
         }

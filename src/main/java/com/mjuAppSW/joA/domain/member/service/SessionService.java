@@ -7,12 +7,14 @@ import com.mjuAppSW.joA.domain.member.service.port.CacheManagerImpl;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
+@Builder
 @RequiredArgsConstructor
 @Slf4j
 public class SessionService {
