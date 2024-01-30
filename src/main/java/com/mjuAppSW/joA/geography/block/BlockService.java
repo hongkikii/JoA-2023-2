@@ -6,7 +6,7 @@ import com.mjuAppSW.joA.geography.block.dto.BlockRequest;
 import com.mjuAppSW.joA.geography.block.exception.BlockAlreadyExistedException;
 import com.mjuAppSW.joA.geography.block.exception.LocationNotFoundException;
 import com.mjuAppSW.joA.geography.location.Location;
-import com.mjuAppSW.joA.geography.location.LocationRepository;
+import com.mjuAppSW.joA.geography.location.infrastructure.LocationJpaRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class BlockService {
 
     private final BlockRepository blockRepository;
-    private final LocationRepository locationRepository;
+    private final LocationJpaRepository locationJpaRepository;
     private final MemberService memberService;
 
     @Transactional
@@ -34,7 +34,7 @@ public class BlockService {
     }
 
     private Location findLocation(Long memberId) {
-        return locationRepository.findById(memberId)
+        return locationJpaRepository.findById(memberId)
                 .orElseThrow(LocationNotFoundException::new);
     }
 

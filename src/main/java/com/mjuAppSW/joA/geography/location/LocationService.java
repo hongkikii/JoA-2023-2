@@ -11,6 +11,7 @@ import com.mjuAppSW.joA.geography.location.dto.response.NearByListResponse;
 import com.mjuAppSW.joA.geography.location.dto.request.UpdateRequest;
 import com.mjuAppSW.joA.geography.location.dto.response.UpdateResponse;
 import com.mjuAppSW.joA.geography.location.exception.OutOfCollegeException;
+import com.mjuAppSW.joA.geography.location.infrastructure.LocationJpaRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,7 +30,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class LocationService {
 
-    private final LocationRepository locationRepository;
+    private final LocationJpaRepository locationJpaRepository;
     private final PCollegeService pCollegeService;
     private final HeartRepository heartRepository;
     private final MemberService memberService;
@@ -48,7 +49,7 @@ public class LocationService {
     }
 
     private Location findByMemberId(Long memberId) {
-        return locationRepository.findById(memberId)
+        return locationJpaRepository.findById(memberId)
                 .orElseThrow(LocationNotFoundException::new);
     }
 
@@ -69,7 +70,7 @@ public class LocationService {
                                     .isContained(isContained)
                                     .updateDate(LocalDateTime.now())
                                     .build();
-        locationRepository.save(newLocation);
+        locationJpaRepository.save(newLocation);
     }
 
     private Point getPoint(double latitude, double longitude, double altitude) {
@@ -85,7 +86,7 @@ public class LocationService {
 
         Point point = getPoint(latitude, longitude, altitude);
         System.out.println(member.getId());
-        List<Long> nearMemberIds = locationRepository.findNearIds
+        List<Long> nearMemberIds = locationJpaRepository.findNearIds
                 (member.getId(), point, member.getCollege().getId());
         System.out.println(nearMemberIds.size());
         List<NearByInfo> nearByList = makeNearByList(member, nearMemberIds);
@@ -116,8 +117,8 @@ public class LocationService {
 
     @Transactional
     public void updateIsContained(Long memberId, boolean isContained) {
-        locationRepository.findById(memberId)
-                .ifPresent(location -> locationRepository.save(Location.builder().id(location.getId())
+        locationJpaRepository.findById(memberId)
+                .ifPresent(location -> locationJpaRepository.save(Location.builder().id(location.getId())
                         .college(location.getCollege())
                         .point(location.getPoint())
                         .isContained(isContained)
@@ -126,6 +127,6 @@ public class LocationService {
 
     @Transactional
     public void delete(Long memberId) {
-        locationRepository.deleteById(memberId);
+        locationJpaRepository.deleteById(memberId);
     }
 }
