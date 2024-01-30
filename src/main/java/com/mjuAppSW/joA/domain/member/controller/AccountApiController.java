@@ -49,41 +49,41 @@ public class AccountApiController {
 
     @Operation(summary = "로그아웃", description = "로그아웃 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @PostMapping("/{id}/logout")
     public ResponseEntity<Void> logout(@PathVariable("id") @NotNull Long sessionId) {
         accountService.logout(sessionId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "아이디 찾기", description = "아이디 찾기 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "로그인 id 웹메일 전송 후 HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "204", description = "로그인 id 웹메일 전송 후 HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404-1", description = "P001: 학교 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404-2", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @GetMapping("/id/find")
     public ResponseEntity<Void> findId(@RequestParam @NotBlank String collegeEmail, @RequestParam @NotNull Long collegeId) {
         accountService.findLoginId(collegeEmail, collegeId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "비밀번호 찾기", description = "비밀번호 찾기 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "임시 비밀번호 웹메일 전송 후 HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "204", description = "임시 비밀번호 웹메일 전송 후 HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @GetMapping("/password/find")
     public ResponseEntity<Void> findPassword(@RequestParam @NotBlank String loginId) {
         accountService.findPassword(loginId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "비밀번호 변경", description = "비밀번호 변경 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404-1", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404-2", description = "M015: 비밀번호가 올바르지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "400", description = "M012: 올바른 비밀번호 형식이 아닙니다.", content = @Content(schema = @Schema(hidden = true))),
@@ -91,18 +91,18 @@ public class AccountApiController {
     @PatchMapping("/password")
     public ResponseEntity<Void> transPassword(@RequestBody @Valid TransPasswordRequest request) {
         accountService.transPassword(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "500", description = "M003: S3 저장소 접근에 실패했습니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> withdrawal(@PathVariable("id") @NotNull Long sessionId) {
         accountService.withdrawal(sessionId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

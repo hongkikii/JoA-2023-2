@@ -98,7 +98,7 @@ public class InfoApiController {
 
     @Operation(summary = "한 줄 소개 변경", description = "한 줄 소개 변경 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
@@ -107,12 +107,12 @@ public class InfoApiController {
     @PatchMapping("/bio")
     public ResponseEntity<Void> transBio(@RequestBody @Valid BioRequest request) {
         infoService.transBio(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "한 줄 소개 삭제", description = "한 줄 소개 삭제 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
@@ -121,12 +121,12 @@ public class InfoApiController {
     public ResponseEntity<Void> deleteBio(
             @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH) @PathVariable("id") Long sessionId) {
         infoService.deleteBio(sessionId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "프로필 사진 변경", description = "프로필 사진 변경 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
@@ -135,12 +135,12 @@ public class InfoApiController {
     @PatchMapping("/picture")
     public ResponseEntity<Void> transPicture(@RequestBody @Valid PictureRequest request) {
         infoService.transPicture(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "프로필 사진 삭제", description = "프로필 사진 삭제 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
@@ -150,7 +150,7 @@ public class InfoApiController {
     public ResponseEntity<Void> deletePicture(
             @Parameter(description = "사용자 세션 id", in = ParameterIn.PATH) @PathVariable("id") Long sessionId) {
         infoService.deletePicture(sessionId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "채팅방 입장시 상대방 정보 조회", description = "상대방 정보 조회 API")

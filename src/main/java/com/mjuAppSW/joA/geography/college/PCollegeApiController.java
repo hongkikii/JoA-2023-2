@@ -25,11 +25,11 @@ public class PCollegeApiController {
 
     @Operation(summary = "학교 범위 생성", description = "학교 범위 생성 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환", content = @Content(schema = @Schema(hidden = true))),
     })
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid PolygonRequest request) {
         pCollegeService.create(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
