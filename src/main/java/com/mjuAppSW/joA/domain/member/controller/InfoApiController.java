@@ -1,7 +1,7 @@
 package com.mjuAppSW.joA.domain.member.controller;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
-import com.mjuAppSW.joA.domain.member.dto.response.UserInfoResponse;
+import com.mjuAppSW.joA.domain.member.dto.response.ChattingPageResponse;
 import com.mjuAppSW.joA.domain.member.service.InfoService;
 import com.mjuAppSW.joA.domain.member.dto.request.BioRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.MyPageResponse;
@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -160,8 +161,8 @@ public class InfoApiController {
         @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
         @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다.")
     })
-    @GetMapping("/{roomId}/{memberId}/userinfo")
-    public ResponseEntity<SuccessResponse<UserInfoResponse>> getUserInfo(@PathVariable("roomId") Long roomId, @PathVariable("memberId") Long memberId){
+    @GetMapping("/userinfo")
+    public ResponseEntity<SuccessResponse<ChattingPageResponse>> getUserInfo(@RequestParam("roomId") Long roomId, @RequestParam("memberId") Long memberId){
         return SuccessResponse.of(infoService.getUserInfo(roomId, memberId))
             .asHttp(HttpStatus.OK);
     }
