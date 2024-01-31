@@ -8,7 +8,8 @@ import com.mjuAppSW.joA.domain.member.dto.request.BioRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.MyPageResponse;
 import com.mjuAppSW.joA.domain.member.dto.request.PictureRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SettingPageResponse;
-import com.mjuAppSW.joA.domain.member.dto.response.UserInfoResponse;
+import com.mjuAppSW.joA.domain.member.dto.response.ChattingPageResponse;
+import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import com.mjuAppSW.joA.domain.member.vo.UserInfoVO;
 import com.mjuAppSW.joA.domain.room.Room;
@@ -52,14 +53,13 @@ public class InfoService {
         return MyPageResponse.of(member, todayHeart, totalHeart, voteTop3);
     }
 
-    public UserInfoResponse getUserInfo(Long roomId, Long memberId){
-        Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
+    public ChattingPageResponse getUserInfo(Long roomId, Long memberId){
+        Room room = findByRoomId(roomId);
         Member member = memberService.getBySessionId(memberId);
-        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, member).orElseThrow(
-                RoomInMemberNotFoundException::new);
+        RoomInMember roomInMember = findByRoomAndMember(room, member);
 
-        UserInfoVO userInfoVO = roomInMemberRepository.getUserInfo(roomInMember.getRoom(), roomInMember.getMember());
-        return UserInfoResponse.of(userInfoVO.getName(), userInfoVO.getUrlCode(), userInfoVO.getBio());
+        UserInfoVO userInfoVO = findOpponentUserInfoByRoomAndMember(roomInMember.getRoom(), roomInMember.getMember());
+        return ChattingPageResponse.of(userInfoVO.getName(), userInfoVO.getUrlCode(), userInfoVO.getBio());
     }
 
     public VotePageResponse getVotePage(Long sessionId) {
@@ -99,6 +99,21 @@ public class InfoService {
             imageUploader.delete(member.getUrlCode());
             member.deleteUrlCode();
         }
+    }
+
+    private Room findByRoomId(Long roomId){
+        return roomRepository.findById(roomId)
+            .orElseThrow(RoomNotFoundException::new);
+    }
+
+    private RoomInMember findByRoomAndMember(Room room, Member member){
+        return roomInMemberRepository.findByRoomAndMember(room, member)
+            .orElseThrow(RoomInMemberNotFoundException::new);
+    }
+
+    private UserInfoVO findOpponentUserInfoByRoomAndMember(Room room, Member member){
+        return roomInMemberRepository.findOpponentUserInfoByRoomAndMember(room, member)
+            .orElseThrow(MemberNotFoundException::new);
     }
 
     private boolean isNotBasicPicture(String urlCode) {

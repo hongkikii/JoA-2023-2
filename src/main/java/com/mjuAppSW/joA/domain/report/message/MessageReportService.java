@@ -7,9 +7,7 @@ import com.mjuAppSW.joA.domain.member.service.MemberService;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -19,16 +17,10 @@ import com.mjuAppSW.joA.domain.message.MessageRepository;
 import com.mjuAppSW.joA.domain.message.exception.MessageNotFoundException;
 import com.mjuAppSW.joA.domain.report.ReportCategory;
 import com.mjuAppSW.joA.domain.report.ReportCategoryRepository;
-import com.mjuAppSW.joA.domain.report.message.dto.request.CheckMessageReportRequest;
 import com.mjuAppSW.joA.domain.report.message.dto.request.ReportRequest;
 import com.mjuAppSW.joA.domain.report.message.exception.MessageReportAlreadyExistedException;
-import com.mjuAppSW.joA.domain.report.message.exception.MessageReportAlreadyReportException;
-import com.mjuAppSW.joA.domain.report.message.exception.MessageReportAlreadyReportedException;
 import com.mjuAppSW.joA.domain.report.message.exception.MessageReportNotFoundException;
 import com.mjuAppSW.joA.domain.report.vote.exception.ReportCategoryNotFoundException;
-import com.mjuAppSW.joA.domain.room.Room;
-import com.mjuAppSW.joA.domain.roomInMember.RoomInMember;
-import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -42,19 +34,13 @@ public class MessageReportService {
     private final MessageReportRepository messageReportRepository;
     private final MessageRepository messageRepository;
     private final ReportCategoryRepository reportCategoryRepository;
-    private final RoomInMemberRepository roomInMemberRepository;
     private final MemberService memberService;
 
     @Transactional
     public void messageReport(ReportRequest request, LocalDateTime messageReportDate){
-        Message message = messageRepository.findById(request.getMessageId()).orElseThrow(MessageNotFoundException::new);
-        ReportCategory reportCategory = reportCategoryRepository.findById(request.getCategoryId()).orElseThrow(
-            ReportCategoryNotFoundException::new);
-        MessageReport check = messageReportRepository.findByMessage(message).orElse(null);
-
-        if(check != null){
-            throw new MessageReportAlreadyExistedException();
-        }
+        Message message = findByMessageId(request.getMessageId());
+        ReportCategory reportCategory = findByCategoryId(request.getCategoryId());
+        checkExistedReportMessage(message);
 
         MessageReport messageReport = MessageReport.builder()
             .message_id(message)
@@ -69,49 +55,30 @@ public class MessageReportService {
         member.addReportCount();
     }
 
-    public boolean check(List<MessageReport> messageReports, Long memberId1, Long memberId2){
-        Set<Room> roomIds = new HashSet<>();
-        if(messageReports != null){
-            for(MessageReport mr : messageReports){
-                roomIds.add(mr.getMessage_id().getRoom());
-            }
-        }
-
-        for(Room rId : roomIds){
-            List<RoomInMember> roomInMembers = roomInMemberRepository.findByAllRoom(rId);
-            boolean memberId1Exists = roomInMembers.stream()
-                    .anyMatch(rim -> rim.getMember().getId().equals(memberId1));
-            boolean memberId2Exists = roomInMembers.stream()
-                    .anyMatch(rim -> rim.getMember().getId().equals(memberId2));
-            if(memberId1Exists && memberId2Exists){
-                return true;
-            }
-        }
-        return false;
-    }
-    public void checkMessageReport(CheckMessageReportRequest request){
-        Member member1 = memberService.getBySessionId(request.getMemberId1());
-        Member member2 = memberService.getById(request.getMemberId2());
-
-        List<MessageReport> myMessageReport = messageReportRepository.findByMemberId(member1.getId());
-        List<MessageReport> opponentMessageReport = messageReportRepository.findByMemberId(member2.getId());
-        Boolean reported = check(myMessageReport, member1.getId(), member2.getId());
-        Boolean report = check(opponentMessageReport, member1.getId(), member2.getId());
-        if(reported && report){throw new MessageReportAlreadyReportedException();}
-        else if(reported){throw new MessageReportAlreadyReportedException();}
-        else if(report){throw new MessageReportAlreadyReportException();}
-    }
     @Transactional
     public void deleteMessageReportAdmin(Long id){
-        MessageReport messageReport = messageReportRepository.findById(id).orElseThrow(MessageReportNotFoundException::new);
+        MessageReport messageReport = findByMessageReportId(id);
         messageReportRepository.delete(messageReport);
     }
 
-    public Long calculationHour(LocalDateTime getTime){
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        Duration duration = Duration.between(getTime, currentDateTime);
-        Long hours = duration.toHours();
-        return hours;
+    private Message findByMessageId(Long messageId){
+        return messageRepository.findById(messageId)
+            .orElseThrow(MessageNotFoundException::new);
+    }
+    private MessageReport findByMessageReportId(Long messageReportId){
+        return messageReportRepository.findById(messageReportId)
+            .orElseThrow(MessageReportNotFoundException::new);
+    }
+    private ReportCategory findByCategoryId(Long categoryId){
+        return reportCategoryRepository.findById(categoryId)
+            .orElseThrow(ReportCategoryNotFoundException::new);
+    }
+
+    private void checkExistedReportMessage(Message message){
+        messageReportRepository.findByMessage(message)
+            .ifPresent(messageReport -> {
+                throw new MessageReportAlreadyExistedException();
+            });
     }
 
     @Scheduled(cron = "0 55 23 14,L * ?")
@@ -131,5 +98,11 @@ public class MessageReportService {
                 messageReportRepository.delete(mr);
             }
         }
+    }
+    private Long calculationHour(LocalDateTime getTime){
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        Duration duration = Duration.between(getTime, currentDateTime);
+        Long hours = duration.toHours();
+        return hours;
     }
 }
