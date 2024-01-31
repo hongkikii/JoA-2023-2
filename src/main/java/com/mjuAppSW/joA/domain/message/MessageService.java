@@ -37,7 +37,7 @@ public class MessageService {
 
     @Transactional
     public Long saveMessage(Long roomId, Long memberId, String content, String isChecked, LocalDateTime createdMessageDate) {
-        Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
+        Room room = findByRoomId(roomId);
         Member member = memberService.getById(memberId);
         String encryptedMessage = encryptManager.encrypt(content, room.getEncryptKey());
         if(encryptedMessage == null){
@@ -55,23 +55,22 @@ public class MessageService {
     }
 
     public MessageResponse loadMessage(Long roomId, Long memberId) {
-        Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
+        Room room = findByRoomId(roomId);
         Member member = memberService.getBySessionId(memberId);
-        RoomInMember roomInMember = roomInMemberRepository.findByRoomAndMember(room, member).orElseThrow(
-            RoomInMemberNotFoundException::new);
+        RoomInMember roomInMember = findByRoomAndMember(room, member);
 
-        List<Message> messageList = messageRepository.findByRoom(room);
+        List<Message> messageList = messageRepository.findByRoom(roomInMember.getRoom());
         if(messageList.isEmpty()){ return MessageResponse.of(new ArrayList<>());}
 
         List<MessageVO> messageVOList = messageList.stream()
-            .map(message -> makeMessageContent(message, member, room))
+            .map(message -> getMessage(message, roomInMember.getMember(), roomInMember.getRoom()))
             .map(MessageVO::new)
             .collect(Collectors.toList());
 
         return MessageResponse.of(messageVOList);
     }
 
-    private String makeMessageContent(Message message, Member member, Room room) {
+    private String getMessage(Message message, Member member, Room room) {
         String decryptedMessage = encryptManager.decrypt(message.getContent(), room.getEncryptKey());
         if(decryptedMessage == null){
             throw new FailDecryptException();
@@ -82,7 +81,7 @@ public class MessageService {
 
     @Transactional
     public void updateIsChecked(String roomId, String memberId){
-        Room room = roomRepository.findById(Long.parseLong(roomId)).orElseThrow(RoomNotFoundException::new);
+        Room room = findByRoomId(Long.parseLong(roomId));
         Member member = memberService.getById(Long.parseLong(memberId));
 
         List<Message> getMessages = messageRepository.findMessage(room, member);
@@ -91,5 +90,15 @@ public class MessageService {
                 message.updateIsChecked();
             }
         }
+    }
+
+    private Room findByRoomId(Long roomId){
+        return roomRepository.findById(roomId)
+            .orElseThrow(RoomNotFoundException::new);
+    }
+
+    private RoomInMember findByRoomAndMember(Room room, Member member){
+        return roomInMemberRepository.findByRoomAndMember(room, member)
+            .orElseThrow(RoomInMemberNotFoundException::new);
     }
 }

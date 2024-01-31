@@ -1,22 +1,19 @@
 package com.mjuAppSW.joA.domain.roomInMember.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 @Schema(description = "채팅방 입장시 상대방 정보 조회 Response")
+@Builder(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserInfoResponse {
-	private String name;
-	private String urlCode;
-	private String bio;
-
-	@Builder
-	public UserInfoResponse(String name, String urlCode, String bio) {
-		this.name = name;
-		this.urlCode = urlCode;
-		this.bio = bio;
-	}
+	private final String name;
+	private final String urlCode;
+	private final String bio;
 
 	public static UserInfoResponse of(String name, String urlCode, String bio) {
 		return UserInfoResponse.builder()

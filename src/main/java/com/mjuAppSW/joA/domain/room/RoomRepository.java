@@ -18,6 +18,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     List<Room> findByStatus(@Param("status") String status);
 
     @Query("SELECT r FROM Room r WHERE r.status = :status AND r.id Not IN :roomIds")
-    List<Room> findByStatusAndRoomIds(@Param("status") String status, @Param("roomIds") Set<Long> roomIds);
+    List<Room> findByStatusAndNotRoomIds(@Param("status") String status, @Param("roomIds") Set<Long> roomIds);
 }
 

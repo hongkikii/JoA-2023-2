@@ -11,7 +11,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Setter
 @Getter
 @Table(name="Room_in_member")
 @IdClass(RoomInMemberId.class)
@@ -54,5 +53,5 @@ public class RoomInMember {
     }
     public void updateExpired(String expired) { this.expired = expired; }
     public void updateEntryTime(LocalDateTime entryTime){ this.entryTime = entryTime; }
-    public void updateExitTime(LocalDateTime exitTime) { this.exitTime = exitTime;}
+    public void updateExitTime(LocalDateTime exitTime) { this.exitTime = exitTime; }
 }
