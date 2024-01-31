@@ -11,7 +11,7 @@ import com.mjuAppSW.joA.geography.location.dto.response.NearByListResponse;
 import com.mjuAppSW.joA.geography.location.dto.request.UpdateRequest;
 import com.mjuAppSW.joA.geography.location.dto.response.UpdateResponse;
 import com.mjuAppSW.joA.geography.location.exception.OutOfCollegeException;
-import com.mjuAppSW.joA.geography.location.infrastructure.LocationJpaRepository;
+import com.mjuAppSW.joA.geography.location.infrastructure.LocationRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class LocationService {
 
-    private final LocationJpaRepository locationJpaRepository;
+    private final LocationRepository locationRepository;
     private final PCollegeService pCollegeService;
     private final HeartRepository heartRepository;
     private final MemberService memberService;
@@ -49,7 +49,7 @@ public class LocationService {
     }
 
     private Location findByMemberId(Long memberId) {
-        return locationJpaRepository.findById(memberId)
+        return locationRepository.findById(memberId)
                 .orElseThrow(LocationNotFoundException::new);
     }
 
@@ -70,7 +70,7 @@ public class LocationService {
                                     .isContained(isContained)
                                     .updateDate(LocalDateTime.now())
                                     .build();
-        locationJpaRepository.save(newLocation);
+        locationRepository.save(newLocation);
     }
 
     private Point getPoint(double latitude, double longitude, double altitude) {
@@ -86,7 +86,7 @@ public class LocationService {
 
         Point point = getPoint(latitude, longitude, altitude);
         System.out.println(member.getId());
-        List<Long> nearMemberIds = locationJpaRepository.findNearIds
+        List<Long> nearMemberIds = locationRepository.findNearIds
                 (member.getId(), point, member.getCollege().getId());
         System.out.println(nearMemberIds.size());
         List<NearByInfo> nearByList = makeNearByList(member, nearMemberIds);
@@ -116,17 +116,7 @@ public class LocationService {
     }
 
     @Transactional
-    public void updateIsContained(Long memberId, boolean isContained) {
-        locationJpaRepository.findById(memberId)
-                .ifPresent(location -> locationJpaRepository.save(Location.builder().id(location.getId())
-                        .college(location.getCollege())
-                        .point(location.getPoint())
-                        .isContained(isContained)
-                        .updateDate(location.getUpdateDate()).build()));
-    }
-
-    @Transactional
     public void delete(Long memberId) {
-        locationJpaRepository.deleteById(memberId);
+        locationRepository.deleteById(memberId);
     }
 }
