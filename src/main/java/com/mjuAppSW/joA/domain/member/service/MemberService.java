@@ -62,7 +62,7 @@ public class MemberService {
     public Member getNormalBySessionId(Long sessionId) {
         return memberRepository.findBysessionId(sessionId)
                 .filter(member -> {
-                    if (member.getStatus().equals(STEP_1_STOP_STATUS)
+                    if (member.getStatus() == STEP_1_STOP_STATUS
                         || member.getStatus() == STEP_2_STOP_STATUS) {
                         throw new AccessStoppedException();
                     }
