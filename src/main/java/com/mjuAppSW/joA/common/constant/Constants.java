@@ -36,13 +36,11 @@ public class Constants {
         public static String EXIT = "0";
         public static String NOT_EXIT = "1";
         public static String APPROVE_VOTE = "0";
-        public static String DISAPPROVE_OR_BEFORE_VOTE = "1";
+        public static String DISAPPROVE_VOTE = "1";
+        public static String BEFORE_VOTE = "2";
     }
 
     public static class MessageReport{
-        public static Integer REPORTED = 1;
-        public static Integer REPORT = 2;
-        public static Integer CLEAR = 3;
         public static Integer NINETY_DAY_HOURS = 2160;
     }
 

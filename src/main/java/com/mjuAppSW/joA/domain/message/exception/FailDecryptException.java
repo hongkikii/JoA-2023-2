@@ -5,6 +5,6 @@ import com.mjuAppSW.joA.common.exception.ErrorCode;
 
 public class FailDecryptException extends BusinessException {
 	public FailDecryptException(){
-		super(ErrorCode.FAIL_ENCRYPT);
+		super(ErrorCode.FAIL_DECRYPT);
 	}
 }
