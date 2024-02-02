@@ -53,4 +53,14 @@ public class MemberRepositoryImpl implements MemberRepository {
     public List<Member> findJoiningAll() {
         return memberJpaRepository.findJoiningAll();
     }
+
+    @Override
+    public void delete(Member member) {
+        memberJpaRepository.delete(member);
+    }
+
+    @Override
+    public void deleteAll() {
+        memberJpaRepository.deleteAll();
+    }
 }
