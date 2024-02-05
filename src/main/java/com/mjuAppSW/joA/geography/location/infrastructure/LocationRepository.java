@@ -9,9 +9,13 @@ public interface LocationRepository {
 
     Location save(Location location);
 
+    List<Location> findAll();
+
     Optional<Location> findById(Long memberId);
 
     List<Long> findNearIds(Long memberId, Point point, Long collegeId);
 
     void deleteById(Long memberId);
+
+    void deleteAll();
 }

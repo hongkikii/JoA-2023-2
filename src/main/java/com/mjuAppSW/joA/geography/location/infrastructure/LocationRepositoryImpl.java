@@ -13,10 +13,14 @@ public class LocationRepositoryImpl implements LocationRepository{
 
     private final LocationJpaRepository locationJpaRepository;
 
-
     @Override
     public Location save(Location location) {
         return locationJpaRepository.save(location);
+    }
+
+    @Override
+    public List<Location> findAll() {
+        return locationJpaRepository.findAll();
     }
 
     @Override
@@ -32,5 +36,10 @@ public class LocationRepositoryImpl implements LocationRepository{
     @Override
     public void deleteById(Long memberId) {
         locationJpaRepository.deleteById(memberId);
+    }
+
+    @Override
+    public void deleteAll() {
+        locationJpaRepository.deleteAll();
     }
 }
