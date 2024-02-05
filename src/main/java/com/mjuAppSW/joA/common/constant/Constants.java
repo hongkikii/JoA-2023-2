@@ -80,6 +80,21 @@ public class Constants {
         public static Integer STEP_2_DATE = 7;
     }
 
+    public static class SlackService{
+        public static final String ERROR_MESSAGE_TITLE = "🤯 *에러 발생*";
+        public static final String ERROR_COLOR = "#eb4034";
+    }
+    public static class SlackServiceUtil{
+        public static final String ERROR_MESSAGE = "*Error Message:*\n";
+        public static final String ERROR_STACK = "*Error Stack:*\n";
+        public static final String ERROR_URI = "*Error URI:*\n";
+        public static final String ERROR_METHOD = "*Error Method:*\n";
+        public static final String ERROR_DATE = "*Error Date:*\n";
+        public static final String FILTER_STRING = "joA";
+        public static final String POINTER = "```";
+        public static final String NEW_LINE = "\n";
+    }
+
     public static Integer ZERO = 0;
     public static String EMPTY_STRING = "";
     public static String EMAIL_SPLIT = "@";

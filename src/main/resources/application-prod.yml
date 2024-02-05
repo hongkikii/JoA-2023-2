@@ -36,3 +36,8 @@ spring:
         auto: false
       s3:
         bucket: j-project-2023
+
+slack:
+  token: ${SLACK_TOKEN}
+  channel:
+    monitor: ${SLACK_CHANNEL_MONITOR}
