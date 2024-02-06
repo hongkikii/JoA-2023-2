@@ -76,8 +76,8 @@ public class Constants {
         public static int STEP_1_REPORT_COUNT = 5;
         public static int STEP_2_REPORT_COUNT = 10;
         public static int STEP_3_REPORT_COUNT = 15;
-        public static int STEP_1_DATE = 1;
-        public static int STEP_2_DATE = 7;
+        public static int STEP_1_DATE = 2;
+        public static int STEP_2_DATE = 8;
     }
 
     public static class SlackService{
