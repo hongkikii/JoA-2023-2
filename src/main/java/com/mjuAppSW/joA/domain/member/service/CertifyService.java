@@ -58,7 +58,7 @@ public class CertifyService { //FIXME
 
     public void verify(VerifyCertifyNumRequest request) {
         Long sessionId = request.getId();
-        sessionManager.checkStatusInCache(CERTIFY_NUMBER, sessionId);
+        sessionManager.checkInCache(CERTIFY_NUMBER, sessionId);
 
         if (!cacheManager.compare(CERTIFY_NUMBER + sessionId, request.getCertifyNum())) {
             throw new InvalidCertifyNumberException();

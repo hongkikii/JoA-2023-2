@@ -31,7 +31,7 @@ public class JoinService { //FIXME
         String loginId = request.getLoginId();
         Long sessionId = request.getSessionId();
         loginIdManager.validate(loginId);
-        sessionManager.checkStatusInCache(AFTER_EMAIL, sessionId);
+        sessionManager.checkInCache(AFTER_EMAIL, sessionId);
         loginIdManager.checkInCache(sessionId, loginId);
         loginIdManager.checkInDb(loginId);
         cacheLoginId(sessionId, loginId);
@@ -45,7 +45,7 @@ public class JoinService { //FIXME
     @Transactional
     public void join(JoinRequest request) {
         Long sessionId = request.getId();
-        sessionManager.checkStatusInCache(AFTER_EMAIL, sessionId);
+        sessionManager.checkInCache(AFTER_EMAIL, sessionId);
         loginIdManager.checkNotCache(sessionId, request.getLoginId());
 
         String eMail = cacheManager.getData(AFTER_EMAIL + sessionId);

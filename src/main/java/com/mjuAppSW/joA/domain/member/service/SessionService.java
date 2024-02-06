@@ -4,7 +4,6 @@ import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.exception.SessionNotFoundException;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
-import com.mjuAppSW.joA.domain.member.service.port.CacheManagerImpl;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -38,7 +37,7 @@ public class SessionService {
         }
     }
 
-    public void checkStatusInCache(String status, Long sessionId) {
+    public void checkInCache(String status, Long sessionId) {
         if (cacheManager.isNotExistedKey(status + sessionId)) {
             throw new SessionNotFoundException();
         }
