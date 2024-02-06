@@ -26,12 +26,12 @@ public class StatusService {
     @Scheduled(cron = "0 0 4 * * ?")
 //    @Scheduled(cron = "0 */10 * * * *")
     @Transactional
-    public void translate() {
+    public void check() {
         List<Member> joiningAll = memberRepository.findJoiningAll();
         for (Member member : joiningAll) {
             if(member.getStatus() == STEP_1_STOP_STATUS
             || member.getStatus() == STEP_2_STOP_STATUS) {
-                completeStopPolicy(member);
+                finishStopPolicy(member);
             }
             if (member.getReportCount() >= STEP_1_REPORT_COUNT
                 && member.getStatus() != STEP_1_STOP_STATUS
@@ -52,7 +52,7 @@ public class StatusService {
         }
     }
 
-    private void completeStopPolicy(Member member) {
+    private void finishStopPolicy(Member member) {
         if(!member.getStopEndDate().toLocalDate().equals(LocalDate.now())) {
             log.info("account stop ing : id = {}", member.getId());
             return;
