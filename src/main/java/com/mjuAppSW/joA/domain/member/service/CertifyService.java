@@ -27,7 +27,7 @@ public class CertifyService { //FIXME
 
     private final MemberService memberService;
     private final MCollegeService mCollegeService;
-    private final SessionService sessionManager;
+    private final SessionService sessionService;
     private final CacheManager cacheManager;
     private final MailSender mailSender;
 
@@ -40,7 +40,7 @@ public class CertifyService { //FIXME
         String eMail = uEmail + college.getDomain();
         checkJoining(eMail);
 
-        long sessionId = sessionManager.create();
+        long sessionId = sessionService.create();
         String certifyNum = cacheManager.addRandomValue(
                 CERTIFY_NUMBER + sessionId, BEFORE_CERTIFY_TIME);
         cacheManager.add(BEFORE_EMAIL + sessionId, eMail, BEFORE_CERTIFY_TIME);
@@ -58,7 +58,7 @@ public class CertifyService { //FIXME
 
     public void verify(VerifyCertifyNumRequest request) {
         Long sessionId = request.getId();
-        sessionManager.checkInCache(CERTIFY_NUMBER, sessionId);
+        sessionService.checkInCache(CERTIFY_NUMBER, sessionId);
 
         if (!cacheManager.compare(CERTIFY_NUMBER + sessionId, request.getCertifyNum())) {
             throw new InvalidCertifyNumberException();
