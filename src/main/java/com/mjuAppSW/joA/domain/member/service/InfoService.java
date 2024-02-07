@@ -42,8 +42,7 @@ public class InfoService {
     private final RoomInMemberRepository roomInMemberRepository;
 
     public SettingPageResponse getSettingPage(Long sessionId) {
-        Member member = memberService.getNormalBySessionId(sessionId);
-        return SettingPageResponse.of(member);
+        return SettingPageResponse.of(memberService.getNormalBySessionId(sessionId));
     }
 
     public MyPageResponse getMyPage(Long sessionId) {
