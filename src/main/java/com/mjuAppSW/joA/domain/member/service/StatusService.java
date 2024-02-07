@@ -33,21 +33,21 @@ public class StatusService {
             || member.getStatus() == STEP_2_STOP_STATUS) {
                 finishStopPolicy(member);
             }
+            if (member.getReportCount() >= STEP_3_REPORT_COUNT) {
+                executeOutPolicy(member);
+            }
+            if (member.getReportCount() >= STEP_2_REPORT_COUNT
+                    && member.getStatus() != STEP_1_STOP_STATUS
+                    && member.getStatus() != STEP_2_STOP_STATUS
+                    && member.getStatus() != STEP_2_COMPLETE_STATUS) {
+                executeStopPolicy(member, STEP_2_REPORT_COUNT);
+            }
             if (member.getReportCount() >= STEP_1_REPORT_COUNT
                 && member.getStatus() != STEP_1_STOP_STATUS
                 && member.getStatus() != STEP_1_COMPLETE_STATUS
                 && member.getStatus() != STEP_2_STOP_STATUS
                 && member.getStatus() != STEP_2_COMPLETE_STATUS) {
                 executeStopPolicy(member, STEP_1_REPORT_COUNT);
-            }
-            if (member.getReportCount() >= STEP_2_REPORT_COUNT
-                && member.getStatus() != STEP_1_STOP_STATUS
-                && member.getStatus() != STEP_2_STOP_STATUS
-                && member.getStatus() != STEP_2_COMPLETE_STATUS) {
-                executeStopPolicy(member, STEP_2_REPORT_COUNT);
-            }
-            if (member.getReportCount() >= STEP_3_REPORT_COUNT) {
-                executeOutPolicy(member);
             }
         }
     }
@@ -68,6 +68,12 @@ public class StatusService {
         member.expireStopDate();
     }
 
+    private void executeOutPolicy(Member member) {
+        member.updateStatus(STEP_3_STOP_STATUS);
+        memberService.delete(member);
+        log.info("account delete : id = {}, reportCount = 15", member.getId());
+    }
+
     private void executeStopPolicy(Member member, int reportCount) {
         LocalDateTime today = LocalDateTime.now();
         member.updateStopStartDate(today);
@@ -81,11 +87,5 @@ public class StatusService {
             member.updateStatus(STEP_2_STOP_STATUS);
             log.info("account stop start : id = {}, reportCount = 10", member.getId());
         }
-    }
-
-    private void executeOutPolicy(Member member) {
-        member.updateStatus(STEP_3_STOP_STATUS);
-        memberService.delete(member);
-        log.info("account delete : id = {}, reportCount = 15", member.getId());
     }
 }
