@@ -16,7 +16,7 @@ public interface VoteRepository {
 
     Optional<Vote> findTodayVote(Long giveId, Long takeId, Long categoryId);
 
-    List<Vote> findInvalidVotes(Long giveId, Long takeId);
-
     List<Vote> findValidAllByTakeId(Long id, Pageable pageable);
+
+    List<Vote> findInvalidVotes(Long giveId, Long takeId);
 }
