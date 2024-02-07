@@ -12,6 +12,11 @@ public class MCollegeRepositoryImpl implements MCollegeRepository {
     private final MCollegeJpaRepository mCollegeJpaRepository;
 
     @Override
+    public void save(MCollege mCollege) {
+        mCollegeJpaRepository.save(mCollege);
+    }
+
+    @Override
     public Optional<MCollege> findById(Long collegeId) {
         return mCollegeJpaRepository.findById(collegeId);
     }
