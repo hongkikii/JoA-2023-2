@@ -10,10 +10,12 @@ import com.mjuAppSW.joA.domain.member.infrastructure.LoginIdManager;
 import com.mjuAppSW.joA.domain.member.service.MemberService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@Builder
 @RequiredArgsConstructor
 public class LoginIdManagerImpl implements LoginIdManager {
 
