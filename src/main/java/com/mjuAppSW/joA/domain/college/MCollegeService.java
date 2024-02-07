@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@Builder
 @RequiredArgsConstructor
 public class MCollegeService {
 
