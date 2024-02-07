@@ -12,7 +12,6 @@ import org.locationtech.jts.geom.Polygon;
 import org.springframework.stereotype.Service;
 
 @Service
-@Builder
 @RequiredArgsConstructor
 public class PCollegeService {
 
