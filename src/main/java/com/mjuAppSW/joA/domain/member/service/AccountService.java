@@ -23,7 +23,7 @@ public class AccountService {
 
     private final MemberService memberService;
     private final MCollegeService mCollegeService;
-    private final SessionService sessionManager;
+    private final SessionService sessionService;
     private final MailSender mailSender;
     private final PasswordManager passwordManager;
 
@@ -33,7 +33,7 @@ public class AccountService {
         String hashedPassword = passwordManager.createHashed (
                 request.getPassword(), member.getSalt());
         passwordManager.compare(member.getPassword(), hashedPassword);
-        member.updateSessionId(sessionManager.create());
+        member.updateSessionId(sessionService.create());
         return SessionIdResponse.of(member.getSessionId());
     }
 
