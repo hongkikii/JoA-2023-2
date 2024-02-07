@@ -42,9 +42,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private Map<String, List<WebSocketSession>> roomSessions = new ConcurrentHashMap<>();
     private Map<String, List<WebSocketSession>> memberSessions = new ConcurrentHashMap<>();
     private final RoomInMemberService roomInMemberService;
-    private final RoomInMemberRepository roomInMemberRepository;
     private final MessageService messageService;
-    private final RoomRepository roomRepository;
     private final MemberService memberService;
     private final RoomService roomService;
     private final MessageReportRepository messageReportRepository;
@@ -97,7 +95,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
     private Boolean checkMessageReport(Long roomId, WebSocketSession session) throws IOException {
-        Room room = findByRoomId(roomId);
+        Room room = roomService.findByRoomId(roomId);
         List<MessageReport> checkMessageReport = messageReportRepository.findByRoomId(room);
         if(!checkMessageReport.isEmpty()){
             sendExceptionMessage(String.valueOf(roomId), session, ALARM_REPORTED_ROOM);
@@ -169,9 +167,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
     public void updateCurrentMessage(String roomId, String memberId) throws Exception {
-        Room room = findByRoomId(Long.parseLong(roomId));
+        Room room = roomService.findByRoomId(Long.parseLong(roomId));
         Member member = memberService.getById(Long.parseLong(memberId));
-        RoomInMember roomInMember = checkOpponentExpired(room, member);
+        RoomInMember roomInMember = roomInMemberService.checkOpponentExpired(room, member);
 
         List<WebSocketSession> memberSessionsList = memberSessions.get(String.valueOf(roomInMember.getMember().getId()));
 
@@ -186,16 +184,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 }
             }
         }
-    }
-
-    private Room findByRoomId(Long roomId){
-        return roomRepository.findById(roomId)
-            .orElseThrow(RoomNotFoundException::new);
-    }
-
-    private RoomInMember checkOpponentExpired(Room room, Member member){
-        return roomInMemberRepository.checkOpponentExpired(room, member, NOT_EXIT)
-            .orElseThrow(RoomInMemberNotFoundException::new);
     }
 
     private String getRoomId(WebSocketSession session) throws URISyntaxException {

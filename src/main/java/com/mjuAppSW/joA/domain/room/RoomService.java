@@ -148,7 +148,7 @@ public class RoomService {
         }
     }
 
-    private Room findByRoomId(Long roomId){
+    public Room findByRoomId(Long roomId){
         return roomRepository.findById(roomId)
             .orElseThrow(RoomNotFoundException::new);
     }
