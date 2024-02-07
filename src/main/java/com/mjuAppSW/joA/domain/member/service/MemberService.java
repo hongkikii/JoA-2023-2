@@ -95,7 +95,7 @@ public class MemberService {
                     throw new MemberAlreadyExistedException();});
     }
 
-    public void checkForbidden(String uEmail, MCollege mCollege) {
+    public void checkPermanentForbiddenMember(String uEmail, MCollege mCollege) {
         memberRepository.findForbidden(uEmail, mCollege)
                 .ifPresent(forbiddenMember -> {
                     throw new PermanentBanException();});

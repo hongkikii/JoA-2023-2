@@ -36,7 +36,7 @@ public class CertifyService { //FIXME
         String uEmail = request.getCollegeEmail();
 
         memberService.checkExist(uEmail, college);
-        memberService.checkForbidden(uEmail, college);
+        memberService.checkPermanentForbiddenMember(uEmail, college);
         String eMail = uEmail + college.getDomain();
         checkJoining(eMail);
 
