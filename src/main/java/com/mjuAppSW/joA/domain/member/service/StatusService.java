@@ -35,12 +35,14 @@ public class StatusService {
             }
             if (member.getReportCount() >= STEP_3_REPORT_COUNT) {
                 executeOutPolicy(member);
+                break;
             }
             if (member.getReportCount() >= STEP_2_REPORT_COUNT
-                    && member.getStatus() != STEP_1_STOP_STATUS
-                    && member.getStatus() != STEP_2_STOP_STATUS
-                    && member.getStatus() != STEP_2_COMPLETE_STATUS) {
+                && member.getStatus() != STEP_1_STOP_STATUS
+                && member.getStatus() != STEP_2_STOP_STATUS
+                && member.getStatus() != STEP_2_COMPLETE_STATUS) {
                 executeStopPolicy(member, STEP_2_REPORT_COUNT);
+                break;
             }
             if (member.getReportCount() >= STEP_1_REPORT_COUNT
                 && member.getStatus() != STEP_1_STOP_STATUS
@@ -48,6 +50,7 @@ public class StatusService {
                 && member.getStatus() != STEP_2_STOP_STATUS
                 && member.getStatus() != STEP_2_COMPLETE_STATUS) {
                 executeStopPolicy(member, STEP_1_REPORT_COUNT);
+                break;
             }
         }
     }
