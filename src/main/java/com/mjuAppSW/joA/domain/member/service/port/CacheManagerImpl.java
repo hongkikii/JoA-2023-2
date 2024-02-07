@@ -20,6 +20,7 @@ public class CacheManagerImpl implements CacheManager { //FIXME
     private final Map<String, DataAndTime> expireDataMap = new ConcurrentHashMap<>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
+    @Override
     public void add(String key, String value, int minute) {
         DataAndTime dataAndTime = new DataAndTime(value, LocalDateTime.now());
         expireDataMap.put(key, dataAndTime);
@@ -32,6 +33,7 @@ public class CacheManagerImpl implements CacheManager { //FIXME
         return minute * 60;
     }
 
+    @Override
     public String addRandomValue(String key, int minute) {
         String randomValue = getRandomValue();
         add(key, randomValue, minute);
@@ -43,16 +45,19 @@ public class CacheManagerImpl implements CacheManager { //FIXME
         return String.valueOf(random);
     }
 
+    @Override
     public boolean isNotExistedKey(String key) {
         return !expireDataMap.containsKey(key);
     }
 
+    @Override
     public boolean isExistedValue(String startWith, String checkValue) {
         return expireDataMap.entrySet().stream()
                 .filter(entry -> entry.getKey().startsWith(startWith))
                 .anyMatch(entry -> entry.getValue().getData().equals(checkValue));
     }
 
+    @Override
     public boolean compare(String key, String value) {
         DataAndTime dataAndTime = expireDataMap.get(key);
         if(dataAndTime != null) {
@@ -62,16 +67,19 @@ public class CacheManagerImpl implements CacheManager { //FIXME
         return false;
     }
 
+    @Override
     public String getData(String key) {
         DataAndTime dataAndTime = expireDataMap.get(key);
         return dataAndTime.getData();
     }
 
+    @Override
     public void changeTime(String key, int minute) {
         String savedValue = expireDataMap.get(key).getData();
         add(key, savedValue, minute);
     }
 
+    @Override
     public String delete(String key) {
         DataAndTime remove = expireDataMap.remove(key);
         log.info("remove to expireDataMap key = {}", key);

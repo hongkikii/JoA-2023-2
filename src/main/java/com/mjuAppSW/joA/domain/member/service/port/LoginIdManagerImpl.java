@@ -22,6 +22,7 @@ public class LoginIdManagerImpl implements LoginIdManager {
     private final MemberService memberService;
     private final CacheManager cacheManager;
 
+    @Override
     public void validate(String id) {
         if (id.length() < 5 || id.length() > 20) {
             throw new InvalidLoginIdException();
