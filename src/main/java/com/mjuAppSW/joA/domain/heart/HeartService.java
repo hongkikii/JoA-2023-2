@@ -2,6 +2,8 @@ package com.mjuAppSW.joA.domain.heart;
 
 import com.mjuAppSW.joA.domain.heart.dto.HeartRequest;
 import com.mjuAppSW.joA.domain.heart.dto.HeartResponse;
+import com.mjuAppSW.joA.domain.heart.repository.HeartJpaRepository;
+import com.mjuAppSW.joA.domain.heart.repository.HeartRepository;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;

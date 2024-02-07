@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.geography.location;
 
-import com.mjuAppSW.joA.domain.heart.HeartRepository;
+import com.mjuAppSW.joA.domain.heart.repository.HeartRepository;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.geography.block.exception.LocationNotFoundException;
