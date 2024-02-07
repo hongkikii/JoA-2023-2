@@ -45,7 +45,7 @@ public class CertifyService { //FIXME
                 CERTIFY_NUMBER + sessionId, BEFORE_CERTIFY_TIME);
         cacheManager.add(BEFORE_EMAIL + sessionId, eMail, BEFORE_CERTIFY_TIME);
 
-        mailSender.send(eMail, CERTIFY_NUMBER_IS,certifyNum);
+        mailSender.send(eMail, CERTIFY_NUMBER_IS, certifyNum);
         return SessionIdResponse.of(sessionId);
     }
 
