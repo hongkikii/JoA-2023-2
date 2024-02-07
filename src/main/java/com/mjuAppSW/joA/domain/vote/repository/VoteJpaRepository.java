@@ -1,5 +1,6 @@
-package com.mjuAppSW.joA.domain.vote;
+package com.mjuAppSW.joA.domain.vote.repository;
 
+import com.mjuAppSW.joA.domain.vote.Vote;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Pageable;
@@ -7,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface VoteRepository extends JpaRepository<Vote, Long> {
+public interface VoteJpaRepository extends JpaRepository<Vote, Long> {
     @Query("SELECT vc.name FROM Vote v JOIN v.voteCategory vc WHERE v.member.id = :id AND v.isValid = true GROUP BY vc.name ORDER BY COUNT(vc.name) DESC")
     List<String> findVoteCategoryById(@Param("id") Long id, Pageable pageable);
 

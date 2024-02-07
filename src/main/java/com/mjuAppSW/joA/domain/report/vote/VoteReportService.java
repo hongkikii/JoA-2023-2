@@ -9,7 +9,8 @@ import com.mjuAppSW.joA.domain.report.vote.exception.ReportCategoryNotFoundExcep
 import com.mjuAppSW.joA.domain.report.vote.exception.VoteNotFoundException;
 import com.mjuAppSW.joA.domain.report.vote.exception.VoteReportAlreadyExistedException;
 import com.mjuAppSW.joA.domain.vote.Vote;
-import com.mjuAppSW.joA.domain.vote.VoteRepository;
+import com.mjuAppSW.joA.domain.vote.repository.VoteJpaRepository;
+import com.mjuAppSW.joA.domain.vote.repository.VoteRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;

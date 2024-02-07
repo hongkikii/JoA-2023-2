@@ -3,6 +3,8 @@ package com.mjuAppSW.joA.domain.vote;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.vote.exception.InvalidVoteExistedException;
+import com.mjuAppSW.joA.domain.vote.repository.VoteJpaRepository;
+import com.mjuAppSW.joA.domain.vote.repository.VoteRepository;
 import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
 import com.mjuAppSW.joA.domain.vote.dto.request.VoteRequest;
 import com.mjuAppSW.joA.domain.vote.dto.response.VoteContent;
