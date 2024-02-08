@@ -1,10 +1,11 @@
-package com.mjuAppSW.joA.domain.vote;
+package com.mjuAppSW.joA.domain.vote.service;
 
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
+import com.mjuAppSW.joA.domain.vote.Vote;
 import com.mjuAppSW.joA.domain.vote.repository.VoteRepository;
 import com.mjuAppSW.joA.domain.voteCategory.VoteCategoryQueryService;
-import com.mjuAppSW.joA.geography.block.BlockQueryService;
+import com.mjuAppSW.joA.geography.block.service.BlockQueryService;
 import com.mjuAppSW.joA.domain.vote.dto.request.VoteRequest;
 import com.mjuAppSW.joA.domain.vote.dto.response.VoteListResponse;
 import com.mjuAppSW.joA.domain.voteCategory.VoteCategory;

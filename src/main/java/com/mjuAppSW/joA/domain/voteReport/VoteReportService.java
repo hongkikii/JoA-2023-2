@@ -5,7 +5,7 @@ import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.reportCategory.ReportCategory;
 import com.mjuAppSW.joA.domain.reportCategory.ReportCategoryQueryService;
 import com.mjuAppSW.joA.domain.vote.Vote;
-import com.mjuAppSW.joA.domain.vote.VoteQueryService;
+import com.mjuAppSW.joA.domain.vote.service.VoteQueryService;
 import com.mjuAppSW.joA.domain.vote.dto.VoteReportRequest;
 import com.mjuAppSW.joA.domain.vote.exception.VoteReportAlreadyExistedException;
 import jakarta.transaction.Transactional;

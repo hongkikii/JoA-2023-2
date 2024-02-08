@@ -1,16 +1,18 @@
-package com.mjuAppSW.joA.geography.location;
+package com.mjuAppSW.joA.geography.location.service;
 
-import com.mjuAppSW.joA.domain.heart.HeartQueryService;
+import com.mjuAppSW.joA.domain.heart.service.HeartQueryService;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.geography.college.PCollege;
 import com.mjuAppSW.joA.geography.college.PCollegeService;
+import com.mjuAppSW.joA.geography.location.Location;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByInfo;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByListResponse;
 import com.mjuAppSW.joA.geography.location.dto.request.UpdateRequest;
 import com.mjuAppSW.joA.geography.location.dto.response.UpdateResponse;
 import com.mjuAppSW.joA.geography.location.exception.OutOfCollegeException;
 import com.mjuAppSW.joA.geography.location.repository.LocationRepository;
+import com.mjuAppSW.joA.geography.location.service.LocationQueryService;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;

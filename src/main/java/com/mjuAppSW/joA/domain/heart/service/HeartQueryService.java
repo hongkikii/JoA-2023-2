@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.heart;
+package com.mjuAppSW.joA.domain.heart.service;
 
 import com.mjuAppSW.joA.domain.heart.repository.HeartRepository;
 import lombok.RequiredArgsConstructor;

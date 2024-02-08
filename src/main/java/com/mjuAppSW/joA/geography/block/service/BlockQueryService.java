@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.geography.block;
+package com.mjuAppSW.joA.geography.block.service;
 
 import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
 import com.mjuAppSW.joA.geography.block.exception.BlockAlreadyExistedException;

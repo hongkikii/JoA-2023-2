@@ -1,6 +1,7 @@
-package com.mjuAppSW.joA.geography.location;
+package com.mjuAppSW.joA.geography.location.service;
 
 import com.mjuAppSW.joA.geography.block.exception.LocationNotFoundException;
+import com.mjuAppSW.joA.geography.location.Location;
 import com.mjuAppSW.joA.geography.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,12 +1,13 @@
-package com.mjuAppSW.joA.domain.heart;
+package com.mjuAppSW.joA.domain.heart.service;
 
+import com.mjuAppSW.joA.domain.heart.Heart;
 import com.mjuAppSW.joA.domain.heart.dto.HeartRequest;
 import com.mjuAppSW.joA.domain.heart.dto.HeartResponse;
 import com.mjuAppSW.joA.domain.heart.repository.HeartRepository;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberService;
-import com.mjuAppSW.joA.geography.block.BlockQueryService;
+import com.mjuAppSW.joA.geography.block.service.BlockQueryService;
 import com.mjuAppSW.joA.domain.heart.exception.HeartAlreadyExistedException;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
