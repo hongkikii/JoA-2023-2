@@ -1,11 +1,9 @@
 package com.mjuAppSW.joA.domain.vote;
 
-import com.mjuAppSW.joA.domain.vote.dto.response.VoteContent;
 import com.mjuAppSW.joA.domain.vote.exception.InvalidVoteExistedException;
 import com.mjuAppSW.joA.domain.vote.exception.VoteAlreadyExistedException;
 import com.mjuAppSW.joA.domain.vote.repository.VoteRepository;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,18 +29,8 @@ public class VoteQueryService {
         }
     }
 
-    public List<VoteContent> getValidAllBy(Long takeId) {
+    public List<Vote> getValidAllBy(Long takeId) {
         Pageable pageable = PageRequest.of(0, 30);
-        return  voteRepository.findValidAllBy(takeId, pageable).stream()
-                .map(this::createVoteContent)
-                .collect(Collectors.toList());
-    }
-
-    private VoteContent createVoteContent(Vote vote) {
-        return VoteContent.builder()
-                .voteId(vote.getId())
-                .categoryId(vote.getVoteCategory().getId())
-                .hint(vote.getHint())
-                .build();
+        return  voteRepository.findValidAllBy(takeId, pageable);
     }
 }
