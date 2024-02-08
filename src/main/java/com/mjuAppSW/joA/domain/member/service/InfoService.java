@@ -51,7 +51,7 @@ public class InfoService {
         return MyPageResponse.of(member, todayHeart, totalHeart, voteTop3);
     }
 
-    public ChattingPageResponse getChattingListPage(Long roomId, Long memberId){
+    public ChattingPageResponse getChattingPage(Long roomId, Long memberId){
         Room room = roomService.findByRoomId(roomId);
         Member member = memberService.getBySessionId(memberId);
         RoomInMember roomInMember = roomInMemberService.findByRoomAndMember(room, member);

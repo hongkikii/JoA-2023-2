@@ -163,7 +163,7 @@ public class InfoApiController {
     })
     @GetMapping("/userinfo")
     public ResponseEntity<SuccessResponse<ChattingPageResponse>> getUserInfo(@RequestParam("roomId") Long roomId, @RequestParam("memberId") Long memberId){
-        return SuccessResponse.of(infoService.getChattingListPage(roomId, memberId))
+        return SuccessResponse.of(infoService.getChattingPage(roomId, memberId))
             .asHttp(HttpStatus.OK);
     }
 }
