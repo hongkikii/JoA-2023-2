@@ -54,7 +54,7 @@ public class Vote {
         this.isValid = true;
     }
 
-    public void changeInvalid() {
+    public void changeToInvalid() {
         this.isValid = false;
     }
 }

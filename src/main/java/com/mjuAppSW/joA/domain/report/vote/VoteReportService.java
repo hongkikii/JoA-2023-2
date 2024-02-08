@@ -35,7 +35,7 @@ public class VoteReportService {
         checkEqualReport(voteId);
 
         createVoteReport(vote, reportCategory, request.getContent());
-        vote.changeInvalid();
+        vote.changeToInvalid();
         giveMember.addReportCount();
     }
 
