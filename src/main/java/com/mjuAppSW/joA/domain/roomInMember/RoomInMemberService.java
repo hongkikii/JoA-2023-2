@@ -4,13 +4,14 @@ import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
 
 import com.mjuAppSW.joA.common.encryption.EncryptManager;
 import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.domain.member.service.MemberService;
+import com.mjuAppSW.joA.domain.member.vo.UserInfoVO;
 import com.mjuAppSW.joA.domain.message.MessageRepository;
-import com.mjuAppSW.joA.domain.message.dto.vo.CurrentMessageVO;
 import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
+import com.mjuAppSW.joA.domain.message.exception.MessageNotFoundException;
 import com.mjuAppSW.joA.domain.room.Room;
-import com.mjuAppSW.joA.domain.room.RoomRepository;
-import com.mjuAppSW.joA.domain.room.exception.RoomNotFoundException;
+import com.mjuAppSW.joA.domain.room.RoomService;
 import com.mjuAppSW.joA.domain.roomInMember.dto.request.UpdateExpiredRequest;
 import com.mjuAppSW.joA.domain.roomInMember.dto.request.VoteRequest;
 import com.mjuAppSW.joA.domain.roomInMember.dto.response.RoomListResponse;
@@ -36,8 +37,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class RoomInMemberService {
+	private final RoomService roomService;
     private final RoomInMemberRepository roomInMemberRepository;
-    private final RoomRepository roomRepository;
     private final MessageRepository messageRepository;
     private final MemberService memberService;
     private final EncryptManager encryptManager;
@@ -113,7 +114,7 @@ public class RoomInMemberService {
 
     @Transactional
     public void createRoom(Long roomId, String[] idArr){
-        Room room = findByRoomId(roomId);
+        Room room = roomService.findByRoomId(roomId);
 
         for(String memberId : idArr){
             Member member = memberService.getById(Long.parseLong(memberId));
@@ -130,7 +131,7 @@ public class RoomInMemberService {
 
     @Transactional
     public VoteResponse saveVoteResult(VoteRequest request){
-        Room room = findByRoomId(request.getRoomId());
+        Room room = roomService.findByRoomId(request.getRoomId());
         Member member = memberService.getBySessionId(request.getMemberId());
         RoomInMember roomInMember = findByRoomAndMember(room, member);
         if (roomInMember.getResult().equals(APPROVE_VOTE) || roomInMember.getResult().equals(DISAPPROVE_VOTE)) {
@@ -144,7 +145,7 @@ public class RoomInMemberService {
 
     @Transactional
     public void updateExpired(UpdateExpiredRequest request) {
-        Room room = findByRoomId(request.getRoomId());
+        Room room = roomService.findByRoomId(request.getRoomId());
         Member member = memberService.getBySessionId(request.getMemberId());
         RoomInMember roomInMember = findByRoomAndMember(room, member);
 
@@ -153,7 +154,7 @@ public class RoomInMemberService {
 
     @Transactional
     public void updateEntryTime(String sRoomId, String sMemberId){
-		Room room = findByRoomId(Long.parseLong(sRoomId));
+		Room room = roomService.findByRoomId(Long.parseLong(sRoomId));
         Member member = memberService.getById(Long.parseLong(sMemberId));
 		RoomInMember roomInMember = findByRoomAndMember(room, member);
 
@@ -162,7 +163,7 @@ public class RoomInMemberService {
 
     @Transactional
     public void updateExitTime(String sRoomId, String sMemberId){
-		Room room = findByRoomId(Long.parseLong(sRoomId));
+		Room room = roomService.findByRoomId(Long.parseLong(sRoomId));
         Member member = memberService.getById(Long.parseLong(sMemberId));
 		RoomInMember roomInMember = findByRoomAndMember(room, member);
 
@@ -170,7 +171,7 @@ public class RoomInMemberService {
     }
 
     public Boolean checkExpired(Long roomId, Long memberId){
-		Room room = findByRoomId(roomId);
+		Room room = roomService.findByRoomId(roomId);
         Member member = memberService.getById(memberId);
 		RoomInMember opponent = findOpponentByRoomAndMember(room, member);
 
@@ -179,7 +180,7 @@ public class RoomInMemberService {
     }
 
     public Boolean checkIsWithDrawal(Long roomId, Long memberId){
-		Room room = findByRoomId(roomId);
+		Room room = roomService.findByRoomId(roomId);
         Member member = memberService.getById(memberId);
 		RoomInMember rim = findOpponentByRoomAndMember(room, member);
 
@@ -188,13 +189,23 @@ public class RoomInMemberService {
         return false;
     }
 
-	private Room findByRoomId(Long roomId){
-		return roomRepository.findById(roomId)
-			.orElseThrow(RoomNotFoundException::new);
+	public RoomInMember findByRoomAndMember(Room room, Member member){
+		return roomInMemberRepository.findByRoomAndMember(room, member)
+			.orElseThrow(RoomInMemberNotFoundException::new);
 	}
 
-	private RoomInMember findOpponentByRoomAndMember(Room room, Member member){
+	public RoomInMember findOpponentByRoomAndMember(Room room, Member member){
 		return roomInMemberRepository.findOpponentByRoomAndMember(room, member)
+			.orElseThrow(RoomInMemberNotFoundException::new);
+	}
+
+	public UserInfoVO findOpponentUserInfoByRoomAndMember(Room room, Member member){
+		return roomInMemberRepository.findOpponentUserInfoByRoomAndMember(room, member)
+			.orElseThrow(MemberNotFoundException::new);
+	}
+
+	public RoomInMember checkOpponentExpired(Room room, Member member){
+		return roomInMemberRepository.checkOpponentExpired(room, member, NOT_EXIT)
 			.orElseThrow(RoomInMemberNotFoundException::new);
 	}
 
@@ -203,13 +214,11 @@ public class RoomInMemberService {
 			.orElseThrow(RoomInMemberNotFoundException::new);
 	}
 
-	private RoomInMember findByRoomAndMember(Room room, Member member){
-		return roomInMemberRepository.findByRoomAndMember(room, member)
-			.orElseThrow(RoomInMemberNotFoundException::new);
-	}
-
 	private RoomInfoIncludeMessageVO findRoomInfoIncludeMessageByRoomAndMember(Room room, Member member){
-		return roomInMemberRepository.findRoomInfoIncludeMessage(room, member)
-			.orElseThrow(RoomInMemberNotFoundException::new);
+		List<RoomInfoIncludeMessageVO> roomInfoIncludeMessageVOList = roomInMemberRepository.findRoomInfoIncludeMessage(room, member);
+		if(roomInfoIncludeMessageVOList.isEmpty()){
+			throw new MessageNotFoundException();
+		}
+		return roomInfoIncludeMessageVOList.get(0);
 	}
 }

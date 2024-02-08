@@ -9,16 +9,12 @@ import com.mjuAppSW.joA.domain.member.dto.response.MyPageResponse;
 import com.mjuAppSW.joA.domain.member.dto.request.PictureRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SettingPageResponse;
 import com.mjuAppSW.joA.domain.member.dto.response.ChattingPageResponse;
-import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import com.mjuAppSW.joA.domain.member.vo.UserInfoVO;
 import com.mjuAppSW.joA.domain.room.Room;
-import com.mjuAppSW.joA.domain.room.RoomRepository;
-import com.mjuAppSW.joA.domain.room.exception.RoomNotFoundException;
+import com.mjuAppSW.joA.domain.room.RoomService;
 import com.mjuAppSW.joA.domain.roomInMember.RoomInMember;
-import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberRepository;
-import com.mjuAppSW.joA.domain.roomInMember.exception.RoomInMemberNotFoundException;
-import com.mjuAppSW.joA.domain.vote.repository.VoteJpaRepository;
+import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberService;
 import com.mjuAppSW.joA.domain.member.dto.response.VotePageResponse;
 import com.mjuAppSW.joA.domain.member.dto.response.LocationPageResponse;
 import com.mjuAppSW.joA.domain.vote.repository.VoteRepository;
@@ -35,11 +31,11 @@ import org.springframework.stereotype.Service;
 public class InfoService {
 
     private final MemberService memberService;
+    private final RoomService roomService;
+    private final RoomInMemberService roomInMemberService;
     private final ImageUploader imageUploader;
     private final HeartRepository heartRepository;
     private final VoteRepository voteRepository;
-    private final RoomRepository roomRepository;
-    private final RoomInMemberRepository roomInMemberRepository;
 
     public SettingPageResponse getSettingPage(Long sessionId) {
         return SettingPageResponse.of(memberService.getNormalBySessionId(sessionId));
@@ -55,12 +51,12 @@ public class InfoService {
         return MyPageResponse.of(member, todayHeart, totalHeart, voteTop3);
     }
 
-    public ChattingPageResponse getUserInfo(Long roomId, Long memberId){
-        Room room = findByRoomId(roomId);
+    public ChattingPageResponse getChattingPage(Long roomId, Long memberId){
+        Room room = roomService.findByRoomId(roomId);
         Member member = memberService.getBySessionId(memberId);
-        RoomInMember roomInMember = findByRoomAndMember(room, member);
+        RoomInMember roomInMember = roomInMemberService.findByRoomAndMember(room, member);
 
-        UserInfoVO userInfoVO = findOpponentUserInfoByRoomAndMember(roomInMember.getRoom(), roomInMember.getMember());
+        UserInfoVO userInfoVO = roomInMemberService.findOpponentUserInfoByRoomAndMember(roomInMember.getRoom(), roomInMember.getMember());
         return ChattingPageResponse.of(userInfoVO.getName(), userInfoVO.getUrlCode(), userInfoVO.getBio());
     }
 
@@ -101,21 +97,6 @@ public class InfoService {
             imageUploader.delete(member.getUrlCode());
             member.deleteUrlCode();
         }
-    }
-
-    private Room findByRoomId(Long roomId){
-        return roomRepository.findById(roomId)
-            .orElseThrow(RoomNotFoundException::new);
-    }
-
-    private RoomInMember findByRoomAndMember(Room room, Member member){
-        return roomInMemberRepository.findByRoomAndMember(room, member)
-            .orElseThrow(RoomInMemberNotFoundException::new);
-    }
-
-    private UserInfoVO findOpponentUserInfoByRoomAndMember(Room room, Member member){
-        return roomInMemberRepository.findOpponentUserInfoByRoomAndMember(room, member)
-            .orElseThrow(MemberNotFoundException::new);
     }
 
     private boolean isNotBasicPicture(String urlCode) {

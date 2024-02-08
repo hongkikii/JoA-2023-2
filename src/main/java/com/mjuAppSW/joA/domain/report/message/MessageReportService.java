@@ -13,8 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.mjuAppSW.joA.domain.message.Message;
-import com.mjuAppSW.joA.domain.message.MessageRepository;
-import com.mjuAppSW.joA.domain.message.exception.MessageNotFoundException;
+import com.mjuAppSW.joA.domain.message.MessageService;
 import com.mjuAppSW.joA.domain.report.ReportCategory;
 import com.mjuAppSW.joA.domain.report.ReportCategoryRepository;
 import com.mjuAppSW.joA.domain.report.message.dto.request.ReportRequest;
@@ -30,15 +29,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class MessageReportService {
-
-    private final MessageReportRepository messageReportRepository;
-    private final MessageRepository messageRepository;
-    private final ReportCategoryRepository reportCategoryRepository;
     private final MemberService memberService;
+    private final MessageService messageService;
+    private final MessageReportRepository messageReportRepository;
+    private final ReportCategoryRepository reportCategoryRepository;
 
     @Transactional
     public void messageReport(ReportRequest request, LocalDateTime messageReportDate){
-        Message message = findByMessageId(request.getMessageId());
+        Message message = messageService.findByMessageId(request.getMessageId());
         ReportCategory reportCategory = findByCategoryId(request.getCategoryId());
         checkExistedReportMessage(message);
 
@@ -61,10 +59,6 @@ public class MessageReportService {
         messageReportRepository.delete(messageReport);
     }
 
-    private Message findByMessageId(Long messageId){
-        return messageRepository.findById(messageId)
-            .orElseThrow(MessageNotFoundException::new);
-    }
     private MessageReport findByMessageReportId(Long messageReportId){
         return messageReportRepository.findById(messageReportId)
             .orElseThrow(MessageReportNotFoundException::new);

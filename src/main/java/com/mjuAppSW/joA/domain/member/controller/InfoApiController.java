@@ -161,9 +161,9 @@ public class InfoApiController {
         @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
         @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다.")
     })
-    @GetMapping("/userinfo")
+    @GetMapping("/chatting-page")
     public ResponseEntity<SuccessResponse<ChattingPageResponse>> getUserInfo(@RequestParam("roomId") Long roomId, @RequestParam("memberId") Long memberId){
-        return SuccessResponse.of(infoService.getUserInfo(roomId, memberId))
+        return SuccessResponse.of(infoService.getChattingPage(roomId, memberId))
             .asHttp(HttpStatus.OK);
     }
 }
