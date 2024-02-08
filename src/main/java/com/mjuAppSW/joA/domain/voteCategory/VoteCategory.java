@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.vote.voteCategory;
+package com.mjuAppSW.joA.domain.voteCategory;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.vote.voteCategory;
+package com.mjuAppSW.joA.domain.voteCategory;
 
 import com.mjuAppSW.joA.domain.vote.exception.VoteCategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
