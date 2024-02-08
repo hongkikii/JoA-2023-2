@@ -51,7 +51,7 @@ public class JoinService { //FIXME
         String eMail = cacheManager.getData(AFTER_EMAIL + sessionId);
         String[] splitEMail = eMail.split(EMAIL_SPLIT);
         String uEmail = splitEMail[0];
-        MCollege mCollege = mCollegeService.findByDomain(splitEMail[1]);
+        MCollege mCollege = mCollegeService.getByDomain(splitEMail[1]);
 
         memberService.create(sessionId, request.getName(), request.getLoginId(),
                             request.getPassword(), uEmail, mCollege);

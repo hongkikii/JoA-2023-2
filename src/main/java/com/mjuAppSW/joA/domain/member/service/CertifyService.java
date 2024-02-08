@@ -32,7 +32,7 @@ public class CertifyService { //FIXME
     private final MailSender mailSender;
 
     public SessionIdResponse send(SendCertifyNumRequest request) {
-        MCollege college = mCollegeService.findById(request.getCollegeId());
+        MCollege college = mCollegeService.getById(request.getCollegeId());
         String uEmail = request.getCollegeEmail();
 
         memberService.checkExist(uEmail, college);

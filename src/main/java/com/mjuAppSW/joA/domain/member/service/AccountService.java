@@ -44,7 +44,7 @@ public class AccountService {
     }
 
     public void findLoginId(String collegeEmail, Long collegeId) {
-        MCollege college = mCollegeService.findById(collegeId);
+        MCollege college = mCollegeService.getById(collegeId);
         Member member = memberService.getByUEmailAndCollege(collegeEmail, college);
 
         String email = member.getUEmail() + college.getDomain();
