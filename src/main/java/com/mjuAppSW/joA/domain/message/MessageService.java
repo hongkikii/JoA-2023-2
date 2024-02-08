@@ -7,12 +7,11 @@ import com.mjuAppSW.joA.domain.message.dto.vo.MessageVO;
 import com.mjuAppSW.joA.domain.message.dto.response.MessageResponse;
 import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
 import com.mjuAppSW.joA.domain.message.exception.FailEncryptException;
+import com.mjuAppSW.joA.domain.message.exception.MessageNotFoundException;
 import com.mjuAppSW.joA.domain.room.Room;
-import com.mjuAppSW.joA.domain.room.RoomRepository;
-import com.mjuAppSW.joA.domain.room.exception.RoomNotFoundException;
+import com.mjuAppSW.joA.domain.room.RoomService;
 import com.mjuAppSW.joA.domain.roomInMember.RoomInMember;
-import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberRepository;
-import com.mjuAppSW.joA.domain.roomInMember.exception.RoomInMemberNotFoundException;
+import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -29,15 +28,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class MessageService {
-    private final MessageRepository messageRepository;
-    private final RoomRepository roomRepository;
-    private final RoomInMemberRepository roomInMemberRepository;
     private final MemberService memberService;
+    private final RoomService roomService;
+    private final RoomInMemberService roomInMemberService;
+    private final MessageRepository messageRepository;
     private final EncryptManager encryptManager;
 
     @Transactional
     public Long saveMessage(Long roomId, Long memberId, String content, String isChecked, LocalDateTime createdMessageDate) {
-        Room room = findByRoomId(roomId);
+        Room room = roomService.findByRoomId(roomId);
         Member member = memberService.getById(memberId);
         String encryptedMessage = encryptManager.encrypt(content, room.getEncryptKey());
         if(encryptedMessage == null){
@@ -55,9 +54,9 @@ public class MessageService {
     }
 
     public MessageResponse loadMessage(Long roomId, Long memberId) {
-        Room room = findByRoomId(roomId);
+        Room room = roomService.findByRoomId(roomId);
         Member member = memberService.getBySessionId(memberId);
-        RoomInMember roomInMember = findByRoomAndMember(room, member);
+        RoomInMember roomInMember = roomInMemberService.findByRoomAndMember(room, member);
 
         List<Message> messageList = messageRepository.findByRoom(roomInMember.getRoom());
         if(messageList.isEmpty()){ return MessageResponse.of(new ArrayList<>());}
@@ -79,9 +78,14 @@ public class MessageService {
         return messageType + " " + message.getId() + " " + message.getIsChecked() + " " + decryptedMessage;
     }
 
+    public Message findByMessageId(Long messageId){
+        return messageRepository.findById(messageId)
+            .orElseThrow(MessageNotFoundException::new);
+    }
+
     @Transactional
     public void updateIsChecked(String roomId, String memberId){
-        Room room = findByRoomId(Long.parseLong(roomId));
+        Room room = roomService.findByRoomId(Long.parseLong(roomId));
         Member member = memberService.getById(Long.parseLong(memberId));
 
         List<Message> getMessages = messageRepository.findMessage(room, member);
@@ -90,15 +94,5 @@ public class MessageService {
                 message.updateIsChecked();
             }
         }
-    }
-
-    private Room findByRoomId(Long roomId){
-        return roomRepository.findById(roomId)
-            .orElseThrow(RoomNotFoundException::new);
-    }
-
-    private RoomInMember findByRoomAndMember(Room room, Member member){
-        return roomInMemberRepository.findByRoomAndMember(room, member)
-            .orElseThrow(RoomInMemberNotFoundException::new);
     }
 }
