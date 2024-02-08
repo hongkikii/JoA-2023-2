@@ -39,7 +39,7 @@ public class HeartApiController {
     })
     @PostMapping
     public ResponseEntity<SuccessResponse<HeartResponse>> sendHeart(@RequestBody @Valid HeartRequest request) {
-        return SuccessResponse.of(heartService.sendHeart(request))
+        return SuccessResponse.of(heartService.send(request))
                 .asHttp(HttpStatus.OK);
     }
 }

@@ -222,7 +222,7 @@ public class RoomInMemberService {
 		return roomInfoIncludeMessageVOList.get(0);
 	}
 
-    public void checkRoomExisted(Member member1, Member member2) {
+    public void validateNoRoom(Member member1, Member member2) {
         if (roomInMemberRepository.checkRoomInMember(member1, member2).size() != 0) {
             throw new RoomAlreadyExistedException();
         }

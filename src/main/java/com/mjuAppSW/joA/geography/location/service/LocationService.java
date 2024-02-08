@@ -82,10 +82,8 @@ public class LocationService {
         checkWithinCollege(locationQueryService.getBy(member.getId()));
 
         Point point = getPoint(latitude, longitude, altitude);
-        System.out.println(member.getId());
         List<Long> nearMemberIds = locationRepository.findNearIds
                 (member.getId(), point, member.getCollege().getId());
-        System.out.println(nearMemberIds.size());
         List<NearByInfo> nearByList = makeNearByList(member, nearMemberIds);
         return NearByListResponse.of(nearByList);
     }
@@ -100,7 +98,7 @@ public class LocationService {
         return nearMemberIds.stream()
                         .map(nearId -> {
                             Member findMember = memberQueryService.getById(nearId);
-                            boolean isLiked = heartQueryService.isExisted(member.getId(), nearId);
+                            boolean isLiked = heartQueryService.isTodayHeartExisted(member.getId(), nearId);
                             return NearByInfo.builder()
                                         .id(findMember.getId())
                                         .name(findMember.getName())
