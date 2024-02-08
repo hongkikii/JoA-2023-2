@@ -11,11 +11,13 @@ import com.mjuAppSW.joA.domain.vote.exception.VoteReportAlreadyExistedException;
 import com.mjuAppSW.joA.domain.voteReport.repository.VoteReportRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Builder
 @RequiredArgsConstructor
 @Slf4j
 public class VoteReportService {
