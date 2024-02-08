@@ -53,6 +53,11 @@ public class LocationService {
                 .orElseThrow(LocationNotFoundException::new);
     }
 
+    public Location findLocation(Long memberId) {
+        return locationRepository.findById(memberId)
+                .orElseThrow(LocationNotFoundException::new);
+    }
+
     private boolean isPointWithinCollege(double latitude, double longitude, Polygon polygon) {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
         Coordinate coordinate = new Coordinate(longitude, latitude);

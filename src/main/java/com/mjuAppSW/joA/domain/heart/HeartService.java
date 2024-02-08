@@ -5,9 +5,8 @@ import com.mjuAppSW.joA.domain.heart.dto.HeartResponse;
 import com.mjuAppSW.joA.domain.heart.repository.HeartRepository;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
-import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberService;
-import com.mjuAppSW.joA.geography.block.BlockService;
+import com.mjuAppSW.joA.geography.block.BlockQueryService;
 import com.mjuAppSW.joA.domain.heart.exception.HeartAlreadyExistedException;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -22,7 +21,7 @@ public class HeartService {
 
     private final HeartRepository heartRepository;
     private final RoomInMemberService roomInMemberService;
-//    private final BlockService blockService;
+    private final BlockQueryService blockQueryService;
     private final MemberQueryService memberQueryService;
 
     @Transactional
@@ -32,7 +31,7 @@ public class HeartService {
         Long takeMemberId = request.getTakeId();
         Member takeMember = memberQueryService.getById(takeMemberId);
 
-        blockService.check(giveMemberId, takeMemberId);
+        blockQueryService.checkAndThrowIfBlocked(giveMemberId, takeMemberId);
         checkEqualHeart(giveMemberId, takeMemberId);
 
         Heart newHeart = createHeart(giveMemberId, takeMember);
