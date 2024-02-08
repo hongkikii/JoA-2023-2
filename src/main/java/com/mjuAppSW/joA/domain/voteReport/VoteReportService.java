@@ -8,6 +8,7 @@ import com.mjuAppSW.joA.domain.vote.Vote;
 import com.mjuAppSW.joA.domain.vote.service.VoteQueryService;
 import com.mjuAppSW.joA.domain.vote.dto.VoteReportRequest;
 import com.mjuAppSW.joA.domain.vote.exception.VoteReportAlreadyExistedException;
+import com.mjuAppSW.joA.domain.voteReport.repository.VoteReportRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,7 @@ public class VoteReportService {
 
     // 현재 해당 서비스 안에서만 사용중
     public void validateNoVoteReport(Long voteId) {
-        voteReportRepository.findByVoteId(voteId)
+        voteReportRepository.findBy(voteId)
                 .ifPresent(report -> {
                     throw new VoteReportAlreadyExistedException();});
     }
