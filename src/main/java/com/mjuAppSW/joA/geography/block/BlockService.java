@@ -7,7 +7,7 @@ import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
 import com.mjuAppSW.joA.geography.block.exception.BlockAlreadyExistedException;
 import com.mjuAppSW.joA.geography.block.exception.LocationNotFoundException;
 import com.mjuAppSW.joA.geography.location.Location;
-import com.mjuAppSW.joA.geography.location.infrastructure.LocationRepository;
+import com.mjuAppSW.joA.geography.location.repository.LocationRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

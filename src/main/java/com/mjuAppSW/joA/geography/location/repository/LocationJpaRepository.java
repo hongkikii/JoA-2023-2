@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.geography.location.infrastructure;
+package com.mjuAppSW.joA.geography.location.repository;
 
 import com.mjuAppSW.joA.geography.location.Location;
 import java.util.List;

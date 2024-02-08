@@ -11,7 +11,7 @@ import com.mjuAppSW.joA.geography.location.dto.response.NearByListResponse;
 import com.mjuAppSW.joA.geography.location.dto.request.UpdateRequest;
 import com.mjuAppSW.joA.geography.location.dto.response.UpdateResponse;
 import com.mjuAppSW.joA.geography.location.exception.OutOfCollegeException;
-import com.mjuAppSW.joA.geography.location.infrastructure.LocationRepository;
+import com.mjuAppSW.joA.geography.location.repository.LocationRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,10 +1,9 @@
 package com.mjuAppSW.joA.geography.college;
 
 import com.mjuAppSW.joA.geography.college.dto.PolygonRequest;
-import com.mjuAppSW.joA.geography.college.infrastructure.PCollegeRepository;
+import com.mjuAppSW.joA.geography.college.repository.PCollegeRepository;
 import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;

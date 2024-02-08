@@ -1,23 +1,14 @@
 package com.mjuAppSW.joA.domain.member.service;
 
-import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_1_STOP_STATUS;
-import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_2_STOP_STATUS;
-import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_3_STOP_STATUS;
-
 import com.mjuAppSW.joA.domain.college.MCollege;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.exception.LoginIdAlreadyExistedException;
-import com.mjuAppSW.joA.domain.member.exception.MemberAlreadyExistedException;
-import com.mjuAppSW.joA.domain.member.exception.PermanentBanException;
 import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import com.mjuAppSW.joA.domain.member.infrastructure.PasswordManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
-import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.geography.college.PCollege;
 import com.mjuAppSW.joA.geography.college.PCollegeService;
 import com.mjuAppSW.joA.geography.location.Location;
-import com.mjuAppSW.joA.geography.location.exception.AccessStoppedException;
-import com.mjuAppSW.joA.geography.location.infrastructure.LocationRepository;
+import com.mjuAppSW.joA.geography.location.repository.LocationRepository;
 import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
