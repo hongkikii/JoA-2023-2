@@ -1,6 +1,6 @@
-package com.mjuAppSW.joA.domain.report;
+package com.mjuAppSW.joA.domain.reportCategory;
 
-import com.mjuAppSW.joA.domain.report.vote.exception.ReportCategoryNotFoundException;
+import com.mjuAppSW.joA.domain.vote.exception.ReportCategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

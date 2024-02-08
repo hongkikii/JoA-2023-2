@@ -1,5 +1,6 @@
-package com.mjuAppSW.joA.domain.report.message;
+package com.mjuAppSW.joA.domain.messageReport;
 
+import com.mjuAppSW.joA.domain.message.Message;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.mjuAppSW.joA.domain.message.Message;
 import com.mjuAppSW.joA.domain.room.Room;
 
 @Repository

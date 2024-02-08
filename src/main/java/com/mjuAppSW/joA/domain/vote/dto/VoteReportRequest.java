@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.report.vote.dto;
+package com.mjuAppSW.joA.domain.vote.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;

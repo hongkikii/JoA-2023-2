@@ -1,13 +1,13 @@
-package com.mjuAppSW.joA.domain.report.vote;
+package com.mjuAppSW.joA.domain.voteReport;
 
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
-import com.mjuAppSW.joA.domain.report.ReportCategory;
-import com.mjuAppSW.joA.domain.report.ReportCategoryQueryService;
-import com.mjuAppSW.joA.domain.report.vote.dto.VoteReportRequest;
-import com.mjuAppSW.joA.domain.report.vote.exception.VoteReportAlreadyExistedException;
+import com.mjuAppSW.joA.domain.reportCategory.ReportCategory;
+import com.mjuAppSW.joA.domain.reportCategory.ReportCategoryQueryService;
 import com.mjuAppSW.joA.domain.vote.Vote;
 import com.mjuAppSW.joA.domain.vote.VoteQueryService;
+import com.mjuAppSW.joA.domain.vote.dto.VoteReportRequest;
+import com.mjuAppSW.joA.domain.vote.exception.VoteReportAlreadyExistedException;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;

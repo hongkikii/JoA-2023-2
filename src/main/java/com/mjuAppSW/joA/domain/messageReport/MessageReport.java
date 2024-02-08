@@ -1,9 +1,9 @@
-package com.mjuAppSW.joA.domain.report.message;
-
-import java.time.LocalDateTime;
+package com.mjuAppSW.joA.domain.messageReport;
 
 import com.mjuAppSW.joA.domain.message.Message;
-import com.mjuAppSW.joA.domain.report.ReportCategory;
+import java.time.LocalDateTime;
+
+import com.mjuAppSW.joA.domain.reportCategory.ReportCategory;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +19,6 @@ import jakarta.persistence.TemporalType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter

@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.report.vote.exception;
+package com.mjuAppSW.joA.domain.vote.exception;
 
 import com.mjuAppSW.joA.common.exception.BusinessException;
 import com.mjuAppSW.joA.common.exception.ErrorCode;

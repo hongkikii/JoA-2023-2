@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.vote;
 
-import com.mjuAppSW.joA.domain.report.vote.exception.VoteNotFoundException;
+import com.mjuAppSW.joA.domain.vote.exception.VoteNotFoundException;
 import com.mjuAppSW.joA.domain.vote.exception.InvalidVoteExistedException;
 import com.mjuAppSW.joA.domain.vote.exception.VoteAlreadyExistedException;
 import com.mjuAppSW.joA.domain.vote.repository.VoteRepository;

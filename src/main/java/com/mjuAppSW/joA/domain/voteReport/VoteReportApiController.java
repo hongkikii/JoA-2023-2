@@ -1,6 +1,6 @@
-package com.mjuAppSW.joA.domain.report.vote;
+package com.mjuAppSW.joA.domain.voteReport;
 
-import com.mjuAppSW.joA.domain.report.vote.dto.VoteReportRequest;
+import com.mjuAppSW.joA.domain.vote.dto.VoteReportRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

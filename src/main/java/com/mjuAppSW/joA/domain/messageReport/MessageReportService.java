@@ -1,9 +1,11 @@
-package com.mjuAppSW.joA.domain.report.message;
+package com.mjuAppSW.joA.domain.messageReport;
 
 import static com.mjuAppSW.joA.common.constant.Constants.MessageReport.*;
 
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
+import com.mjuAppSW.joA.domain.message.Message;
+import com.mjuAppSW.joA.domain.message.MessageService;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,14 +14,12 @@ import java.util.List;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.mjuAppSW.joA.domain.message.Message;
-import com.mjuAppSW.joA.domain.message.MessageService;
-import com.mjuAppSW.joA.domain.report.ReportCategory;
-import com.mjuAppSW.joA.domain.report.ReportCategoryRepository;
-import com.mjuAppSW.joA.domain.report.message.dto.request.ReportRequest;
-import com.mjuAppSW.joA.domain.report.message.exception.MessageReportAlreadyExistedException;
-import com.mjuAppSW.joA.domain.report.message.exception.MessageReportNotFoundException;
-import com.mjuAppSW.joA.domain.report.vote.exception.ReportCategoryNotFoundException;
+import com.mjuAppSW.joA.domain.reportCategory.ReportCategory;
+import com.mjuAppSW.joA.domain.reportCategory.ReportCategoryRepository;
+import com.mjuAppSW.joA.domain.message.dto.request.ReportRequest;
+import com.mjuAppSW.joA.domain.message.exception.MessageReportAlreadyExistedException;
+import com.mjuAppSW.joA.domain.message.exception.MessageReportNotFoundException;
+import com.mjuAppSW.joA.domain.vote.exception.ReportCategoryNotFoundException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -1,24 +1,18 @@
 package com.mjuAppSW.joA.common.websocket;
 
-import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
 import static com.mjuAppSW.joA.common.constant.Constants.WebSocketHandler.*;
 
 import com.mjuAppSW.joA.common.websocket.exception.MemberSessionListNullException;
 import com.mjuAppSW.joA.common.websocket.exception.RoomSessionListNullException;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
-import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.message.MessageService;
-import com.mjuAppSW.joA.domain.report.message.MessageReport;
-import com.mjuAppSW.joA.domain.report.message.MessageReportRepository;
+import com.mjuAppSW.joA.domain.messageReport.MessageReport;
+import com.mjuAppSW.joA.domain.messageReport.MessageReportRepository;
 import com.mjuAppSW.joA.domain.room.Room;
-import com.mjuAppSW.joA.domain.room.RoomRepository;
 import com.mjuAppSW.joA.domain.room.RoomService;
-import com.mjuAppSW.joA.domain.room.exception.RoomNotFoundException;
 import com.mjuAppSW.joA.domain.roomInMember.RoomInMember;
-import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberRepository;
 import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberService;
-import com.mjuAppSW.joA.domain.roomInMember.exception.RoomInMemberNotFoundException;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoExceptDateVO;
 
 import lombok.RequiredArgsConstructor;

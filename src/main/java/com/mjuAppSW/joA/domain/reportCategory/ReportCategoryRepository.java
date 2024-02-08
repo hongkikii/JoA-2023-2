@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.report;
+package com.mjuAppSW.joA.domain.reportCategory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
