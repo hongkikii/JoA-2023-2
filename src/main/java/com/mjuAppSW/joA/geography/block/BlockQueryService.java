@@ -14,13 +14,13 @@ public class BlockQueryService {
 
     private final BlockRepository blockRepository;
 
-    public void checkAndThrowIfBlockExists(Long blockerId, Long blockedId) {
+    public void validateNoEqualBlock(Long blockerId, Long blockedId) {
         blockRepository.findEqualBy(blockerId, blockedId)
                 .ifPresent(block -> {
                     throw new BlockAlreadyExistedException();});
     }
 
-    public void checkAndThrowIfBlocked(Long blockerId, Long blockedId) {
+    public void validateNoBlock(Long blockerId, Long blockedId) {
         if (!blockRepository.findBy(blockedId, blockerId).isEmpty()) {
             throw new BlockAccessForbiddenException();
         }

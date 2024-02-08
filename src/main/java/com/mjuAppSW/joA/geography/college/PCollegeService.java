@@ -35,7 +35,7 @@ public class PCollegeService {
         return geometryFactory.createPolygon(coordinates);
     }
 
-    public PCollege findById(Long collegeId) {
+    public PCollege getBy(Long collegeId) {
         return pCollegeRepository.findById(collegeId)
                 .orElseThrow(CollegeNotFoundException::new);
     }

@@ -31,7 +31,7 @@ public class HeartService {
         Long takeMemberId = request.getTakeId();
         Member takeMember = memberQueryService.getById(takeMemberId);
 
-        blockQueryService.checkAndThrowIfBlocked(giveMemberId, takeMemberId);
+        blockQueryService.validateNoBlock(giveMemberId, takeMemberId);
         checkEqualHeart(giveMemberId, takeMemberId);
 
         Heart newHeart = createHeart(giveMemberId, takeMember);

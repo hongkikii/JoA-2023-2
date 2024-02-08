@@ -53,7 +53,7 @@ public class LoginIdManagerImpl implements LoginIdManager {
 
     @Override
     public void checkInDb(String loginId) {
-        memberQueryService.checkExistedLoginId(loginId);
+        memberQueryService.validateNoExistedLoginId(loginId);
     }
 
 }
