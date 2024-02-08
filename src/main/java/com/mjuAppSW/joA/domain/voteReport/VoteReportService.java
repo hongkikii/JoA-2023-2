@@ -28,7 +28,7 @@ public class VoteReportService {
     private final MemberQueryService memberQueryService;
 
     @Transactional
-    public void execute(VoteReportRequest request) {
+    public void create(VoteReportRequest request) {
         Long voteId = request.getVoteId();
         ReportCategory reportCategory = reportCategoryQueryService.getBy(request.getReportId());
         Vote vote = voteQueryService.getBy(voteId);

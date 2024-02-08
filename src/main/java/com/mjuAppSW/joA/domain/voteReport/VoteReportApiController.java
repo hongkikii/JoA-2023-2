@@ -33,7 +33,7 @@ public class VoteReportApiController {
     })
     @PostMapping("/vote")
     public ResponseEntity<Void> execute(@RequestBody @Valid VoteReportRequest request) {
-        voteReportService.execute(request);
+        voteReportService.create(request);
         return ResponseEntity.noContent().build();
     }
 }
