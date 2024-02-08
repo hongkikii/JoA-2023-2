@@ -3,6 +3,7 @@ package com.mjuAppSW.joA.domain.roomInMember;
 import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
 
 import com.mjuAppSW.joA.common.encryption.EncryptManager;
+import com.mjuAppSW.joA.domain.heart.exception.RoomAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.domain.member.service.MemberService;
@@ -21,7 +22,6 @@ import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoExceptMessageVO;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoIncludeMessageVO;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoVO;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoExceptDateVO;
-import com.mjuAppSW.joA.domain.roomInMember.exception.RoomInMemberAlreadyExistedException;
 import com.mjuAppSW.joA.domain.roomInMember.exception.RoomInMemberNotFoundException;
 
 import jakarta.transaction.Transactional;
@@ -221,4 +221,10 @@ public class RoomInMemberService {
 		}
 		return roomInfoIncludeMessageVOList.get(0);
 	}
+
+    public void checkRoomExisted(Member member1, Member member2) {
+        if (roomInMemberRepository.checkRoomInMember(member1, member2).size() != 0) {
+            throw new RoomAlreadyExistedException();
+        }
+    }
 }

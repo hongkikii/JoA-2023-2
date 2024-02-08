@@ -3,6 +3,7 @@ package com.mjuAppSW.joA.geography.block;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.geography.block.dto.BlockRequest;
+import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
 import com.mjuAppSW.joA.geography.block.exception.BlockAlreadyExistedException;
 import com.mjuAppSW.joA.geography.block.exception.LocationNotFoundException;
 import com.mjuAppSW.joA.geography.location.Location;
@@ -42,5 +43,11 @@ public class BlockService {
         blockRepository.findEqualBlock(blockerId, blockedId)
                     .ifPresent(block -> {
                         throw new BlockAlreadyExistedException();});
+    }
+
+    public void check(Long giveMemberId, Long takeMemberId) {
+        if (blockRepository.findBlockByIds(takeMemberId, giveMemberId).size() != 0) {
+            throw new BlockAccessForbiddenException();
+        }
     }
 }
