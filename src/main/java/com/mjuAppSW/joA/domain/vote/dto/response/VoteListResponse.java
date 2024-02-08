@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class VoteListResponse {
     private final List<VoteContent> voteList;
 
-    public static VoteListResponse of (List voteList) {
+    public static VoteListResponse of (List<VoteContent> voteList) {
         return VoteListResponse.builder()
                 .voteList(voteList)
                 .build();
