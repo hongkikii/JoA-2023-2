@@ -1,5 +1,6 @@
 package com.mjuAppSW.joA.geography.location.service;
 
+import com.mjuAppSW.joA.domain.college.MCollege;
 import com.mjuAppSW.joA.domain.heart.service.HeartQueryService;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
@@ -12,13 +13,10 @@ import com.mjuAppSW.joA.geography.location.dto.request.UpdateRequest;
 import com.mjuAppSW.joA.geography.location.dto.response.UpdateResponse;
 import com.mjuAppSW.joA.geography.location.exception.OutOfCollegeException;
 import com.mjuAppSW.joA.geography.location.repository.LocationRepository;
-import com.mjuAppSW.joA.geography.location.service.LocationQueryService;
 import jakarta.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -28,7 +26,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class LocationService {
 
     private final LocationRepository locationRepository;
@@ -40,34 +37,17 @@ public class LocationService {
     @Transactional
     public UpdateResponse update(UpdateRequest request) {
         Member member = memberQueryService.getNormalBySessionId(request.getId());
-        Location oldLocation = locationQueryService.getBy(member.getId());
-        PCollege college = pCollegeService.getBy(oldLocation.getCollege().getCollegeId());
+        Long memberId = member.getId();
+        Location location = locationQueryService.getBy(memberId);
 
-        boolean isContained = isPointWithinCollege
-                (request.getLatitude(), request.getLongitude(), college.getPolygonField());
+        PCollege college = location.getCollege();
+        double latitude = request.getLatitude();
+        double longitude = request.getLongitude();
+        boolean isContained = pCollegeService.isWithinCollege(latitude, longitude, college);
 
-        create(request, oldLocation, isContained);
+        Point point = getPoint(latitude, longitude, request.getAltitude());
+        locationRepository.updateById(point, isContained, memberId);
         return UpdateResponse.of(isContained);
-    }
-
-    private boolean isPointWithinCollege(double latitude, double longitude, Polygon polygon) {
-        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
-        Coordinate coordinate = new Coordinate(longitude, latitude);
-        Point point = geometryFactory.createPoint(coordinate);
-
-        return polygon.contains(point);
-    }
-
-    private void create(UpdateRequest request, Location oldLocation, boolean isContained) {
-        Point point = getPoint(request.getLatitude(), request.getLongitude(), request.getAltitude());
-        Location newLocation = Location.builder()
-                                    .id(oldLocation.getId())
-                                    .college(oldLocation.getCollege())
-                                    .point(point)
-                                    .isContained(isContained)
-                                    .updateDate(LocalDateTime.now())
-                                    .build();
-        locationRepository.save(newLocation);
     }
 
     private Point getPoint(double latitude, double longitude, double altitude) {
@@ -76,19 +56,19 @@ public class LocationService {
         return geometryFactory.createPoint(coordinate);
     }
 
-    public NearByListResponse getNearByList
-            (Long sessionId, Double latitude, Double longitude, Double altitude) {
+    public NearByListResponse getNearByList(Long sessionId, Double latitude, Double longitude, Double altitude) {
         Member member = memberQueryService.getNormalBySessionId(sessionId);
-        checkWithinCollege(locationQueryService.getBy(member.getId()));
+        Long memberId = member.getId();
+        validateWithinCollege(locationQueryService.getBy(memberId));
 
         Point point = getPoint(latitude, longitude, altitude);
-        List<Long> nearMemberIds = locationRepository.findNearIds
-                (member.getId(), point, member.getCollege().getId());
+        MCollege mCollege = member.getCollege();
+        List<Long> nearMemberIds = locationRepository.findNearIds(memberId, point, mCollege.getId());
         List<NearByInfo> nearByList = makeNearByList(member, nearMemberIds);
         return NearByListResponse.of(nearByList);
     }
 
-    private void checkWithinCollege(Location location) {
+    private void validateWithinCollege(Location location) {
         if (!location.getIsContained()) {
             throw new OutOfCollegeException();
         }
@@ -96,17 +76,18 @@ public class LocationService {
 
     private List<NearByInfo> makeNearByList(Member member, List<Long> nearMemberIds) {
         return nearMemberIds.stream()
-                        .map(nearId -> {
-                            Member findMember = memberQueryService.getById(nearId);
-                            boolean isLiked = heartQueryService.isTodayHeartExisted(member.getId(), nearId);
-                            return NearByInfo.builder()
-                                        .id(findMember.getId())
-                                        .name(findMember.getName())
-                                        .urlCode(findMember.getUrlCode())
-                                        .bio(findMember.getBio())
-                                        .isLiked(isLiked)
-                                        .build();})
-                        .collect(Collectors.toList());
+                .map(nearId -> {
+                    Member findMember = memberQueryService.getById(nearId);
+                    boolean isLiked = heartQueryService.isTodayHeartExisted(member.getId(), nearId);
+                    return NearByInfo.builder()
+                            .id(findMember.getId())
+                            .name(findMember.getName())
+                            .urlCode(findMember.getUrlCode())
+                            .bio(findMember.getBio())
+                            .isLiked(isLiked)
+                            .build();
+                })
+                .toList();
     }
 
     @Transactional
