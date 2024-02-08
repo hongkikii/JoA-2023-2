@@ -26,7 +26,7 @@ public class VoteQueryService {
     }
 
     public void validateNoInvalidVotes(Long giveId, Long takeId) {
-        if (voteRepository.findInvalidAllBy(giveId, takeId).isEmpty()) {
+        if (!voteRepository.findInvalidAllBy(giveId, takeId).isEmpty()) {
             throw new InvalidVoteExistedException();
         }
     }
