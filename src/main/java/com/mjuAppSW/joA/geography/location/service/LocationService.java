@@ -52,6 +52,7 @@ public class LocationService {
         return UpdateResponse.of(isContained);
     }
 
+    // FIXME : 분리
     private Point getPoint(double latitude, double longitude, double altitude) {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
         Coordinate coordinate = new Coordinate(longitude, latitude, altitude);

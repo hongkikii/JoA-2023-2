@@ -24,6 +24,7 @@ public class PCollegeService {
         pCollegeRepository.save(college);
     }
 
+    // FIXME : 분리
     private Polygon makePolygon(PolygonRequest request) {
         GeometryFactory geometryFactory = new GeometryFactory();
 
