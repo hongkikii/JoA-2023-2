@@ -15,7 +15,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.mjuAppSW.joA.domain.reportCategory.ReportCategory;
-import com.mjuAppSW.joA.domain.reportCategory.ReportCategoryRepository;
+import com.mjuAppSW.joA.domain.reportCategory.repository.ReportCategoryRepository;
 import com.mjuAppSW.joA.domain.message.dto.request.ReportRequest;
 import com.mjuAppSW.joA.domain.message.exception.MessageReportAlreadyExistedException;
 import com.mjuAppSW.joA.domain.message.exception.MessageReportNotFoundException;
