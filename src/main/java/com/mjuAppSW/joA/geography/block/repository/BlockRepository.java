@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface BlockRepository {
     void save(Block newBlock);
 
-    Optional<Block> findEqualBlock(Long blockerId, Long blockedId);
+    Optional<Block> findEqualBy(Long blockerId, Long blockedId);
 
-    List<Block> findBlockByIds(Long takeMemberId, Long giveMemberId);
+    List<Block> findBy(Long takeMemberId, Long giveMemberId);
 }

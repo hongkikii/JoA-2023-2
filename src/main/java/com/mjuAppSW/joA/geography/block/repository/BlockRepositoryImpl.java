@@ -18,13 +18,13 @@ public class BlockRepositoryImpl implements BlockRepository{
     }
 
     @Override
-    public Optional<Block> findEqualBlock(Long blockerId, Long blockedId) {
-        return blockJpaRepository.findEqualBlock(blockerId, blockedId);
+    public Optional<Block> findEqualBy(Long blockerId, Long blockedId) {
+        return blockJpaRepository.findEqualBy(blockerId, blockedId);
     }
 
     @Override
-    public List<Block> findBlockByIds(Long blockerId, Long blockedId) {
-        return blockJpaRepository.findBlockByIds(blockerId, blockedId);
+    public List<Block> findBy(Long blockerId, Long blockedId) {
+        return blockJpaRepository.findBy(blockerId, blockedId);
     }
 
 }
