@@ -68,7 +68,8 @@ public class Member {
     private LocalDateTime stopEndDate;
 
     @Builder
-    public Member(String name, String loginId, String password, String salt, String uEmail, MCollege college, Long sessionId) {
+    public Member(Long id, String name, String loginId, String password, String salt, String uEmail, MCollege college, Long sessionId) {
+        this.id = id;
         this.name = name;
         this.loginId = loginId;
         this.password = password;

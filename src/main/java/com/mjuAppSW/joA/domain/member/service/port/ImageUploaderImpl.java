@@ -29,6 +29,7 @@ public class ImageUploaderImpl implements ImageUploader {
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucketName;
 
+    @Override
     public String put(Long memberId, String base64Picture) {
         String key = String.valueOf(memberId);
         byte[] pictureBytes = Base64.getDecoder().decode(base64Picture);
@@ -51,6 +52,7 @@ public class ImageUploaderImpl implements ImageUploader {
         }
     }
 
+    @Override
     public boolean delete(String key) {
         if(key.equals(EMPTY_STRING)) {
             return true;

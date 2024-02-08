@@ -50,7 +50,7 @@ public class JoinApiController {
     })
     @PostMapping
     public ResponseEntity<Void> join(@RequestBody @Valid JoinRequest request) {
-        joinService.join(request);
+        joinService.execute(request);
         return ResponseEntity.noContent().build();
     }
 }

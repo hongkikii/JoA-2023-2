@@ -15,5 +15,5 @@ public class PictureRequest {
     @NotNull
     private final Long id;
     @NotBlank
-    private String base64Picture;
+    private final String base64Picture;
 }

@@ -2,51 +2,45 @@ package com.mjuAppSW.joA.domain.heart;
 
 import com.mjuAppSW.joA.domain.heart.dto.HeartRequest;
 import com.mjuAppSW.joA.domain.heart.dto.HeartResponse;
+import com.mjuAppSW.joA.domain.heart.repository.HeartRepository;
 import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.member.service.MemberService;
-import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
+import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberService;
+import com.mjuAppSW.joA.geography.block.BlockService;
 import com.mjuAppSW.joA.domain.heart.exception.HeartAlreadyExistedException;
-import com.mjuAppSW.joA.domain.heart.exception.RoomAlreadyExistedException;
-import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberRepository;
-import com.mjuAppSW.joA.geography.block.BlockRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Builder
 @RequiredArgsConstructor
-@Slf4j
 public class HeartService {
 
     private final HeartRepository heartRepository;
-    private final RoomInMemberRepository roomInMemberRepository;
-    private final BlockRepository blockRepository;
-    private final MemberService memberService;
+    private final RoomInMemberService roomInMemberService;
+    private final BlockService blockService;
+    private final MemberQueryService memberQueryService;
 
     @Transactional
     public HeartResponse sendHeart(HeartRequest request) {
-        Member giveMember = memberService.getNormalBySessionId(request.getGiveId());
+        Member giveMember = memberQueryService.getNormalBySessionId(request.getGiveId());
         Long giveMemberId = giveMember.getId();
         Long takeMemberId = request.getTakeId();
-        Member takeMember = memberService.getById(takeMemberId);
+        Member takeMember = memberQueryService.getById(takeMemberId);
 
-        checkBlock(giveMemberId, takeMemberId);
+        blockService.check(giveMemberId, takeMemberId);
         checkEqualHeart(giveMemberId, takeMemberId);
 
         Heart newHeart = createHeart(giveMemberId, takeMember);
         heartRepository.save(newHeart);
-        checkExistedRoom(giveMember, takeMember);
+        roomInMemberService.checkRoomExisted(giveMember, takeMember);
 
         boolean isMatched = isOpponentHeartExisted(takeMemberId, giveMemberId);
         return HeartResponse.of(isMatched, giveMember, takeMember);
-    }
-
-    private void checkBlock(Long giveMemberId, Long takeMemberId) {
-        if (blockRepository.findBlockByIds(takeMemberId, giveMemberId).size() != 0) {
-            throw new BlockAccessForbiddenException();
-        }
     }
 
     private void checkEqualHeart(Long giveId, Long takeId) {
@@ -61,12 +55,6 @@ public class HeartService {
                 .member(takeMember)
                 .date(LocalDateTime.now())
                 .build();
-    }
-
-    private void checkExistedRoom(Member giveMember, Member takeMember) {
-        if (roomInMemberRepository.checkRoomInMember(giveMember, takeMember).size() != 0) {
-            throw new RoomAlreadyExistedException();
-        }
     }
 
     private boolean isOpponentHeartExisted(Long takeId, Long giveId) {

@@ -26,7 +26,7 @@ public enum ErrorCode {
     INVALID_S3(500, "M003", "S3 저장소 접근에 실패했습니다."),
     ACCESS_STOPPED(403, "M004", "정지된 계정입니다."),
     MEMBER_ALREADY_EXISTED(409, "M005", "이미 존재하는 사용자입니다."),
-    JOINING_MAIL(409, "M006", "사용 중인 이메일입니다."),
+    JOINING_MAIL(409, "M006", "회원가입 중인 이메일입니다."),
     SESSION_NOT_FOUND(404, "M007", "세션 id가 유효하지 않습니다."),
     MAIL_NOT_VERIFY(400, "M008", "이메일 인증이 완료되지 않았습니다."),
     INVALID_CERTIFY_NUMBER(400, "M009", "인증번호가 올바르지 않습니다."),

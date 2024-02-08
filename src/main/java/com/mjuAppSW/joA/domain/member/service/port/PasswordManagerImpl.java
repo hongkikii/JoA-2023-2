@@ -55,6 +55,7 @@ public class PasswordManagerImpl implements PasswordManager {
         }
     }
 
+    @Override
     public void compare(String originalPassword, String InputPassword) {
         if (!originalPassword.equals(InputPassword)) {
             throw new PasswordNotFoundException();

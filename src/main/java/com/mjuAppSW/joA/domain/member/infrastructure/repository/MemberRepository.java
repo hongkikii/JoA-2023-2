@@ -21,4 +21,8 @@ public interface MemberRepository {
     List<Member> findAll();
     
     List<Member> findJoiningAll();
+
+    void delete(Member member);
+
+    void deleteAll();
 }

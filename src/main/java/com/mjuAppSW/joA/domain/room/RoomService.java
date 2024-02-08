@@ -7,7 +7,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.WebSocketHandler.*;
 
 import com.mjuAppSW.joA.common.encryption.EncryptManager;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.service.MemberService;
+import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.message.MessageRepository;
 import com.mjuAppSW.joA.domain.report.message.MessageReport;
 import com.mjuAppSW.joA.domain.report.message.MessageReportRepository;
@@ -27,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -40,7 +39,7 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final RoomInMemberRepository roomInMemberRepository;
-    private final MemberService memberService;
+    private final MemberQueryService memberQueryService;
     private final MessageRepository messageRepository;
     private final MessageReportRepository messageReportRepository;
     private final EncryptManager encryptManager;
@@ -66,8 +65,8 @@ public class RoomService {
     }
 
     public void checkRoomInMember(Long memberId1, Long memberId2) {
-        Member member1 = memberService.getBySessionId(memberId1);
-        Member member2 = memberService.getById(memberId2);
+        Member member1 = memberQueryService.getBySessionId(memberId1);
+        Member member2 = memberQueryService.getById(memberId2);
         List<RoomInMember> roomInMemberList = roomInMemberRepository.checkRoomInMember(member1, member2);
         if(!roomInMemberList.isEmpty()){
             throw new RoomInMemberAlreadyExistedException();
@@ -75,8 +74,8 @@ public class RoomService {
     }
 
     public void checkMessageReport(Long memberId1, Long memberId2){
-        Member member1 = memberService.getBySessionId(memberId1);
-        Member member2 = memberService.getById(memberId2);
+        Member member1 = memberQueryService.getBySessionId(memberId1);
+        Member member2 = memberQueryService.getById(memberId2);
 
         List<MessageReport> myMessageReport = messageReportRepository.findByMemberId(member1.getId());
         List<MessageReport> opponentMessageReport = messageReportRepository.findByMemberId(member2.getId());

@@ -16,34 +16,36 @@ import com.mjuAppSW.joA.domain.member.exception.InvalidCertifyNumberException;
 import com.mjuAppSW.joA.domain.member.exception.JoiningMailException;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.MailSender;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@Builder
 @RequiredArgsConstructor
 public class CertifyService { //FIXME
 
-    private final MemberService memberService;
+    private final MemberQueryService memberQueryService;
     private final MCollegeService mCollegeService;
-    private final SessionService sessionManager;
+    private final SessionService sessionService;
     private final CacheManager cacheManager;
     private final MailSender mailSender;
 
     public SessionIdResponse send(SendCertifyNumRequest request) {
-        MCollege college = mCollegeService.findById(request.getCollegeId());
+        MCollege college = mCollegeService.getById(request.getCollegeId());
         String uEmail = request.getCollegeEmail();
 
-        memberService.checkExist(uEmail, college);
-        memberService.checkForbidden(uEmail, college);
+        memberQueryService.checkExist(uEmail, college);
+        memberQueryService.checkPermanentForbiddenMember(uEmail, college);
         String eMail = uEmail + college.getDomain();
         checkJoining(eMail);
 
-        long sessionId = sessionManager.create();
+        long sessionId = sessionService.create();
         String certifyNum = cacheManager.addRandomValue(
                 CERTIFY_NUMBER + sessionId, BEFORE_CERTIFY_TIME);
         cacheManager.add(BEFORE_EMAIL + sessionId, eMail, BEFORE_CERTIFY_TIME);
 
-        mailSender.send(eMail, CERTIFY_NUMBER_IS,certifyNum);
+        mailSender.send(eMail, CERTIFY_NUMBER_IS, certifyNum);
         return SessionIdResponse.of(sessionId);
     }
 
@@ -56,7 +58,7 @@ public class CertifyService { //FIXME
 
     public void verify(VerifyCertifyNumRequest request) {
         Long sessionId = request.getId();
-        sessionManager.checkStatusInCache(CERTIFY_NUMBER, sessionId);
+        sessionService.checkInCache(CERTIFY_NUMBER, sessionId);
 
         if (!cacheManager.compare(CERTIFY_NUMBER + sessionId, request.getCertifyNum())) {
             throw new InvalidCertifyNumberException();

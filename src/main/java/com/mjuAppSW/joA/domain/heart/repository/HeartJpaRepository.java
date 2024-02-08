@@ -1,11 +1,12 @@
-package com.mjuAppSW.joA.domain.heart;
+package com.mjuAppSW.joA.domain.heart.repository;
 
+import com.mjuAppSW.joA.domain.heart.Heart;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface HeartRepository extends JpaRepository<Heart, Long>  {
+public interface HeartJpaRepository extends JpaRepository<Heart, Long>  {
 
     @Query("SELECT COUNT(h) FROM Heart h WHERE h.member.id = :id AND DATE(h.date) = current_date")
     int countTodayHeartsById(@Param("id") Long id);

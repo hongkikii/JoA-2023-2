@@ -1,6 +1,6 @@
-package com.mjuAppSW.joA.geography.location;
+package com.mjuAppSW.joA.geography.location.repository;
 
-import java.time.LocalDate;
+import com.mjuAppSW.joA.geography.location.Location;
 import java.util.List;
 import java.util.Optional;
 import org.locationtech.jts.geom.Point;
@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface LocationRepository extends JpaRepository<Location, Long> {
+public interface LocationJpaRepository extends JpaRepository<Location, Long> {
 
 
     @Query(value = "SELECT l.member_id " +

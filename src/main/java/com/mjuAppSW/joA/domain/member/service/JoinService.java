@@ -9,20 +9,21 @@ import com.mjuAppSW.joA.domain.college.MCollege;
 import com.mjuAppSW.joA.domain.college.MCollegeService;
 import com.mjuAppSW.joA.domain.member.dto.request.JoinRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.VerifyIdRequest;
-import com.mjuAppSW.joA.domain.member.exception.LoginIdNotAuthorizedException;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.LoginIdManager;
 import jakarta.transaction.Transactional;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@Builder
 @RequiredArgsConstructor
 public class JoinService { //FIXME
 
     private final MemberService memberService;
     private final MCollegeService mCollegeService;
-    private final SessionService sessionManager;
+    private final SessionService sessionService;
     private final CacheManager cacheManager;
     private final LoginIdManager loginIdManager;
 
@@ -30,7 +31,7 @@ public class JoinService { //FIXME
         String loginId = request.getLoginId();
         Long sessionId = request.getSessionId();
         loginIdManager.validate(loginId);
-        sessionManager.checkStatusInCache(AFTER_EMAIL, sessionId);
+        sessionService.checkInCache(AFTER_EMAIL, sessionId);
         loginIdManager.checkInCache(sessionId, loginId);
         loginIdManager.checkInDb(loginId);
         cacheLoginId(sessionId, loginId);
@@ -42,15 +43,15 @@ public class JoinService { //FIXME
     }
 
     @Transactional
-    public void join(JoinRequest request) {
+    public void execute(JoinRequest request) {
         Long sessionId = request.getId();
-        sessionManager.checkStatusInCache(AFTER_EMAIL, sessionId);
+        sessionService.checkInCache(AFTER_EMAIL, sessionId);
         loginIdManager.checkNotCache(sessionId, request.getLoginId());
 
         String eMail = cacheManager.getData(AFTER_EMAIL + sessionId);
         String[] splitEMail = eMail.split(EMAIL_SPLIT);
         String uEmail = splitEMail[0];
-        MCollege mCollege = mCollegeService.findByDomain(splitEMail[1]);
+        MCollege mCollege = mCollegeService.getByDomain(splitEMail[1]);
 
         memberService.create(sessionId, request.getName(), request.getLoginId(),
                             request.getPassword(), uEmail, mCollege);

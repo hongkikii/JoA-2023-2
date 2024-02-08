@@ -1,7 +1,7 @@
 package com.mjuAppSW.joA.domain.report.vote;
 
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.service.MemberService;
+import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.report.ReportCategory;
 import com.mjuAppSW.joA.domain.report.ReportCategoryRepository;
 import com.mjuAppSW.joA.domain.report.vote.dto.VoteReportRequest;
@@ -9,7 +9,7 @@ import com.mjuAppSW.joA.domain.report.vote.exception.ReportCategoryNotFoundExcep
 import com.mjuAppSW.joA.domain.report.vote.exception.VoteNotFoundException;
 import com.mjuAppSW.joA.domain.report.vote.exception.VoteReportAlreadyExistedException;
 import com.mjuAppSW.joA.domain.vote.Vote;
-import com.mjuAppSW.joA.domain.vote.VoteRepository;
+import com.mjuAppSW.joA.domain.vote.repository.VoteRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +23,14 @@ public class VoteReportService {
     private final VoteRepository voteRepository;
     private final VoteReportRepository voteReportRepository;
     private final ReportCategoryRepository reportCategoryRepository;
-    private final MemberService memberService;
+    private final MemberQueryService memberQueryService;
 
     @Transactional
     public void execute(VoteReportRequest request) {
         ReportCategory reportCategory = findReportCategoryById(request.getReportId());
         Long voteId = request.getVoteId();
         Vote vote = findVoteById(voteId);
-        Member giveMember = memberService.getById(vote.getGiveId());
+        Member giveMember = memberQueryService.getById(vote.getGiveId());
 
         checkEqualReport(voteId);
 

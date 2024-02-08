@@ -8,12 +8,14 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
+@Builder
 @RequiredArgsConstructor
 @Slf4j
 public class StatusService {
@@ -24,12 +26,23 @@ public class StatusService {
     @Scheduled(cron = "0 0 4 * * ?")
 //    @Scheduled(cron = "0 */10 * * * *")
     @Transactional
-    public void translate() {
+    public void check() {
         List<Member> joiningAll = memberRepository.findJoiningAll();
         for (Member member : joiningAll) {
             if(member.getStatus() == STEP_1_STOP_STATUS
             || member.getStatus() == STEP_2_STOP_STATUS) {
-                completeStopPolicy(member);
+                finishStopPolicy(member);
+            }
+            if (member.getReportCount() >= STEP_3_REPORT_COUNT) {
+                executeOutPolicy(member);
+                break;
+            }
+            if (member.getReportCount() >= STEP_2_REPORT_COUNT
+                && member.getStatus() != STEP_1_STOP_STATUS
+                && member.getStatus() != STEP_2_STOP_STATUS
+                && member.getStatus() != STEP_2_COMPLETE_STATUS) {
+                executeStopPolicy(member, STEP_2_REPORT_COUNT);
+                break;
             }
             if (member.getReportCount() >= STEP_1_REPORT_COUNT
                 && member.getStatus() != STEP_1_STOP_STATUS
@@ -37,21 +50,13 @@ public class StatusService {
                 && member.getStatus() != STEP_2_STOP_STATUS
                 && member.getStatus() != STEP_2_COMPLETE_STATUS) {
                 executeStopPolicy(member, STEP_1_REPORT_COUNT);
-            }
-            if (member.getReportCount() >= STEP_2_REPORT_COUNT
-                && member.getStatus() != STEP_1_STOP_STATUS
-                && member.getStatus() != STEP_2_STOP_STATUS
-                && member.getStatus() != STEP_2_COMPLETE_STATUS) {
-                executeStopPolicy(member, STEP_2_REPORT_COUNT);
-            }
-            if (member.getReportCount() >= STEP_3_REPORT_COUNT) {
-                executeOutPolicy(member);
+                break;
             }
         }
     }
 
-    private void completeStopPolicy(Member member) {
-        if(member.getStopEndDate().toLocalDate() != LocalDate.now()) {
+    private void finishStopPolicy(Member member) {
+        if(!member.getStopEndDate().toLocalDate().equals(LocalDate.now())) {
             log.info("account stop ing : id = {}", member.getId());
             return;
         }
@@ -64,6 +69,12 @@ public class StatusService {
             log.info("account stop end : id = {}, reportCount = 10", member.getId());
         }
         member.expireStopDate();
+    }
+
+    private void executeOutPolicy(Member member) {
+        member.updateStatus(STEP_3_STOP_STATUS);
+        memberService.delete(member);
+        log.info("account delete : id = {}, reportCount = 15", member.getId());
     }
 
     private void executeStopPolicy(Member member, int reportCount) {
@@ -79,11 +90,5 @@ public class StatusService {
             member.updateStatus(STEP_2_STOP_STATUS);
             log.info("account stop start : id = {}, reportCount = 10", member.getId());
         }
-    }
-
-    private void executeOutPolicy(Member member) {
-        member.updateStatus(STEP_3_STOP_STATUS);
-        memberService.delete(member);
-        log.info("account delete : id = {}, reportCount = 15", member.getId());
     }
 }
