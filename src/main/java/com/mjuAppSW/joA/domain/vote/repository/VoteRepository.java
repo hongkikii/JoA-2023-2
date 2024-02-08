@@ -14,9 +14,9 @@ public interface VoteRepository {
 
     List<String> findVoteCategoryById(Long id, PageRequest pageRequest);
 
-    Optional<Vote> findTodayVote(Long giveId, Long takeId, Long categoryId);
+    Optional<Vote> findTodayBy(Long giveId, Long takeId, Long categoryId);
 
-    List<Vote> findValidAllByTakeId(Long id, Pageable pageable);
+    List<Vote> findInvalidAllBy(Long giveId, Long takeId);
 
-    List<Vote> findInvalidVotes(Long giveId, Long takeId);
+    List<Vote> findValidAllBy(Long takeId, Pageable pageable);
 }
