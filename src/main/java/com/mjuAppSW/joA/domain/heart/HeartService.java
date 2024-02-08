@@ -8,19 +8,15 @@ import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberService;
 import com.mjuAppSW.joA.geography.block.BlockService;
 import com.mjuAppSW.joA.domain.heart.exception.HeartAlreadyExistedException;
-import com.mjuAppSW.joA.domain.heart.exception.RoomAlreadyExistedException;
-import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @Builder
 @RequiredArgsConstructor
-@Slf4j
 public class HeartService {
 
     private final HeartRepository heartRepository;
