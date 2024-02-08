@@ -1,5 +1,6 @@
 package com.mjuAppSW.joA.domain.vote;
 
+import com.mjuAppSW.joA.domain.report.vote.exception.VoteNotFoundException;
 import com.mjuAppSW.joA.domain.vote.exception.InvalidVoteExistedException;
 import com.mjuAppSW.joA.domain.vote.exception.VoteAlreadyExistedException;
 import com.mjuAppSW.joA.domain.vote.repository.VoteRepository;
@@ -27,6 +28,11 @@ public class VoteQueryService {
         if (!voteRepository.findInvalidAllBy(giveId, takeId).isEmpty()) {
             throw new InvalidVoteExistedException();
         }
+    }
+
+    public Vote getBy(Long voteId) {
+        return voteRepository.findById(voteId)
+                .orElseThrow(VoteNotFoundException::new);
     }
 
     public List<Vote> getValidAllBy(Long takeId) {
