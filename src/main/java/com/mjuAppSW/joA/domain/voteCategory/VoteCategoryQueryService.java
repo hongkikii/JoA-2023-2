@@ -1,6 +1,7 @@
 package com.mjuAppSW.joA.domain.voteCategory;
 
 import com.mjuAppSW.joA.domain.vote.exception.VoteCategoryNotFoundException;
+import com.mjuAppSW.joA.domain.voteCategory.repository.VoteCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
