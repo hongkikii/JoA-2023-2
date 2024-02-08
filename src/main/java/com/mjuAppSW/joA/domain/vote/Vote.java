@@ -45,7 +45,8 @@ public class Vote {
     private Boolean isValid;
 
     @Builder
-    public Vote(Long giveId, Member member, VoteCategory voteCategory, LocalDateTime date, String hint) {
+    public Vote(Long id, Long giveId, Member member, VoteCategory voteCategory, LocalDateTime date, String hint) {
+        this.id = id;
         this.giveId = giveId;
         this.member = member;
         this.voteCategory = voteCategory;
