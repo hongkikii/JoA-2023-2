@@ -5,9 +5,11 @@ import com.mjuAppSW.joA.geography.block.exception.BlockAlreadyExistedException;
 import com.mjuAppSW.joA.geography.block.repository.BlockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BlockQueryService {
 
     private final BlockRepository blockRepository;
