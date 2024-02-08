@@ -77,6 +77,7 @@ public class LocationService {
         }
     }
 
+    // FIXME : 분리
     private List<NearByInfo> makeNearByList(Member member, List<Long> nearMemberIds) {
         return nearMemberIds.stream()
                 .map(nearId -> {
