@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface LocationJpaRepository extends JpaRepository<Location, Long> {
-
 
     @Query(value = "SELECT l.member_id " +
             "FROM location l " +
@@ -30,6 +30,11 @@ public interface LocationJpaRepository extends JpaRepository<Location, Long> {
     @Override
     @Query("SELECT l FROM Location l WHERE l.id = :memberId")
     Optional<Location> findById(@Param("memberId") Long memberId);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Location l SET l.point = :newPoint, l.isContained = :newIsContained, l.updateDate = CURRENT_TIMESTAMP WHERE l.id = :memberId")
+    void updateById(@Param("newPoint") Point point, @Param("newIsContained") boolean isContained, @Param("memberId") Long memberId);
 
     @Modifying(clearAutomatically = true)
     @Query("DELETE FROM Location l WHERE l.id = :memberId ")
