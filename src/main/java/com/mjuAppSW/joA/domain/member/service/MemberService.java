@@ -54,69 +54,6 @@ public class MemberService {
         locationRepository.save(location);
     }
 
-    public Member getBySessionId(Long sessionId) {
-        return memberRepository.findBysessionId(sessionId)
-                .orElseThrow(MemberNotFoundException::new);
-    }
-
-    public Member getNormalBySessionId(Long sessionId) {
-        return memberRepository.findBysessionId(sessionId)
-                .filter(member -> {
-                    if (member.getStatus() == STEP_1_STOP_STATUS
-                        || member.getStatus() == STEP_2_STOP_STATUS) {
-                        throw new AccessStoppedException();
-                    }
-                    if (member.getStatus() == STEP_3_STOP_STATUS) {
-                        throw new PermanentBanException();
-                    }
-                    return true;
-                })
-                .orElseThrow(MemberNotFoundException::new);
-    }
-
-    public Member getById(Long id) {
-        return memberRepository.findById(id)
-                .orElseThrow(MemberNotFoundException::new);
-    }
-
-    public Member getByLoginId(String loginId) {
-        return memberRepository.findByloginId(loginId)
-                .orElseThrow(MemberNotFoundException::new);
-    }
-
-    public Member getByUEmailAndCollege(String uEmail, MCollege mCollege) {
-        return memberRepository.findByuEmailAndcollege(uEmail, mCollege)
-                .orElseThrow(MemberNotFoundException::new);
-    }
-
-    public void checkExist(String uEmail, MCollege college) {
-        memberRepository.findByuEmailAndcollege(uEmail, college)
-                .ifPresent(member -> {
-                    throw new MemberAlreadyExistedException();});
-    }
-
-    public void checkPermanentForbiddenMember(String uEmail, MCollege mCollege) {
-        memberRepository.findForbidden(uEmail, mCollege)
-                .ifPresent(forbiddenMember -> {
-                    throw new PermanentBanException();});
-    }
-
-    public void checkExistedLoginId(String loginId) {
-        memberRepository.findByloginId(loginId)
-                .ifPresent(existingMember -> {
-                    throw new LoginIdAlreadyExistedException();});
-    }
-
-    public void checkStopped(Member member) {
-        if (member.getStatus() == STEP_1_STOP_STATUS
-            || member.getStatus() == STEP_2_STOP_STATUS) {
-            throw new AccessStoppedException();
-        }
-        if(member.getStatus() == STEP_3_STOP_STATUS) {
-            throw new PermanentBanException();
-        }
-    }
-
     public void delete(Member member) {
         imageUploader.delete(member.getUrlCode());
         locationRepository.deleteById(member.getId());

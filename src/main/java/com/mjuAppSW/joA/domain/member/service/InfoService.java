@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class InfoService {
 
-    private final MemberService memberService;
+    private final MemberQueryService memberQueryService;
     private final RoomService roomService;
     private final RoomInMemberService roomInMemberService;
     private final ImageUploader imageUploader;
@@ -38,11 +38,11 @@ public class InfoService {
     private final VoteRepository voteRepository;
 
     public SettingPageResponse getSettingPage(Long sessionId) {
-        return SettingPageResponse.of(memberService.getNormalBySessionId(sessionId));
+        return SettingPageResponse.of(memberQueryService.getNormalBySessionId(sessionId));
     }
 
     public MyPageResponse getMyPage(Long sessionId) {
-        Member member = memberService.getNormalBySessionId(sessionId);
+        Member member = memberQueryService.getNormalBySessionId(sessionId);
         int todayHeart = heartRepository.countTodayHeartsById(member.getId());
         int totalHeart = heartRepository.countTotalHeartsById(member.getId());
         List<String> voteTop3 = voteRepository.findVoteCategoryById(
@@ -53,7 +53,7 @@ public class InfoService {
 
     public ChattingPageResponse getChattingPage(Long roomId, Long memberId){
         Room room = roomService.findByRoomId(roomId);
-        Member member = memberService.getBySessionId(memberId);
+        Member member = memberQueryService.getBySessionId(memberId);
         RoomInMember roomInMember = roomInMemberService.findByRoomAndMember(room, member);
 
         UserInfoVO userInfoVO = roomInMemberService.findOpponentUserInfoByRoomAndMember(roomInMember.getRoom(), roomInMember.getMember());
@@ -61,28 +61,28 @@ public class InfoService {
     }
 
     public VotePageResponse getVotePage(Long sessionId) {
-        return VotePageResponse.of(memberService.getNormalBySessionId(sessionId));
+        return VotePageResponse.of(memberQueryService.getNormalBySessionId(sessionId));
     }
 
     public LocationPageResponse getLocationPage(Long sessionId) {
-        return LocationPageResponse.of(memberService.getNormalBySessionId(sessionId));
+        return LocationPageResponse.of(memberQueryService.getNormalBySessionId(sessionId));
     }
 
     @Transactional
     public void transBio(BioRequest request) {
-        Member member = memberService.getNormalBySessionId(request.getId());
+        Member member = memberQueryService.getNormalBySessionId(request.getId());
         member.updateBio(request.getBio());
     }
 
     @Transactional
     public void deleteBio(Long sessionId) {
-        Member member = memberService.getNormalBySessionId(sessionId);
+        Member member = memberQueryService.getNormalBySessionId(sessionId);
         member.deleteBio();
     }
 
     @Transactional
     public void transPicture(PictureRequest request) {
-        Member member = memberService.getNormalBySessionId(request.getId());
+        Member member = memberQueryService.getNormalBySessionId(request.getId());
         if (isNotBasicPicture(member.getUrlCode())){
             imageUploader.delete(member.getUrlCode());
         }
@@ -92,7 +92,7 @@ public class InfoService {
 
     @Transactional
     public void deletePicture(Long sessionId) {
-        Member member = memberService.getNormalBySessionId(sessionId);
+        Member member = memberQueryService.getNormalBySessionId(sessionId);
         if(isNotBasicPicture(member.getUrlCode())) {
             imageUploader.delete(member.getUrlCode());
             member.deleteUrlCode();

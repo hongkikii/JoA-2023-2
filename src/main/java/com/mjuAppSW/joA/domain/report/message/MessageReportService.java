@@ -3,7 +3,7 @@ package com.mjuAppSW.joA.domain.report.message;
 import static com.mjuAppSW.joA.common.constant.Constants.MessageReport.*;
 
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.service.MemberService;
+import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class MessageReportService {
-    private final MemberService memberService;
+    private final MemberQueryService memberQueryService;
     private final MessageService messageService;
     private final MessageReportRepository messageReportRepository;
     private final ReportCategoryRepository reportCategoryRepository;
@@ -49,7 +49,7 @@ public class MessageReportService {
 
         messageReportRepository.save(messageReport);
 
-        Member member = memberService.getById(message.getMember().getId());
+        Member member = memberQueryService.getById(message.getMember().getId());
         member.addReportCount();
     }
 

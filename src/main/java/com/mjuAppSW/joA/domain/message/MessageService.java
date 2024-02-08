@@ -2,7 +2,7 @@ package com.mjuAppSW.joA.domain.message;
 
 import com.mjuAppSW.joA.common.encryption.EncryptManager;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.service.MemberService;
+import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.message.dto.vo.MessageVO;
 import com.mjuAppSW.joA.domain.message.dto.response.MessageResponse;
 import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class MessageService {
-    private final MemberService memberService;
+    private final MemberQueryService memberQueryService;
     private final RoomService roomService;
     private final RoomInMemberService roomInMemberService;
     private final MessageRepository messageRepository;
@@ -37,7 +37,7 @@ public class MessageService {
     @Transactional
     public Long saveMessage(Long roomId, Long memberId, String content, String isChecked, LocalDateTime createdMessageDate) {
         Room room = roomService.findByRoomId(roomId);
-        Member member = memberService.getById(memberId);
+        Member member = memberQueryService.getById(memberId);
         String encryptedMessage = encryptManager.encrypt(content, room.getEncryptKey());
         if(encryptedMessage == null){
             throw new FailEncryptException();
@@ -55,7 +55,7 @@ public class MessageService {
 
     public MessageResponse loadMessage(Long roomId, Long memberId) {
         Room room = roomService.findByRoomId(roomId);
-        Member member = memberService.getBySessionId(memberId);
+        Member member = memberQueryService.getBySessionId(memberId);
         RoomInMember roomInMember = roomInMemberService.findByRoomAndMember(room, member);
 
         List<Message> messageList = messageRepository.findByRoom(roomInMember.getRoom());
@@ -86,7 +86,7 @@ public class MessageService {
     @Transactional
     public void updateIsChecked(String roomId, String memberId){
         Room room = roomService.findByRoomId(Long.parseLong(roomId));
-        Member member = memberService.getById(Long.parseLong(memberId));
+        Member member = memberQueryService.getById(Long.parseLong(memberId));
 
         List<Message> getMessages = messageRepository.findMessage(room, member);
         if(!getMessages.isEmpty()){

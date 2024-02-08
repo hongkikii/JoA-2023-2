@@ -2,7 +2,7 @@ package com.mjuAppSW.joA.geography.location;
 
 import com.mjuAppSW.joA.domain.heart.repository.HeartRepository;
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.service.MemberService;
+import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.geography.block.exception.LocationNotFoundException;
 import com.mjuAppSW.joA.geography.college.PCollege;
 import com.mjuAppSW.joA.geography.college.PCollegeService;
@@ -33,11 +33,11 @@ public class LocationService {
     private final LocationRepository locationRepository;
     private final PCollegeService pCollegeService;
     private final HeartRepository heartRepository;
-    private final MemberService memberService;
+    private final MemberQueryService memberQueryService;
 
     @Transactional
     public UpdateResponse update(UpdateRequest request) {
-        Member member = memberService.getNormalBySessionId(request.getId());
+        Member member = memberQueryService.getNormalBySessionId(request.getId());
         Location oldLocation = findByMemberId(member.getId());
         PCollege college = pCollegeService.findById(oldLocation.getCollege().getCollegeId());
 
@@ -81,7 +81,7 @@ public class LocationService {
 
     public NearByListResponse getNearByList
             (Long sessionId, Double latitude, Double longitude, Double altitude) {
-        Member member = memberService.getNormalBySessionId(sessionId);
+        Member member = memberQueryService.getNormalBySessionId(sessionId);
         checkWithinCollege(findByMemberId(member.getId()));
 
         Point point = getPoint(latitude, longitude, altitude);
@@ -102,7 +102,7 @@ public class LocationService {
     private List<NearByInfo> makeNearByList(Member member, List<Long> nearMemberIds) {
         return nearMemberIds.stream()
                         .map(nearId -> {
-                            Member findMember = memberService.getById(nearId);
+                            Member findMember = memberQueryService.getById(nearId);
                             boolean isLiked = heartRepository.findTodayHeart(member.getId(), nearId)
                                                             .isPresent();
                             return NearByInfo.builder()

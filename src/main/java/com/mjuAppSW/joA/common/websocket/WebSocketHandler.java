@@ -6,6 +6,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.WebSocketHandler.*;
 import com.mjuAppSW.joA.common.websocket.exception.MemberSessionListNullException;
 import com.mjuAppSW.joA.common.websocket.exception.RoomSessionListNullException;
 import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.message.MessageService;
 import com.mjuAppSW.joA.domain.report.message.MessageReport;
@@ -43,7 +44,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private Map<String, List<WebSocketSession>> memberSessions = new ConcurrentHashMap<>();
     private final RoomInMemberService roomInMemberService;
     private final MessageService messageService;
-    private final MemberService memberService;
+    private final MemberQueryService memberQueryService;
     private final RoomService roomService;
     private final MessageReportRepository messageReportRepository;
 
@@ -61,7 +62,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
     public String sessionIdToMemberId(String session){
-        Member member = memberService.getBySessionId(Long.parseLong(session));
+        Member member = memberQueryService.getBySessionId(Long.parseLong(session));
         String memberId = String.valueOf(member.getId());
         return memberId;
     }
@@ -168,7 +169,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     public void updateCurrentMessage(String roomId, String memberId) throws Exception {
         Room room = roomService.findByRoomId(Long.parseLong(roomId));
-        Member member = memberService.getById(Long.parseLong(memberId));
+        Member member = memberQueryService.getById(Long.parseLong(memberId));
         RoomInMember roomInMember = roomInMemberService.checkOpponentExpired(room, member);
 
         List<WebSocketSession> memberSessionsList = memberSessions.get(String.valueOf(roomInMember.getMember().getId()));
@@ -249,7 +250,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         switch (length) {
             case 1:
                 Long onlyMemberId = Long.parseLong(getOnlyMemberId(session));
-                Member member = memberService.getBySessionId(onlyMemberId);
+                Member member = memberQueryService.getBySessionId(onlyMemberId);
 
                 memberId = String.valueOf(member.getId());
                 if (checkURIOfMemberId(session, memberId)) memberSessions.computeIfAbsent(memberId, key -> new ArrayList<>()).add(session);
@@ -257,7 +258,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
             case 2:
                 String roomId = getRoomId(session);
                 Long memberOfSessionId = Long.parseLong(getMemberId(session));
-                Member mem = memberService.getBySessionId(memberOfSessionId);
+                Member mem = memberQueryService.getBySessionId(memberOfSessionId);
 
                 memberId = String.valueOf(mem.getId());
                 if (checkURIOfRoomId(session, roomId)) {
@@ -291,7 +292,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         switch (length){
             case 1 :
                 Long onlyMemberId = Long.parseLong(getOnlyMemberId(session));
-                Member member = memberService.getBySessionId(onlyMemberId);
+                Member member = memberQueryService.getBySessionId(onlyMemberId);
 
                 memberId = String.valueOf(member.getId());
                 List<WebSocketSession> memberSessionsList = memberSessions.get(memberId);
@@ -306,7 +307,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
             case 2 :
                 String roomId = getRoomId(session);
                 Long memberOfSessionId = Long.parseLong(getMemberId(session));
-                Member mem = memberService.getBySessionId(memberOfSessionId);
+                Member mem = memberQueryService.getBySessionId(memberOfSessionId);
 
                 memberId = String.valueOf(mem.getId());
                 List<WebSocketSession> roomSessionsList = roomSessions.get(roomId);

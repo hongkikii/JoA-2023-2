@@ -4,6 +4,7 @@ import com.mjuAppSW.joA.domain.heart.dto.HeartRequest;
 import com.mjuAppSW.joA.domain.heart.dto.HeartResponse;
 import com.mjuAppSW.joA.domain.heart.repository.HeartRepository;
 import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberService;
 import com.mjuAppSW.joA.geography.block.BlockService;
@@ -22,14 +23,14 @@ public class HeartService {
     private final HeartRepository heartRepository;
     private final RoomInMemberService roomInMemberService;
     private final BlockService blockService;
-    private final MemberService memberService;
+    private final MemberQueryService memberQueryService;
 
     @Transactional
     public HeartResponse sendHeart(HeartRequest request) {
-        Member giveMember = memberService.getNormalBySessionId(request.getGiveId());
+        Member giveMember = memberQueryService.getNormalBySessionId(request.getGiveId());
         Long giveMemberId = giveMember.getId();
         Long takeMemberId = request.getTakeId();
-        Member takeMember = memberService.getById(takeMemberId);
+        Member takeMember = memberQueryService.getById(takeMemberId);
 
         blockService.check(giveMemberId, takeMemberId);
         checkEqualHeart(giveMemberId, takeMemberId);

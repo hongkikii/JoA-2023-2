@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class AccountService {
 
     private final MemberService memberService;
+    private final MemberQueryService memberQueryService;
     private final MCollegeService mCollegeService;
     private final SessionService sessionService;
     private final MailSender mailSender;
@@ -29,7 +30,7 @@ public class AccountService {
 
     @Transactional
     public SessionIdResponse login(LoginRequest request) {
-        Member member = memberService.getByLoginId(request.getLoginId());
+        Member member = memberQueryService.getByLoginId(request.getLoginId());
         String hashedPassword = passwordManager.createHashed (
                 request.getPassword(), member.getSalt());
         passwordManager.compare(member.getPassword(), hashedPassword);
@@ -39,13 +40,13 @@ public class AccountService {
 
     @Transactional
     public void logout(Long sessionId) {
-        Member member = memberService.getBySessionId(sessionId);
+        Member member = memberQueryService.getBySessionId(sessionId);
         member.expireSessionId();
     }
 
     public void findLoginId(String collegeEmail, Long collegeId) {
         MCollege college = mCollegeService.getById(collegeId);
-        Member member = memberService.getByUEmailAndCollege(collegeEmail, college);
+        Member member = memberQueryService.getByUEmailAndCollege(collegeEmail, college);
 
         String email = member.getUEmail() + college.getDomain();
         mailSender.send(email, USER_ID_IS, member.getLoginId());
@@ -53,7 +54,7 @@ public class AccountService {
 
     @Transactional
     public void findPassword(String loginId) {
-        Member member = memberService.getByLoginId(loginId);
+        Member member = memberQueryService.getByLoginId(loginId);
 
         String randomPassword = passwordManager.createRandom();
         String hashedRandomPassword = passwordManager.createHashed(
@@ -66,7 +67,7 @@ public class AccountService {
 
     @Transactional
     public void transPassword(TransPasswordRequest request) {
-        Member member = memberService.getBySessionId(request.getId());
+        Member member = memberQueryService.getBySessionId(request.getId());
 
         String hashedCurrentPassword = passwordManager.createHashed(
                 request.getCurrentPassword(), member.getSalt());
@@ -80,7 +81,7 @@ public class AccountService {
 
     @Transactional
     public void withdrawal(Long sessionId) {
-        Member member = memberService.getBySessionId(sessionId);
+        Member member = memberQueryService.getBySessionId(sessionId);
         memberService.delete(member);
     }
 }

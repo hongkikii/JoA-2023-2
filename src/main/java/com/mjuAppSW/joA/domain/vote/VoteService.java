@@ -1,11 +1,10 @@
 package com.mjuAppSW.joA.domain.vote;
 
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.member.service.MemberService;
+import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.vote.exception.InvalidVoteExistedException;
-import com.mjuAppSW.joA.domain.vote.repository.VoteJpaRepository;
 import com.mjuAppSW.joA.domain.vote.repository.VoteRepository;
-import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
+import com.mjuAppSW.joA.geography.block.BlockService;
 import com.mjuAppSW.joA.domain.vote.dto.request.VoteRequest;
 import com.mjuAppSW.joA.domain.vote.dto.response.VoteContent;
 import com.mjuAppSW.joA.domain.vote.dto.response.VoteListResponse;
@@ -13,7 +12,6 @@ import com.mjuAppSW.joA.domain.vote.exception.VoteAlreadyExistedException;
 import com.mjuAppSW.joA.domain.vote.exception.VoteCategoryNotFoundException;
 import com.mjuAppSW.joA.domain.vote.voteCategory.VoteCategory;
 import com.mjuAppSW.joA.domain.vote.voteCategory.VoteCategoryRepository;
-import com.mjuAppSW.joA.geography.block.BlockRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,13 +28,13 @@ import org.springframework.stereotype.Service;
 public class VoteService {
     private final VoteRepository voteRepository;
     private final VoteCategoryRepository voteCategoryRepository;
-    private final BlockRepository blockRepository;
-    private final MemberService memberService;
+    private final BlockService blockService;
+    private final MemberQueryService memberQueryService;
 
     @Transactional
     public void send(VoteRequest request) {
-        Member giveMember = memberService.getNormalBySessionId(request.getGiveId());
-        Member takeMember = memberService.getById(request.getTakeId());
+        Member giveMember = memberQueryService.getNormalBySessionId(request.getGiveId());
+        Member takeMember = memberQueryService.getById(request.getTakeId());
         VoteCategory voteCategory = findVoteCategoryById(request.getCategoryId());
 
         Long giveMemberId = giveMember.getId();
@@ -44,7 +42,7 @@ public class VoteService {
 
         checkEqualVote(giveMemberId, takeMemberId, voteCategory.getId());
         checkInvalidVote(giveMemberId, takeMemberId);
-        checkBlock(giveMemberId, takeMemberId);
+        blockService.check(giveMemberId, takeMemberId);
 
         createVote(giveMember, takeMember, voteCategory, request.getHint());
     }
@@ -61,7 +59,7 @@ public class VoteService {
     }
 
     private void checkInvalidVote(Long giveId, Long takeId) {
-        if (voteRepository.findInvalidVotes(giveId, takeId).size() != 0) {
+        if (voteRepository.findInvalidVotes(giveId, takeId).isEmpty()) {
             throw new InvalidVoteExistedException();
         }
     }
@@ -77,7 +75,7 @@ public class VoteService {
     }
 
     public VoteListResponse get(Long sessionId) {
-        Member findTakeMember = memberService.getNormalBySessionId(sessionId);
+        Member findTakeMember = memberQueryService.getNormalBySessionId(sessionId);
         return VoteListResponse.of(getVoteList(findTakeMember.getId()));
     }
 
@@ -94,12 +92,6 @@ public class VoteService {
                         .categoryId(vote.getVoteCategory().getId())
                         .hint(vote.getHint())
                         .build();
-    }
-
-    private void checkBlock(Long giveId, Long takeId) {
-        if (blockRepository.findBlockByIds(giveId, takeId).size() != 0) {
-            throw new BlockAccessForbiddenException();
-        }
     }
 
     private List<Vote> findVotesByTakeId(Long id, Pageable pageable) {

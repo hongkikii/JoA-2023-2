@@ -7,7 +7,7 @@ import com.mjuAppSW.joA.domain.member.exception.LoginIdAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.LoginIdNotAuthorizedException;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.LoginIdManager;
-import com.mjuAppSW.joA.domain.member.service.MemberService;
+import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Builder;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class LoginIdManagerImpl implements LoginIdManager {
 
-    private final MemberService memberService;
+    private final MemberQueryService memberQueryService;
     private final CacheManager cacheManager;
 
     @Override
@@ -53,7 +53,7 @@ public class LoginIdManagerImpl implements LoginIdManager {
 
     @Override
     public void checkInDb(String loginId) {
-        memberService.checkExistedLoginId(loginId);
+        memberQueryService.checkExistedLoginId(loginId);
     }
 
 }

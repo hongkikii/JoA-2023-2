@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CertifyService { //FIXME
 
-    private final MemberService memberService;
+    private final MemberQueryService memberQueryService;
     private final MCollegeService mCollegeService;
     private final SessionService sessionService;
     private final CacheManager cacheManager;
@@ -35,8 +35,8 @@ public class CertifyService { //FIXME
         MCollege college = mCollegeService.getById(request.getCollegeId());
         String uEmail = request.getCollegeEmail();
 
-        memberService.checkExist(uEmail, college);
-        memberService.checkPermanentForbiddenMember(uEmail, college);
+        memberQueryService.checkExist(uEmail, college);
+        memberQueryService.checkPermanentForbiddenMember(uEmail, college);
         String eMail = uEmail + college.getDomain();
         checkJoining(eMail);
 
