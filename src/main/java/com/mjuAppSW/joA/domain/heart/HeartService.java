@@ -22,7 +22,7 @@ public class HeartService {
 
     private final HeartRepository heartRepository;
     private final RoomInMemberService roomInMemberService;
-    private final BlockService blockService;
+//    private final BlockService blockService;
     private final MemberQueryService memberQueryService;
 
     @Transactional

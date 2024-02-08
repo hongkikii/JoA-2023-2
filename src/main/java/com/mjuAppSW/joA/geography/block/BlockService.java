@@ -6,13 +6,17 @@ import com.mjuAppSW.joA.geography.block.dto.BlockRequest;
 import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
 import com.mjuAppSW.joA.geography.block.exception.BlockAlreadyExistedException;
 import com.mjuAppSW.joA.geography.block.exception.LocationNotFoundException;
+import com.mjuAppSW.joA.geography.block.repository.BlockJpaRepository;
+import com.mjuAppSW.joA.geography.block.repository.BlockRepository;
 import com.mjuAppSW.joA.geography.location.Location;
 import com.mjuAppSW.joA.geography.location.repository.LocationRepository;
 import jakarta.transaction.Transactional;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@Builder
 @RequiredArgsConstructor
 public class BlockService {
 
