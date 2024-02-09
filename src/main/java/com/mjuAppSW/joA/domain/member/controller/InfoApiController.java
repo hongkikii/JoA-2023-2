@@ -157,9 +157,9 @@ public class InfoApiController {
     @Operation(summary = "채팅방 입장시 상대방 정보 조회", description = "상대방 정보 조회 API")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "상대방 정보 반환"),
-        @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
-        @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
-        @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다.")
+        @ApiResponse(responseCode = "404-1", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+        @ApiResponse(responseCode = "404-2", description = "R003: 방을 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+        @ApiResponse(responseCode = "404-3", description = "RIM001: 채팅방을 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping("/chatting-page")
     public ResponseEntity<SuccessResponse<ChattingPageResponse>> getUserInfo(@RequestParam("roomId") Long roomId, @RequestParam("memberId") Long memberId){
