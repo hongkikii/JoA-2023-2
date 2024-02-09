@@ -4,6 +4,8 @@ import com.mjuAppSW.joA.common.dto.SuccessResponse;
 import com.mjuAppSW.joA.domain.message.dto.response.MessageResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +28,10 @@ public class MessageApiController {
     @Operation(summary = "메시지 조회", description = "채팅방 페이지에서 화면이 로드 될 때 메시지를 조회하는 API")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "메시지 조회 완료"),
-        @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
-        @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
-        @ApiResponse(responseCode = "404", description = "RIM001: 채팅방을 찾을 수 없습니다."),
-        @ApiResponse(responseCode = "500", description = "MG003: 메시지 복호화를 실패했습니다.")
+        @ApiResponse(responseCode = "404-1", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+        @ApiResponse(responseCode = "404-2", description = "R003: 방을 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+        @ApiResponse(responseCode = "404-3", description = "RIM001: 채팅방을 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
+        @ApiResponse(responseCode = "500", description = "MG003: 메시지 복호화를 실패했습니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping
     public ResponseEntity<SuccessResponse<MessageResponse>> loadMessages(
