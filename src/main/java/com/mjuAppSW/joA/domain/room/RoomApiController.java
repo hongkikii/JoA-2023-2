@@ -80,8 +80,8 @@ public class RoomApiController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환"),
         @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
-        @ApiResponse(responseCode = "409", description = "MR003: 상대방을 신고한 메시지가 존재합니다."),
-        @ApiResponse(responseCode = "409", description = "MR004: 상대방에게 신고된 메시지가 존재합니다."),
+        @ApiResponse(responseCode = "409-1", description = "MR003: 상대방을 신고한 메시지가 존재합니다."),
+        @ApiResponse(responseCode = "409-2", description = "MR004: 상대방에게 신고된 메시지가 존재합니다."),
     })
     @GetMapping("/report-message")
     public ResponseEntity<Void> checkMessageReport(@RequestParam("memberId1") Long memberId1, @RequestParam("memberId2") Long memberId2){
