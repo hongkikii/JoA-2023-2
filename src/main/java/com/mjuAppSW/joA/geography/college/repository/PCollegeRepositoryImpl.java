@@ -12,8 +12,8 @@ public class PCollegeRepositoryImpl implements PCollegeRepository {
     private final PCollegeJpaRepository pCollegeJpaRepository;
 
     @Override
-    public PCollege save(PCollege pCollege) {
-        return pCollegeJpaRepository.save(pCollege);
+    public void save(PCollege pCollege) {
+        pCollegeJpaRepository.save(pCollege);
     }
 
     @Override

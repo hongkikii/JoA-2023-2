@@ -19,5 +19,4 @@ public interface LocationRepository {
 
     void deleteById(Long memberId);
 
-    void deleteAll();
 }

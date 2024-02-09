@@ -43,8 +43,4 @@ public class LocationRepositoryImpl implements LocationRepository{
         locationJpaRepository.deleteById(memberId);
     }
 
-    @Override
-    public void deleteAll() {
-        locationJpaRepository.deleteAll();
-    }
 }
