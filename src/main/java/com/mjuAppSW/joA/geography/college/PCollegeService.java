@@ -7,7 +7,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +24,7 @@ public class PCollegeService {
         pCollegeRepository.save(college);
     }
 
+    // FIXME : 분리
     private Polygon makePolygon(PolygonRequest request) {
         GeometryFactory geometryFactory = new GeometryFactory();
 
@@ -35,9 +38,16 @@ public class PCollegeService {
         return geometryFactory.createPolygon(coordinates);
     }
 
-    public PCollege findById(Long collegeId) {
+    public PCollege getBy(Long collegeId) {
         return pCollegeRepository.findById(collegeId)
                 .orElseThrow(CollegeNotFoundException::new);
+    }
+
+    public boolean isWithinCollege(double latitude, double longitude, PCollege pCollege) {
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+        Coordinate coordinate = new Coordinate(longitude, latitude);
+        Point point = geometryFactory.createPoint(coordinate);
+        return pCollege.getPolygonField().contains(point);
     }
 
 }

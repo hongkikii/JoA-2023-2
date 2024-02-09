@@ -15,7 +15,8 @@ public interface LocationRepository {
 
     List<Long> findNearIds(Long memberId, Point point, Long collegeId);
 
+    void updateById(Point point, boolean isContained, Long memberId);
+
     void deleteById(Long memberId);
 
-    void deleteAll();
 }

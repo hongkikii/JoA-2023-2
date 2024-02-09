@@ -7,7 +7,6 @@ import com.mjuAppSW.joA.domain.heart.exception.RoomAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
-import com.mjuAppSW.joA.domain.member.service.MemberService;
 import com.mjuAppSW.joA.domain.member.vo.UserInfoVO;
 import com.mjuAppSW.joA.domain.message.MessageRepository;
 import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
@@ -46,7 +45,7 @@ public class RoomInMemberService {
 
     public RoomListResponse getRoomList(Long memberId) {
         Member member = memberQueryService.getBySessionId(memberId);
-        memberQueryService.checkStopped(member);
+        memberQueryService.validateNoTemporaryBan(member);
 
         List<RoomInMember> myRoomInMemberList = roomInMemberRepository.findByAllMember(member);
         if (myRoomInMemberList.isEmpty()) {return RoomListResponse.of(new ArrayList<>());}
@@ -223,7 +222,7 @@ public class RoomInMemberService {
 		return roomInfoIncludeMessageVOList.get(0);
 	}
 
-    public void checkRoomExisted(Member member1, Member member2) {
+    public void validateNoRoom(Member member1, Member member2) {
         if (roomInMemberRepository.checkRoomInMember(member1, member2).size() != 0) {
             throw new RoomAlreadyExistedException();
         }

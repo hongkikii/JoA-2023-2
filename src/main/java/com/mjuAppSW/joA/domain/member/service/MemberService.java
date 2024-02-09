@@ -40,7 +40,7 @@ public class MemberService {
                             .college(mCollege)
                             .sessionId(sessionId).build();
         memberRepository.save(member);
-        PCollege pCollege = pCollegeService.findById(mCollege.getId());
+        PCollege pCollege = pCollegeService.getBy(mCollege.getId());
         Location location = new Location(member.getId(), pCollege);
         locationRepository.save(location);
     }

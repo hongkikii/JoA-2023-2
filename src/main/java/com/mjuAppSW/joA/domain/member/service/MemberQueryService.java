@@ -58,25 +58,25 @@ public class MemberQueryService {
                 .orElseThrow(MemberNotFoundException::new);
     }
 
-    public void checkExist(String uEmail, MCollege college) {
+    public void validateNoExistedEmail(String uEmail, MCollege college) {
         memberRepository.findByuEmailAndcollege(uEmail, college)
                 .ifPresent(member -> {
                     throw new MemberAlreadyExistedException();});
     }
 
-    public void checkPermanentForbiddenMember(String uEmail, MCollege mCollege) {
-        memberRepository.findForbidden(uEmail, mCollege)
-                .ifPresent(forbiddenMember -> {
-                    throw new PermanentBanException();});
-    }
-
-    public void checkExistedLoginId(String loginId) {
+    public void validateNoExistedLoginId(String loginId) {
         memberRepository.findByloginId(loginId)
                 .ifPresent(existingMember -> {
                     throw new LoginIdAlreadyExistedException();});
     }
 
-    public void checkStopped(Member member) {
+    public void validateNoPermanentBan(String uEmail, MCollege mCollege) {
+        memberRepository.findForbidden(uEmail, mCollege)
+                .ifPresent(forbiddenMember -> {
+                    throw new PermanentBanException();});
+    }
+
+    public void validateNoTemporaryBan(Member member) {
         if (member.getStatus() == STEP_1_STOP_STATUS
                 || member.getStatus() == STEP_2_STOP_STATUS) {
             throw new AccessStoppedException();

@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface PCollegeRepository {
 
-    PCollege save(PCollege pCollege);
+    void save(PCollege pCollege);
 
     Optional<PCollege> findById(Long id);
 }

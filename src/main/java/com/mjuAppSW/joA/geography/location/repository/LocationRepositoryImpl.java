@@ -34,12 +34,13 @@ public class LocationRepositoryImpl implements LocationRepository{
     }
 
     @Override
+    public void updateById(Point point, boolean isContained, Long memberId) {
+        locationJpaRepository.updateById(point, isContained, memberId);
+    }
+
+    @Override
     public void deleteById(Long memberId) {
         locationJpaRepository.deleteById(memberId);
     }
 
-    @Override
-    public void deleteAll() {
-        locationJpaRepository.deleteAll();
-    }
 }

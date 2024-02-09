@@ -1,7 +1,9 @@
 package com.mjuAppSW.joA.domain.vote.dto.response;
 
+import com.mjuAppSW.joA.domain.vote.Vote;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,9 +16,21 @@ import lombok.RequiredArgsConstructor;
 public class VoteListResponse {
     private final List<VoteContent> voteList;
 
-    public static VoteListResponse of (List voteList) {
+    public static VoteListResponse of(List<Vote> votes) {
+        List<VoteContent> voteList = votes.stream()
+                .map(vote -> createVoteContent(vote))
+                .collect(Collectors.toList());
+
         return VoteListResponse.builder()
                 .voteList(voteList)
+                .build();
+    }
+
+    private static VoteContent createVoteContent(Vote vote) {
+        return VoteContent.builder()
+                .voteId(vote.getId())
+                .categoryId(vote.getVoteCategory().getId())
+                .hint(vote.getHint())
                 .build();
     }
 }

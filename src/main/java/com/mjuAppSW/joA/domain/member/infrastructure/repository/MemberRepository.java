@@ -22,7 +22,4 @@ public interface MemberRepository {
     
     List<Member> findJoiningAll();
 
-    void delete(Member member);
-
-    void deleteAll();
 }

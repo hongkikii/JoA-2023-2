@@ -8,7 +8,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.Cache.CERTIFY_NUMBER;
 import static com.mjuAppSW.joA.common.constant.Constants.Mail.CERTIFY_NUMBER_IS;
 
 import com.mjuAppSW.joA.domain.college.MCollege;
-import com.mjuAppSW.joA.domain.college.MCollegeService;
+import com.mjuAppSW.joA.domain.college.MCollegeQueryService;
 import com.mjuAppSW.joA.domain.member.dto.request.SendCertifyNumRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.VerifyCertifyNumRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
@@ -26,17 +26,17 @@ import org.springframework.stereotype.Service;
 public class CertifyService { //FIXME
 
     private final MemberQueryService memberQueryService;
-    private final MCollegeService mCollegeService;
+    private final MCollegeQueryService mCollegeQueryService;
     private final SessionService sessionService;
     private final CacheManager cacheManager;
     private final MailSender mailSender;
 
     public SessionIdResponse send(SendCertifyNumRequest request) {
-        MCollege college = mCollegeService.getById(request.getCollegeId());
+        MCollege college = mCollegeQueryService.getById(request.getCollegeId());
         String uEmail = request.getCollegeEmail();
 
-        memberQueryService.checkExist(uEmail, college);
-        memberQueryService.checkPermanentForbiddenMember(uEmail, college);
+        memberQueryService.validateNoExistedEmail(uEmail, college);
+        memberQueryService.validateNoPermanentBan(uEmail, college);
         String eMail = uEmail + college.getDomain();
         checkJoining(eMail);
 

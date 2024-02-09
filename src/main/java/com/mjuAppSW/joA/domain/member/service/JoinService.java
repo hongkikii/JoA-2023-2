@@ -6,7 +6,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.Cache.ID;
 import static com.mjuAppSW.joA.common.constant.Constants.EMAIL_SPLIT;
 
 import com.mjuAppSW.joA.domain.college.MCollege;
-import com.mjuAppSW.joA.domain.college.MCollegeService;
+import com.mjuAppSW.joA.domain.college.MCollegeQueryService;
 import com.mjuAppSW.joA.domain.member.dto.request.JoinRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.VerifyIdRequest;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class JoinService { //FIXME
 
     private final MemberService memberService;
-    private final MCollegeService mCollegeService;
+    private final MCollegeQueryService mCollegeQueryService;
     private final SessionService sessionService;
     private final CacheManager cacheManager;
     private final LoginIdManager loginIdManager;
@@ -51,7 +51,7 @@ public class JoinService { //FIXME
         String eMail = cacheManager.getData(AFTER_EMAIL + sessionId);
         String[] splitEMail = eMail.split(EMAIL_SPLIT);
         String uEmail = splitEMail[0];
-        MCollege mCollege = mCollegeService.getByDomain(splitEMail[1]);
+        MCollege mCollege = mCollegeQueryService.getByDomain(splitEMail[1]);
 
         memberService.create(sessionId, request.getName(), request.getLoginId(),
                             request.getPassword(), uEmail, mCollege);

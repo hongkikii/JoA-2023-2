@@ -3,6 +3,7 @@ package com.mjuAppSW.joA.domain.heart;
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
 import com.mjuAppSW.joA.domain.heart.dto.HeartRequest;
 import com.mjuAppSW.joA.domain.heart.dto.HeartResponse;
+import com.mjuAppSW.joA.domain.heart.service.HeartService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,7 +39,7 @@ public class HeartApiController {
     })
     @PostMapping
     public ResponseEntity<SuccessResponse<HeartResponse>> sendHeart(@RequestBody @Valid HeartRequest request) {
-        return SuccessResponse.of(heartService.sendHeart(request))
+        return SuccessResponse.of(heartService.send(request))
                 .asHttp(HttpStatus.OK);
     }
 }

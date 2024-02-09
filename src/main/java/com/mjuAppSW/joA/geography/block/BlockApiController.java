@@ -1,6 +1,7 @@
 package com.mjuAppSW.joA.geography.block;
 
 import com.mjuAppSW.joA.geography.block.dto.BlockRequest;
+import com.mjuAppSW.joA.geography.block.service.BlockService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

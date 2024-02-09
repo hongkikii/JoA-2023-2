@@ -1,7 +1,7 @@
 package com.mjuAppSW.joA.domain.vote;
 
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.vote.voteCategory.VoteCategory;
+import com.mjuAppSW.joA.domain.voteCategory.VoteCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -45,7 +45,8 @@ public class Vote {
     private Boolean isValid;
 
     @Builder
-    public Vote(Long giveId, Member member, VoteCategory voteCategory, LocalDateTime date, String hint) {
+    public Vote(Long id, Long giveId, Member member, VoteCategory voteCategory, LocalDateTime date, String hint) {
+        this.id = id;
         this.giveId = giveId;
         this.member = member;
         this.voteCategory = voteCategory;
@@ -54,7 +55,7 @@ public class Vote {
         this.isValid = true;
     }
 
-    public void changeInvalid() {
+    public void changeToInvalid() {
         this.isValid = false;
     }
 }

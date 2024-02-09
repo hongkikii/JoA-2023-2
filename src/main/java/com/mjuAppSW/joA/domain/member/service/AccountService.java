@@ -4,7 +4,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.Mail.TEMPORARY_PASSWORD
 import static com.mjuAppSW.joA.common.constant.Constants.Mail.USER_ID_IS;
 
 import com.mjuAppSW.joA.domain.college.MCollege;
-import com.mjuAppSW.joA.domain.college.MCollegeService;
+import com.mjuAppSW.joA.domain.college.MCollegeQueryService;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.dto.request.LoginRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.TransPasswordRequest;
@@ -23,7 +23,7 @@ public class AccountService {
 
     private final MemberService memberService;
     private final MemberQueryService memberQueryService;
-    private final MCollegeService mCollegeService;
+    private final MCollegeQueryService mCollegeQueryService;
     private final SessionService sessionService;
     private final MailSender mailSender;
     private final PasswordManager passwordManager;
@@ -45,7 +45,7 @@ public class AccountService {
     }
 
     public void findLoginId(String collegeEmail, Long collegeId) {
-        MCollege college = mCollegeService.getById(collegeId);
+        MCollege college = mCollegeQueryService.getById(collegeId);
         Member member = memberQueryService.getByUEmailAndCollege(collegeEmail, college);
 
         String email = member.getUEmail() + college.getDomain();
