@@ -29,9 +29,9 @@ public class MessageReportApiController {
     @Operation(summary = "메시지 신고", description = "메시지 신고 API")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환"),
-        @ApiResponse(responseCode = "404", description = "RC001: 신고 카테고리가 존재하지 않습니다."),
-        @ApiResponse(responseCode = "404", description = "MG001: 메시지를 찾을 수 없습니다."),
-        @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "404-1", description = "RC001: 신고 카테고리가 존재하지 않습니다."),
+        @ApiResponse(responseCode = "404-2", description = "MG001: 메시지를 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "404-3", description = "M001: 사용자를 찾을 수 없습니다."),
         @ApiResponse(responseCode = "409", description = "MR001: 이미 신고된 메시지가 존재합니다."),
     })
     @PostMapping("/message")
