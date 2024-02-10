@@ -33,7 +33,7 @@ public class SessionServiceImpl implements SessionService {
     @Transactional
     @Scheduled(cron = "0 0 0 1 * ?")
     public void update() {
-        List<Member> members = memberRepository.findAll();
+        List<Member> members = memberRepository.findJoiningAll();
         for (Member member : members) {
             member.updateSessionId(create());
         }
