@@ -103,7 +103,6 @@ public class InfoApiController {
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "500", description = "M003: 이미지 업로드에 실패하였습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PatchMapping("/bio")
     public ResponseEntity<Void> transBio(@RequestBody @Valid BioRequest request) {

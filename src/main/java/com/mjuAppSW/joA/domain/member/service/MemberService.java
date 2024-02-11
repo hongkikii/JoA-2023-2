@@ -47,7 +47,6 @@ public class MemberService {
 
     public void delete(Member member) {
         imageUploader.delete(member.getUrlCode());
-        locationRepository.deleteById(member.getId());
         member.setWithdrawal();
     }
 }
