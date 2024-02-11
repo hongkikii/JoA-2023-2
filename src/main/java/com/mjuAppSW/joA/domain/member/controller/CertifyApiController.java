@@ -34,7 +34,7 @@ public class CertifyApiController {
             @ApiResponse(responseCode = "404", description = "P001: 학교 정보를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "409-1", description = "M005: 이미 존재하는 사용자입니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "403", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "409-2", description = "M006: 사용 중인 이메일입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "409-2", description = "M006: 회원가입 중인 이메일입니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PostMapping("/certify-num/send")
     public ResponseEntity<SuccessResponse<SessionIdResponse>> sendCertifyNum(@RequestBody @Valid SendCertifyNumRequest request) {
