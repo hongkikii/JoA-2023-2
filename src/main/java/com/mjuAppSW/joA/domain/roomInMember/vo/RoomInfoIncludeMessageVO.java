@@ -2,7 +2,7 @@ package com.mjuAppSW.joA.domain.roomInMember.vo;
 
 import java.util.Date;
 
-import com.mjuAppSW.joA.domain.room.Room;
+import com.mjuAppSW.joA.domain.room.entity.Room;
 
 public interface RoomInfoIncludeMessageVO {
 	Room getRoom();

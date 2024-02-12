@@ -1,12 +1,12 @@
-package com.mjuAppSW.joA.domain.roomInMember;
+package com.mjuAppSW.joA.domain.roomInMember.entity;
 
 import com.mjuAppSW.joA.domain.member.Member;
-import com.mjuAppSW.joA.domain.room.Room;
+import com.mjuAppSW.joA.domain.room.entity.Room;
+
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 

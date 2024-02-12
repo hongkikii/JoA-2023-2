@@ -1,9 +1,10 @@
-package com.mjuAppSW.joA.domain.room;
+package com.mjuAppSW.joA.domain.room.controller;
 
 import java.time.LocalDateTime;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
 import com.mjuAppSW.joA.domain.room.dto.response.RoomResponse;
+import com.mjuAppSW.joA.domain.room.service.RoomService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

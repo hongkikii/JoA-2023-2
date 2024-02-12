@@ -4,7 +4,8 @@ import static com.mjuAppSW.joA.common.constant.Constants.SlackServiceUtil.*;
 import static com.slack.api.model.block.Blocks.*;
 import static com.slack.api.model.block.composition.BlockCompositions.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class SlackServiceUtil {
 		sectionInFields.add(markdownText(ERROR_STACK + exception));
 		sectionInFields.add(markdownText(ERROR_URI + request.getRequestURL()));
 		sectionInFields.add(markdownText(ERROR_METHOD + request.getMethod()));
-		sectionInFields.add(markdownText(ERROR_DATE + LocalDate.now()));
+		sectionInFields.add(markdownText(ERROR_DATE + formatDate(LocalDateTime.now())));
 		layoutBlockList.add(section(section -> section.fields(sectionInFields)));
 
 		layoutBlockList.add(divider());
@@ -53,5 +54,10 @@ public class SlackServiceUtil {
 		}
 		stringBuilder.append(POINTER);
 		return stringBuilder.toString();
+	}
+
+	private static String formatDate(LocalDateTime now){
+		DateTimeFormatter dateForm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		return now.format(dateForm);
 	}
 }

@@ -1,10 +1,11 @@
-package com.mjuAppSW.joA.domain.roomInMember;
+package com.mjuAppSW.joA.domain.roomInMember.controller;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
 import com.mjuAppSW.joA.domain.roomInMember.dto.request.UpdateExpiredRequest;
 import com.mjuAppSW.joA.domain.roomInMember.dto.request.VoteRequest;
 import com.mjuAppSW.joA.domain.roomInMember.dto.response.RoomListResponse;
 import com.mjuAppSW.joA.domain.roomInMember.dto.response.VoteResponse;
+import com.mjuAppSW.joA.domain.roomInMember.service.RoomInMemberService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

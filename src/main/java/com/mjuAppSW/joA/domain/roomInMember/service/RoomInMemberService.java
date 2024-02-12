@@ -1,18 +1,19 @@
-package com.mjuAppSW.joA.domain.roomInMember;
+package com.mjuAppSW.joA.domain.roomInMember.service;
 
 import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
 
 import com.mjuAppSW.joA.common.encryption.EncryptManager;
-import com.mjuAppSW.joA.domain.heart.exception.RoomAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.member.vo.UserInfoVO;
-import com.mjuAppSW.joA.domain.message.MessageRepository;
+import com.mjuAppSW.joA.domain.message.repository.MessageRepository;
 import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
 import com.mjuAppSW.joA.domain.message.exception.MessageNotFoundException;
-import com.mjuAppSW.joA.domain.room.Room;
-import com.mjuAppSW.joA.domain.room.RoomService;
+import com.mjuAppSW.joA.domain.room.entity.Room;
+import com.mjuAppSW.joA.domain.room.service.RoomService;
+import com.mjuAppSW.joA.domain.roomInMember.entity.RoomInMember;
+import com.mjuAppSW.joA.domain.roomInMember.repository.RoomInMemberRepository;
 import com.mjuAppSW.joA.domain.roomInMember.dto.request.UpdateExpiredRequest;
 import com.mjuAppSW.joA.domain.roomInMember.dto.request.VoteRequest;
 import com.mjuAppSW.joA.domain.roomInMember.dto.response.RoomListResponse;
@@ -38,6 +39,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class RoomInMemberService {
 	private final RoomService roomService;
+	private final RoomInMemberQueryService roomInMemberQueryService;
     private final RoomInMemberRepository roomInMemberRepository;
     private final MessageRepository messageRepository;
     private final MemberQueryService memberQueryService;
@@ -221,10 +223,4 @@ public class RoomInMemberService {
 		}
 		return roomInfoIncludeMessageVOList.get(0);
 	}
-
-    public void validateNoRoom(Member member1, Member member2) {
-        if (roomInMemberRepository.checkRoomInMember(member1, member2).size() != 0) {
-            throw new RoomAlreadyExistedException();
-        }
-    }
 }

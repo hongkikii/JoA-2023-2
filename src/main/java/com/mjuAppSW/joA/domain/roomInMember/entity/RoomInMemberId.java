@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.roomInMember;
+package com.mjuAppSW.joA.domain.roomInMember.entity;
 
 import lombok.Data;
 

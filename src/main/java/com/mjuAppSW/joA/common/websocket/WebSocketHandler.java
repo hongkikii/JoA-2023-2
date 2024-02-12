@@ -6,13 +6,13 @@ import com.mjuAppSW.joA.common.websocket.exception.MemberSessionListNullExceptio
 import com.mjuAppSW.joA.common.websocket.exception.RoomSessionListNullException;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
-import com.mjuAppSW.joA.domain.message.MessageService;
-import com.mjuAppSW.joA.domain.messageReport.MessageReport;
-import com.mjuAppSW.joA.domain.messageReport.MessageReportRepository;
-import com.mjuAppSW.joA.domain.room.Room;
-import com.mjuAppSW.joA.domain.room.RoomService;
-import com.mjuAppSW.joA.domain.roomInMember.RoomInMember;
-import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberService;
+import com.mjuAppSW.joA.domain.message.service.MessageService;
+import com.mjuAppSW.joA.domain.messageReport.entity.MessageReport;
+import com.mjuAppSW.joA.domain.messageReport.repository.MessageReportRepository;
+import com.mjuAppSW.joA.domain.room.entity.Room;
+import com.mjuAppSW.joA.domain.room.service.RoomService;
+import com.mjuAppSW.joA.domain.roomInMember.entity.RoomInMember;
+import com.mjuAppSW.joA.domain.roomInMember.service.RoomInMemberService;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoExceptDateVO;
 
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.room;
+package com.mjuAppSW.joA.domain.room.service;
 
 import static com.mjuAppSW.joA.common.constant.Constants.Room.*;
 import static com.mjuAppSW.joA.common.constant.Constants.Room.OVER_ONE_DAY;
@@ -8,17 +8,19 @@ import static com.mjuAppSW.joA.common.constant.Constants.WebSocketHandler.*;
 import com.mjuAppSW.joA.common.encryption.EncryptManager;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
-import com.mjuAppSW.joA.domain.message.MessageRepository;
-import com.mjuAppSW.joA.domain.messageReport.MessageReport;
-import com.mjuAppSW.joA.domain.messageReport.MessageReportRepository;
+import com.mjuAppSW.joA.domain.message.repository.MessageRepository;
+import com.mjuAppSW.joA.domain.messageReport.entity.MessageReport;
+import com.mjuAppSW.joA.domain.messageReport.repository.MessageReportRepository;
 import com.mjuAppSW.joA.domain.message.exception.MessageReportAlreadyReportException;
 import com.mjuAppSW.joA.domain.message.exception.MessageReportAlreadyReportedException;
+import com.mjuAppSW.joA.domain.room.entity.Room;
 import com.mjuAppSW.joA.domain.room.dto.response.RoomResponse;
 import com.mjuAppSW.joA.domain.room.exception.OverOneDayException;
 import com.mjuAppSW.joA.domain.room.exception.RoomAlreadyExtendException;
 import com.mjuAppSW.joA.domain.room.exception.RoomNotFoundException;
-import com.mjuAppSW.joA.domain.roomInMember.RoomInMember;
-import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberRepository;
+import com.mjuAppSW.joA.domain.room.repository.RoomRepository;
+import com.mjuAppSW.joA.domain.roomInMember.entity.RoomInMember;
+import com.mjuAppSW.joA.domain.roomInMember.repository.RoomInMemberRepository;
 import com.mjuAppSW.joA.domain.roomInMember.exception.RoomInMemberAlreadyExistedException;
 
 import jakarta.transaction.Transactional;

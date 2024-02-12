@@ -1,17 +1,19 @@
-package com.mjuAppSW.joA.domain.message;
+package com.mjuAppSW.joA.domain.message.service;
 
 import com.mjuAppSW.joA.common.encryption.EncryptManager;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
+import com.mjuAppSW.joA.domain.message.repository.MessageRepository;
 import com.mjuAppSW.joA.domain.message.dto.vo.MessageVO;
 import com.mjuAppSW.joA.domain.message.dto.response.MessageResponse;
+import com.mjuAppSW.joA.domain.message.entity.Message;
 import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
 import com.mjuAppSW.joA.domain.message.exception.FailEncryptException;
 import com.mjuAppSW.joA.domain.message.exception.MessageNotFoundException;
-import com.mjuAppSW.joA.domain.room.Room;
-import com.mjuAppSW.joA.domain.room.RoomService;
-import com.mjuAppSW.joA.domain.roomInMember.RoomInMember;
-import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberService;
+import com.mjuAppSW.joA.domain.room.entity.Room;
+import com.mjuAppSW.joA.domain.room.service.RoomService;
+import com.mjuAppSW.joA.domain.roomInMember.entity.RoomInMember;
+import com.mjuAppSW.joA.domain.roomInMember.service.RoomInMemberService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

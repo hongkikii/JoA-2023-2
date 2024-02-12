@@ -1,6 +1,7 @@
-package com.mjuAppSW.joA.domain.message;
+package com.mjuAppSW.joA.domain.message.controller;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
+import com.mjuAppSW.joA.domain.message.service.MessageService;
 import com.mjuAppSW.joA.domain.message.dto.response.MessageResponse;
 
 import io.swagger.v3.oas.annotations.Operation;

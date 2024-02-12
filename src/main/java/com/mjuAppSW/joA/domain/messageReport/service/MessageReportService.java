@@ -1,11 +1,11 @@
-package com.mjuAppSW.joA.domain.messageReport;
+package com.mjuAppSW.joA.domain.messageReport.service;
 
 import static com.mjuAppSW.joA.common.constant.Constants.MessageReport.*;
 
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
-import com.mjuAppSW.joA.domain.message.Message;
-import com.mjuAppSW.joA.domain.message.MessageService;
+import com.mjuAppSW.joA.domain.message.entity.Message;
+import com.mjuAppSW.joA.domain.message.service.MessageService;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,6 +14,8 @@ import java.util.List;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.mjuAppSW.joA.domain.messageReport.entity.MessageReport;
+import com.mjuAppSW.joA.domain.messageReport.repository.MessageReportRepository;
 import com.mjuAppSW.joA.domain.reportCategory.ReportCategory;
 import com.mjuAppSW.joA.domain.reportCategory.repository.ReportCategoryRepository;
 import com.mjuAppSW.joA.domain.message.dto.request.ReportRequest;
