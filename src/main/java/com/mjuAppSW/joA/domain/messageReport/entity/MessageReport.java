@@ -1,6 +1,6 @@
-package com.mjuAppSW.joA.domain.messageReport;
+package com.mjuAppSW.joA.domain.messageReport.entity;
 
-import com.mjuAppSW.joA.domain.message.Message;
+import com.mjuAppSW.joA.domain.message.entity.Message;
 import java.time.LocalDateTime;
 
 import com.mjuAppSW.joA.domain.reportCategory.ReportCategory;

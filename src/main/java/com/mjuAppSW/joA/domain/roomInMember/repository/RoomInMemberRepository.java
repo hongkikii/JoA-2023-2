@@ -1,8 +1,9 @@
-package com.mjuAppSW.joA.domain.roomInMember;
+package com.mjuAppSW.joA.domain.roomInMember.repository;
 
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.vo.UserInfoVO;
-import com.mjuAppSW.joA.domain.room.Room;
+import com.mjuAppSW.joA.domain.room.entity.Room;
+import com.mjuAppSW.joA.domain.roomInMember.entity.RoomInMember;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoExceptMessageVO;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoIncludeMessageVO;
 

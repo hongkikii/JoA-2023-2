@@ -1,6 +1,6 @@
-package com.mjuAppSW.joA.domain.messageReport;
+package com.mjuAppSW.joA.domain.messageReport.repository;
 
-import com.mjuAppSW.joA.domain.message.Message;
+import com.mjuAppSW.joA.domain.message.entity.Message;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.mjuAppSW.joA.domain.room.Room;
+import com.mjuAppSW.joA.domain.messageReport.entity.MessageReport;
+import com.mjuAppSW.joA.domain.room.entity.Room;
 
 @Repository
 public interface MessageReportRepository extends JpaRepository<MessageReport, Long> {

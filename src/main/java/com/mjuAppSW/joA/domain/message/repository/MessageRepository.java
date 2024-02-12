@@ -1,8 +1,9 @@
-package com.mjuAppSW.joA.domain.message;
+package com.mjuAppSW.joA.domain.message.repository;
 
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.message.dto.vo.CurrentMessageVO;
-import com.mjuAppSW.joA.domain.room.Room;
+import com.mjuAppSW.joA.domain.message.entity.Message;
+import com.mjuAppSW.joA.domain.room.entity.Room;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.messageReport;
+package com.mjuAppSW.joA.domain.messageReport.controller;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mjuAppSW.joA.domain.message.dto.request.ReportRequest;
+import com.mjuAppSW.joA.domain.messageReport.service.MessageReportService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
