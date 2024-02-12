@@ -6,7 +6,7 @@ import com.mjuAppSW.joA.domain.heart.dto.HeartResponse;
 import com.mjuAppSW.joA.domain.heart.repository.HeartRepository;
 import com.mjuAppSW.joA.domain.member.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
-import com.mjuAppSW.joA.domain.roomInMember.RoomInMemberService;
+import com.mjuAppSW.joA.domain.roomInMember.service.RoomInMemberQueryService;
 import com.mjuAppSW.joA.geography.block.service.BlockQueryService;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -21,7 +21,7 @@ public class HeartService {
 
     private final HeartRepository heartRepository;
     private final HeartQueryService heartQueryService;
-    private final RoomInMemberService roomInMemberService;
+    private final RoomInMemberQueryService roomInMemberQueryService;
     private final BlockQueryService blockQueryService;
     private final MemberQueryService memberQueryService;
 
@@ -37,7 +37,7 @@ public class HeartService {
 
         Heart heart = create(giveMemberId, takeMember);
         heartRepository.save(heart);
-        roomInMemberService.validateNoRoom(giveMember, takeMember);
+        roomInMemberQueryService.validateNoRoom(giveMember, takeMember);
         boolean isMatched = heartQueryService.isTodayHeartExisted(takeMemberId, giveMemberId);
         return HeartResponse.of(isMatched, giveMember, takeMember);
     }
