@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.voteReport.repository;
 
-import com.mjuAppSW.joA.domain.voteReport.VoteReport;
+import com.mjuAppSW.joA.domain.voteReport.entity.VoteReport;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

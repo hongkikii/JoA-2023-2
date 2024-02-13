@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.heart;
+package com.mjuAppSW.joA.domain.heart.controller;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
 import com.mjuAppSW.joA.domain.heart.dto.HeartRequest;

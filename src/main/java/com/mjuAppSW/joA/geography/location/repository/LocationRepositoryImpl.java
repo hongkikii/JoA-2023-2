@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.geography.location.repository;
 
-import com.mjuAppSW.joA.geography.location.Location;
+import com.mjuAppSW.joA.geography.location.entity.Location;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

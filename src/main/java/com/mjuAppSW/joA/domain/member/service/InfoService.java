@@ -3,7 +3,7 @@ package com.mjuAppSW.joA.domain.member.service;
 import static com.mjuAppSW.joA.common.constant.Constants.EMPTY_STRING;
 
 import com.mjuAppSW.joA.domain.heart.repository.HeartRepository;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.dto.request.BioRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.MyPageResponse;
 import com.mjuAppSW.joA.domain.member.dto.request.PictureRequest;

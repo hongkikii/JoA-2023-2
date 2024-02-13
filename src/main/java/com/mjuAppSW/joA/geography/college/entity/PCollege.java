@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.geography.college;
+package com.mjuAppSW.joA.geography.college.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

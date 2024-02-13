@@ -2,7 +2,7 @@ package com.mjuAppSW.joA.domain.message.entity;
 
 import static com.mjuAppSW.joA.common.constant.Constants.Message.*;
 
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.room.entity.Room;
 import jakarta.persistence.*;
 import lombok.Builder;

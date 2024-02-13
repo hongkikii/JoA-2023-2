@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.geography.location;
+package com.mjuAppSW.joA.geography.location.controller;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByListResponse;

@@ -6,7 +6,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.Room.OVER_SEVEN_DAY;
 import static com.mjuAppSW.joA.common.constant.Constants.WebSocketHandler.*;
 
 import com.mjuAppSW.joA.common.encryption.EncryptManager;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.message.repository.MessageRepository;
 import com.mjuAppSW.joA.domain.messageReport.entity.MessageReport;

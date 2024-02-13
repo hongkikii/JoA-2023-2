@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.reportCategory;
+package com.mjuAppSW.joA.domain.reportCategory.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.heart.repository;
 
-import com.mjuAppSW.joA.domain.heart.Heart;
+import com.mjuAppSW.joA.domain.heart.entity.Heart;
 import java.util.Optional;
 
 public interface HeartRepository {

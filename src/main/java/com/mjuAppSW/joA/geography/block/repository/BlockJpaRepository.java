@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.geography.block.repository;
 
-import com.mjuAppSW.joA.geography.block.Block;
+import com.mjuAppSW.joA.geography.block.entity.Block;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

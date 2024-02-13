@@ -4,8 +4,8 @@ import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_1_STO
 import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_2_STOP_STATUS;
 import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_3_STOP_STATUS;
 
-import com.mjuAppSW.joA.domain.college.MCollege;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.college.entity.MCollege;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.exception.LoginIdAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.MemberAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;

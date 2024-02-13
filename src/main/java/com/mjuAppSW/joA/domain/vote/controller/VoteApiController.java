@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.vote;
+package com.mjuAppSW.joA.domain.vote.controller;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
 import com.mjuAppSW.joA.domain.vote.dto.request.VoteRequest;

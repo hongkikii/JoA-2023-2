@@ -7,8 +7,8 @@ import static com.mjuAppSW.joA.common.constant.Constants.Cache.BEFORE_EMAIL;
 import static com.mjuAppSW.joA.common.constant.Constants.Cache.CERTIFY_NUMBER;
 import static com.mjuAppSW.joA.common.constant.Constants.Mail.CERTIFY_NUMBER_IS;
 
-import com.mjuAppSW.joA.domain.college.MCollege;
-import com.mjuAppSW.joA.domain.college.MCollegeQueryService;
+import com.mjuAppSW.joA.domain.college.entity.MCollege;
+import com.mjuAppSW.joA.domain.college.service.MCollegeQueryService;
 import com.mjuAppSW.joA.domain.member.dto.request.SendCertifyNumRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.VerifyCertifyNumRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;

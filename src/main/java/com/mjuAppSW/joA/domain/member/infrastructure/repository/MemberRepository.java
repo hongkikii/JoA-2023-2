@@ -1,7 +1,7 @@
 package com.mjuAppSW.joA.domain.member.infrastructure.repository;
 
-import com.mjuAppSW.joA.domain.college.MCollege;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.college.entity.MCollege;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import java.util.List;
 import java.util.Optional;
 

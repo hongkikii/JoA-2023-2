@@ -1,6 +1,6 @@
-package com.mjuAppSW.joA.geography.block;
+package com.mjuAppSW.joA.geography.block.entity;
 
-import com.mjuAppSW.joA.geography.location.Location;
+import com.mjuAppSW.joA.geography.location.entity.Location;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -1,6 +1,7 @@
-package com.mjuAppSW.joA.geography.college;
+package com.mjuAppSW.joA.geography.college.service;
 
 import com.mjuAppSW.joA.geography.college.dto.PolygonRequest;
+import com.mjuAppSW.joA.geography.college.entity.PCollege;
 import com.mjuAppSW.joA.geography.college.repository.PCollegeRepository;
 import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
 import jakarta.transaction.Transactional;

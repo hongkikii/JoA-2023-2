@@ -1,11 +1,11 @@
 package com.mjuAppSW.joA.geography.block.service;
 
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
-import com.mjuAppSW.joA.geography.block.Block;
+import com.mjuAppSW.joA.geography.block.entity.Block;
 import com.mjuAppSW.joA.geography.block.dto.BlockRequest;
 import com.mjuAppSW.joA.geography.block.repository.BlockRepository;
-import com.mjuAppSW.joA.geography.location.Location;
+import com.mjuAppSW.joA.geography.location.entity.Location;
 import com.mjuAppSW.joA.geography.location.service.LocationQueryService;
 import jakarta.transaction.Transactional;
 import lombok.Builder;

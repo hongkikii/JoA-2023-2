@@ -1,12 +1,12 @@
 package com.mjuAppSW.joA.geography.location.service;
 
-import com.mjuAppSW.joA.domain.college.MCollege;
+import com.mjuAppSW.joA.domain.college.entity.MCollege;
 import com.mjuAppSW.joA.domain.heart.service.HeartQueryService;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
-import com.mjuAppSW.joA.geography.college.PCollege;
-import com.mjuAppSW.joA.geography.college.PCollegeService;
-import com.mjuAppSW.joA.geography.location.Location;
+import com.mjuAppSW.joA.geography.college.entity.PCollege;
+import com.mjuAppSW.joA.geography.college.service.PCollegeService;
+import com.mjuAppSW.joA.geography.location.entity.Location;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByInfo;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByListResponse;
 import com.mjuAppSW.joA.geography.location.dto.request.UpdateRequest;
@@ -15,13 +15,11 @@ import com.mjuAppSW.joA.geography.location.exception.OutOfCollegeException;
 import com.mjuAppSW.joA.geography.location.repository.LocationRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.stereotype.Service;
 

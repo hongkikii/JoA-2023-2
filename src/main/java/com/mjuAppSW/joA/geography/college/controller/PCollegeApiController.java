@@ -1,5 +1,6 @@
-package com.mjuAppSW.joA.geography.college;
+package com.mjuAppSW.joA.geography.college.controller;
 
+import com.mjuAppSW.joA.geography.college.service.PCollegeService;
 import com.mjuAppSW.joA.geography.college.dto.PolygonRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

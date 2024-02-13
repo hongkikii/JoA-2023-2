@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.geography.college.repository;
 
-import com.mjuAppSW.joA.geography.college.PCollege;
+import com.mjuAppSW.joA.geography.college.entity.PCollege;
 import java.util.Optional;
 
 public interface PCollegeRepository {

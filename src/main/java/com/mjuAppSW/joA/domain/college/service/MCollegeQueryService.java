@@ -1,7 +1,8 @@
-package com.mjuAppSW.joA.domain.college;
+package com.mjuAppSW.joA.domain.college.service;
 
 import static com.mjuAppSW.joA.common.constant.Constants.EMAIL_SPLIT;
 
+import com.mjuAppSW.joA.domain.college.entity.MCollege;
 import com.mjuAppSW.joA.domain.college.repository.MCollegeRepository;
 import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.college.repository;
 
-import com.mjuAppSW.joA.domain.college.MCollege;
+import com.mjuAppSW.joA.domain.college.entity.MCollege;
 import java.util.Optional;
 
 public interface MCollegeRepository {

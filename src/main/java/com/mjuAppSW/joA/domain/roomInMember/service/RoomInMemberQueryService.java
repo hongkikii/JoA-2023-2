@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mjuAppSW.joA.domain.heart.exception.RoomAlreadyExistedException;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.roomInMember.repository.RoomInMemberRepository;
 
 import lombok.RequiredArgsConstructor;

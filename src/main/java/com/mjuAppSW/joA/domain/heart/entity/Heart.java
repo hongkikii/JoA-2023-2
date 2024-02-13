@@ -1,6 +1,6 @@
-package com.mjuAppSW.joA.domain.heart;
+package com.mjuAppSW.joA.domain.heart.entity;
 
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.geography.block;
+package com.mjuAppSW.joA.geography.block.controller;
 
 import com.mjuAppSW.joA.geography.block.dto.BlockRequest;
 import com.mjuAppSW.joA.geography.block.service.BlockService;

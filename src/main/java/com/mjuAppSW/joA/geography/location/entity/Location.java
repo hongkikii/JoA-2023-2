@@ -1,12 +1,11 @@
-package com.mjuAppSW.joA.geography.location;
+package com.mjuAppSW.joA.geography.location.entity;
 
-import com.mjuAppSW.joA.geography.college.PCollege;
+import com.mjuAppSW.joA.geography.college.entity.PCollege;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;

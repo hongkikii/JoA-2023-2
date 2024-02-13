@@ -1,7 +1,7 @@
-package com.mjuAppSW.joA.domain.voteReport;
+package com.mjuAppSW.joA.domain.voteReport.entity;
 
-import com.mjuAppSW.joA.domain.reportCategory.ReportCategory;
-import com.mjuAppSW.joA.domain.vote.Vote;
+import com.mjuAppSW.joA.domain.reportCategory.entity.ReportCategory;
+import com.mjuAppSW.joA.domain.vote.entity.Vote;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

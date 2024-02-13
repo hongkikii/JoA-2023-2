@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.member.service;
 
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.exception.SessionNotFoundException;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;

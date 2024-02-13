@@ -4,7 +4,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.WebSocketHandler.*;
 
 import com.mjuAppSW.joA.common.websocket.exception.MemberSessionListNullException;
 import com.mjuAppSW.joA.common.websocket.exception.RoomSessionListNullException;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.message.service.MessageService;
 import com.mjuAppSW.joA.domain.messageReport.entity.MessageReport;

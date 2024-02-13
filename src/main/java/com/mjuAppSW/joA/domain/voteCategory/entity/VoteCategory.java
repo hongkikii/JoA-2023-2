@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.college;
+package com.mjuAppSW.joA.domain.voteCategory.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,21 +10,17 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MCollege {
+public class VoteCategory {
 
     @Id
-    @Column(name = "College_id")
+    @Column(name = "Category_id")
     private Long id;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String domain;
-
-    public MCollege(Long id, String name, String domain) {
+    public VoteCategory(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.domain = domain;
     }
 }

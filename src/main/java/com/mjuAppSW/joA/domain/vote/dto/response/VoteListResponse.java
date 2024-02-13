@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.vote.dto.response;
 
-import com.mjuAppSW.joA.domain.vote.Vote;
+import com.mjuAppSW.joA.domain.vote.entity.Vote;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.stream.Collectors;
