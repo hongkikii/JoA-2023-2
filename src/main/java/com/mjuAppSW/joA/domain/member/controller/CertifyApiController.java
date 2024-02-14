@@ -2,6 +2,7 @@ package com.mjuAppSW.joA.domain.member.controller;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
 import com.mjuAppSW.joA.domain.member.dto.request.CertifyNumSendRequest;
+import com.mjuAppSW.joA.domain.member.dto.request.AsyncRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.CertifyNumVerifyRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
 import com.mjuAppSW.joA.domain.member.service.CertifyService;
@@ -38,7 +39,9 @@ public class CertifyApiController {
     })
     @PostMapping("/certify-num/send")
     public ResponseEntity<SuccessResponse<SessionIdResponse>> send(@RequestBody @Valid CertifyNumSendRequest request) {
-        return SuccessResponse.of(certifyService.send(request))
+        AsyncRequest asyncRequest = certifyService.validate(request);
+        certifyService.send(asyncRequest);
+        return SuccessResponse.of(SessionIdResponse.of(asyncRequest.getSessionId()))
                 .asHttp(HttpStatus.OK);
     }
 

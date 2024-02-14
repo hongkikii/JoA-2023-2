@@ -8,12 +8,12 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class SendRequest {
+public class AsyncRequest {
     private final Long sessionId;
     private final String eMail;
 
-    public static SendRequest of(Long sessionId, String eMail) {
-        return SendRequest.builder()
+    public static AsyncRequest of(Long sessionId, String eMail) {
+        return AsyncRequest.builder()
                 .sessionId(sessionId)
                 .eMail(eMail)
                 .build();
