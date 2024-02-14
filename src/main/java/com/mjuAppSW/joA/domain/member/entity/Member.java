@@ -3,7 +3,7 @@ package com.mjuAppSW.joA.domain.member.entity;
 import static com.mjuAppSW.joA.common.constant.Constants.EMPTY_STRING;
 import static com.mjuAppSW.joA.common.constant.Constants.ZERO;
 
-import com.mjuAppSW.joA.domain.college.entity.MCollege;
+import com.mjuAppSW.joA.domain.mCollege.entity.MCollege;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

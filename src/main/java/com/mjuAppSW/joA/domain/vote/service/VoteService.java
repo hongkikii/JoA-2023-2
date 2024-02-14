@@ -5,7 +5,7 @@ import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.vote.entity.Vote;
 import com.mjuAppSW.joA.domain.vote.repository.VoteRepository;
 import com.mjuAppSW.joA.domain.voteCategory.service.VoteCategoryQueryService;
-import com.mjuAppSW.joA.geography.block.service.BlockQueryService;
+import com.mjuAppSW.joA.domain.block.service.BlockQueryService;
 import com.mjuAppSW.joA.domain.vote.dto.request.VoteRequest;
 import com.mjuAppSW.joA.domain.vote.dto.response.VoteListResponse;
 import com.mjuAppSW.joA.domain.voteCategory.entity.VoteCategory;

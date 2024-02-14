@@ -5,8 +5,8 @@ import static com.mjuAppSW.joA.common.constant.Constants.Cache.AFTER_SAVE_LOGIN_
 import static com.mjuAppSW.joA.common.constant.Constants.Cache.ID;
 import static com.mjuAppSW.joA.common.constant.Constants.EMAIL_SPLIT;
 
-import com.mjuAppSW.joA.domain.college.entity.MCollege;
-import com.mjuAppSW.joA.domain.college.service.MCollegeQueryService;
+import com.mjuAppSW.joA.domain.mCollege.entity.MCollege;
+import com.mjuAppSW.joA.domain.mCollege.service.MCollegeQueryService;
 import com.mjuAppSW.joA.domain.member.dto.request.JoinRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.VerifyIdRequest;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
