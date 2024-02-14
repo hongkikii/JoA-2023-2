@@ -4,10 +4,13 @@ import com.mjuAppSW.joA.domain.mCollege.entity.MCollege;
 import com.mjuAppSW.joA.domain.member.entity.Member;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+@Qualifier("primaryDataSource")
 public interface MemberJpaRepository extends JpaRepository<Member, Long> {
 
     @Query("SELECT m FROM Member m WHERE m.id = :id AND m.isWithdrawal = false")

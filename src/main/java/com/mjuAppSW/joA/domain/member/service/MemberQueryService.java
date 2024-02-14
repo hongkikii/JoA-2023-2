@@ -11,7 +11,7 @@ import com.mjuAppSW.joA.domain.member.exception.MemberAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.domain.member.exception.PermanentBanException;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
-import com.mjuAppSW.joA.domain.location.exception.AccessStoppedException;
+import com.mjuAppSW.joA.geography.location.exception.AccessStoppedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
