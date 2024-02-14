@@ -47,7 +47,7 @@ public class Member {
     @Column(name = "Url_code", nullable = false)
     private String urlCode;
 
-    @Column(nullable = false)
+    @Column(name = "Is_withdrawal", nullable = false)
     private Boolean isWithdrawal;
 
     @Column(name = "Session_id")
@@ -63,8 +63,10 @@ public class Member {
     @Column(nullable = false)
     private Integer status;
 
+    @Column(name = "Stop_start_date")
     private LocalDateTime stopStartDate;
 
+    @Column(name = "Stop_end_date")
     private LocalDateTime stopEndDate;
 
     @Builder

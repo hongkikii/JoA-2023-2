@@ -4,7 +4,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.EMAIL_SPLIT;
 
 import com.mjuAppSW.joA.domain.mCollege.entity.MCollege;
 import com.mjuAppSW.joA.domain.mCollege.repository.MCollegeRepository;
-import com.mjuAppSW.joA.domain.location.exception.CollegeNotFoundException;
+import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
