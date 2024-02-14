@@ -1,8 +1,10 @@
 package com.mjuAppSW.joA.domain.member.service;
 
 import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.*;
+import static com.mjuAppSW.joA.domain.member.entity.Status.*;
 
 import com.mjuAppSW.joA.domain.member.entity.Member;
+import com.mjuAppSW.joA.domain.member.entity.Status;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
@@ -29,8 +31,8 @@ public class StatusService {
     public void check() {
         List<Member> joiningAll = memberRepository.findJoiningAll();
         for (Member member : joiningAll) {
-            if(member.getStatus() == STEP_1_STOP_STATUS
-            || member.getStatus() == STEP_2_STOP_STATUS) {
+            if(member.getStatus() == STEP_1_STOP
+            || member.getStatus() == STEP_2_STOP) {
                 finishStopPolicy(member);
             }
             if (member.getReportCount() >= STEP_3_REPORT_COUNT) {
@@ -38,17 +40,17 @@ public class StatusService {
                 break;
             }
             if (member.getReportCount() >= STEP_2_REPORT_COUNT
-                && member.getStatus() != STEP_1_STOP_STATUS
-                && member.getStatus() != STEP_2_STOP_STATUS
-                && member.getStatus() != STEP_2_COMPLETE_STATUS) {
+                && member.getStatus() != STEP_1_STOP
+                && member.getStatus() != STEP_2_STOP
+                && member.getStatus() != STEP_2_COMPLETE) {
                 executeStopPolicy(member, STEP_2_REPORT_COUNT);
                 break;
             }
             if (member.getReportCount() >= STEP_1_REPORT_COUNT
-                && member.getStatus() != STEP_1_STOP_STATUS
-                && member.getStatus() != STEP_1_COMPLETE_STATUS
-                && member.getStatus() != STEP_2_STOP_STATUS
-                && member.getStatus() != STEP_2_COMPLETE_STATUS) {
+                && member.getStatus() != STEP_1_STOP
+                && member.getStatus() != STEP_1_COMPLETE
+                && member.getStatus() != STEP_2_STOP
+                && member.getStatus() != STEP_2_COMPLETE) {
                 executeStopPolicy(member, STEP_1_REPORT_COUNT);
                 break;
             }
@@ -60,19 +62,19 @@ public class StatusService {
             log.info("account stop ing : id = {}", member.getId());
             return;
         }
-        if (member.getStatus() == STEP_1_STOP_STATUS) {
-            member.updateStatus(STEP_1_COMPLETE_STATUS);
+        if (member.getStatus() == STEP_1_STOP) {
+            member.updateStatus(STEP_1_COMPLETE);
             log.info("account stop end : id = {}, reportCount = 5", member.getId());
         }
-        if (member.getStatus() == STEP_2_STOP_STATUS) {
-            member.updateStatus(STEP_2_COMPLETE_STATUS);
+        if (member.getStatus() == STEP_2_STOP) {
+            member.updateStatus(STEP_2_COMPLETE);
             log.info("account stop end : id = {}, reportCount = 10", member.getId());
         }
         member.expireStopDate();
     }
 
     private void executeOutPolicy(Member member) {
-        member.updateStatus(STEP_3_STOP_STATUS);
+        member.updateStatus(STEP_3_STOP);
         memberService.delete(member);
         log.info("account delete : id = {}, reportCount = 15", member.getId());
     }
@@ -82,12 +84,12 @@ public class StatusService {
         member.updateStopStartDate(today);
         if (reportCount == STEP_1_REPORT_COUNT) {
             member.updateStopEndDate(today.plusDays(STEP_1_DATE));
-            member.updateStatus(STEP_1_STOP_STATUS);
+            member.updateStatus(STEP_1_STOP);
             log.info("account stop start : id = {}, reportCount = 5", member.getId());
         }
         if (reportCount == STEP_2_REPORT_COUNT) {
             member.updateStopEndDate(today.plusDays(STEP_2_DATE));
-            member.updateStatus(STEP_2_STOP_STATUS);
+            member.updateStatus(STEP_2_STOP);
             log.info("account stop start : id = {}, reportCount = 10", member.getId());
         }
     }

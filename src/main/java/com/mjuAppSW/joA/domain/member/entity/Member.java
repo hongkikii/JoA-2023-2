@@ -61,7 +61,7 @@ public class Member {
     private Integer reportCount;
 
     @Column(nullable = false)
-    private Integer status;
+    private Status status;
 
     @Column(name = "Stop_start_date")
     private LocalDateTime stopStartDate;
@@ -83,7 +83,7 @@ public class Member {
         this.urlCode = EMPTY_STRING;
         this.sessionId = sessionId;
         this.reportCount = ZERO;
-        this.status = ZERO;
+        this.status = Status.NONE;
     }
 
     public void updateSessionId(Long sessionId) {
@@ -118,7 +118,7 @@ public class Member {
         this.reportCount++;
     }
 
-    public void updateStatus(int status) {
+    public void updateStatus(Status status) {
         this.status = status;
     }
 

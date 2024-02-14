@@ -1,11 +1,10 @@
 package com.mjuAppSW.joA.domain.member.service;
 
-import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_1_STOP_STATUS;
-import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_2_STOP_STATUS;
-import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_3_STOP_STATUS;
+import static com.mjuAppSW.joA.domain.member.entity.Status.*;
 
 import com.mjuAppSW.joA.domain.mCollege.entity.MCollege;
 import com.mjuAppSW.joA.domain.member.entity.Member;
+import com.mjuAppSW.joA.domain.member.entity.Status;
 import com.mjuAppSW.joA.domain.member.exception.LoginIdAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.MemberAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
@@ -31,11 +30,11 @@ public class MemberQueryService {
     public Member getNormalBySessionId(Long sessionId) {
         return memberRepository.findBysessionId(sessionId)
                 .filter(member -> {
-                    if (member.getStatus() == STEP_1_STOP_STATUS
-                            || member.getStatus() == STEP_2_STOP_STATUS) {
+                    if (member.getStatus() == STEP_1_STOP
+                            || member.getStatus() == STEP_2_STOP) {
                         throw new AccessStoppedException();
                     }
-                    if (member.getStatus() == STEP_3_STOP_STATUS) {
+                    if (member.getStatus() == STEP_3_STOP) {
                         throw new PermanentBanException();
                     }
                     return true;
@@ -77,11 +76,11 @@ public class MemberQueryService {
     }
 
     public void validateNoTemporaryBan(Member member) {
-        if (member.getStatus() == STEP_1_STOP_STATUS
-                || member.getStatus() == STEP_2_STOP_STATUS) {
+        if (member.getStatus() == STEP_1_STOP
+                || member.getStatus() == STEP_2_STOP) {
             throw new AccessStoppedException();
         }
-        if(member.getStatus() == STEP_3_STOP_STATUS) {
+        if(member.getStatus() == STEP_3_STOP) {
             throw new PermanentBanException();
         }
     }

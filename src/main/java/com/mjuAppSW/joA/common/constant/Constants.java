@@ -68,11 +68,6 @@ public class Constants {
     }
 
     public static class MemberStatus {
-        public static int STEP_1_STOP_STATUS = 1;
-        public static int STEP_2_STOP_STATUS = 2;
-        public static int STEP_3_STOP_STATUS = 3;
-        public static int STEP_1_COMPLETE_STATUS = 11;
-        public static int STEP_2_COMPLETE_STATUS = 22;
         public static int STEP_1_REPORT_COUNT = 5;
         public static int STEP_2_REPORT_COUNT = 10;
         public static int STEP_3_REPORT_COUNT = 15;
