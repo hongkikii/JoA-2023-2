@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class PictureRequest {
     @NotNull
     private final Long id;
+    @Schema(description = "이미지를 base 64로 인코딩한 문자열")
     @NotBlank
     private final String base64Picture;
 }

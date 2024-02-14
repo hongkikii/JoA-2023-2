@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Builder(access = AccessLevel.PRIVATE)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class UpdateResponse {
+    @Schema(description = "현재 학교 안에 위치하고 있는지 여부(학교 안에 위치할 시 true 반환)")
     private final Boolean isContained;
 
     public static UpdateResponse of(Boolean isContained) {

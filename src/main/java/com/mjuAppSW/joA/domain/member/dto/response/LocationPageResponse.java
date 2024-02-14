@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class LocationPageResponse {
     private final String name;
+    @Schema(description = "S3 저장소 내 프로필 사진 고유 코드, 기본 이미지일 시 빈 문자열 반환")
     private final String urlCode;
     private final String bio;
 

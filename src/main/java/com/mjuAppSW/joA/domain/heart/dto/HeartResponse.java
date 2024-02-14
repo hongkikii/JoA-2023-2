@@ -16,7 +16,9 @@ public class HeartResponse {
     private final Boolean isMatched;
     private final String giveName;
     private final String takeName;
+    @Schema(description = "하트 송신자의 S3 저장소 내 프로필 사진 고유 코드", defaultValue = "")
     private final String giveUrlCode;
+    @Schema(description = "하트 수신자의 S3 내 프로필 사진 고유 코드", defaultValue = "")
     private final String takeUrlCode;
 
     public static HeartResponse of(Boolean isMatched, Member giveMember, Member takeMember) {
