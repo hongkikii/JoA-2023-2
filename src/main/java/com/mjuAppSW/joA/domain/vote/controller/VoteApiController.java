@@ -34,7 +34,7 @@ public class VoteApiController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "상태 코드 반환"),
             @ApiResponse(responseCode = "404-1", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-1", description = "M004: 일시 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404-2", description = "V002: 투표 카테고리가 존재하지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "409", description = "V003: 이미 투표가 존재합니다.", content = @Content(schema = @Schema(hidden = true))),
@@ -51,7 +51,7 @@ public class VoteApiController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "받은 투표 목록 반환"),
             @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403-1", description = "M003: 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403-1", description = "M004: 일시 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "403-2", description = "M014: 영구 정지된 계정입니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping("/{id}")
