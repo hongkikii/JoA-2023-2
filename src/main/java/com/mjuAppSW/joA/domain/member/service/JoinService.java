@@ -8,7 +8,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.EMAIL_SPLIT;
 import com.mjuAppSW.joA.domain.mCollege.entity.MCollege;
 import com.mjuAppSW.joA.domain.mCollege.service.MCollegeQueryService;
 import com.mjuAppSW.joA.domain.member.dto.request.JoinRequest;
-import com.mjuAppSW.joA.domain.member.dto.request.VerifyIdRequest;
+import com.mjuAppSW.joA.domain.member.dto.request.LoginIdRequest;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.LoginIdManager;
 import jakarta.transaction.Transactional;
@@ -27,7 +27,7 @@ public class JoinService { //FIXME
     private final CacheManager cacheManager;
     private final LoginIdManager loginIdManager;
 
-    public void verifyLoginId(VerifyIdRequest request) {
+    public void verifyLoginId(LoginIdRequest request) {
         String loginId = request.getLoginId();
         Long sessionId = request.getSessionId();
         loginIdManager.validate(loginId);

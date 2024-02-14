@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(description = "인증번호 전송 Request")
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public class SendCertifyNumRequest {
+public class CertifyNumSendRequest {
     @Schema(description = "학교 이메일 아이디(도메인 미포함)")
     @NotBlank
     private final String collegeEmail;

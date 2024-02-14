@@ -9,8 +9,8 @@ import static com.mjuAppSW.joA.common.constant.Constants.Mail.CERTIFY_NUMBER_IS;
 
 import com.mjuAppSW.joA.domain.mCollege.entity.MCollege;
 import com.mjuAppSW.joA.domain.mCollege.service.MCollegeQueryService;
-import com.mjuAppSW.joA.domain.member.dto.request.SendCertifyNumRequest;
-import com.mjuAppSW.joA.domain.member.dto.request.VerifyCertifyNumRequest;
+import com.mjuAppSW.joA.domain.member.dto.request.CertifyNumSendRequest;
+import com.mjuAppSW.joA.domain.member.dto.request.CertifyNumVerifyRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
 import com.mjuAppSW.joA.domain.member.exception.InvalidCertifyNumberException;
 import com.mjuAppSW.joA.domain.member.exception.JoiningMailException;
@@ -31,7 +31,7 @@ public class CertifyService { //FIXME
     private final CacheManager cacheManager;
     private final MailSender mailSender;
 
-    public SessionIdResponse send(SendCertifyNumRequest request) {
+    public SessionIdResponse send(CertifyNumSendRequest request) {
         MCollege college = mCollegeQueryService.getById(request.getCollegeId());
         String uEmail = request.getCollegeEmail();
 
@@ -56,7 +56,7 @@ public class CertifyService { //FIXME
         }
     }
 
-    public void verify(VerifyCertifyNumRequest request) {
+    public void verify(CertifyNumVerifyRequest request) {
         Long sessionId = request.getId();
         sessionService.checkInCache(CERTIFY_NUMBER, sessionId);
 

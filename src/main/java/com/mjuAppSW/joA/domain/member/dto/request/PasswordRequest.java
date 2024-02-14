@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(description = "비밀번호 변경 Request")
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public class TransPasswordRequest {
+public class PasswordRequest {
     @NotNull
     private final Long id;
     @NotBlank
