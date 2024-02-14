@@ -83,7 +83,7 @@ public class Member {
         this.urlCode = EMPTY_STRING;
         this.sessionId = sessionId;
         this.reportCount = ZERO;
-        this.status = Status.NONE;
+        this.status = Status.ACTIVE;
     }
 
     public void updateSessionId(Long sessionId) {

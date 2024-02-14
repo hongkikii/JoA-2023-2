@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class ReportCategory {
 
     @Id
-    @Column(name = "Report_id")
+    @Column(name = "Report_category_id")
     public Long id;
 
     @Column(nullable = false)

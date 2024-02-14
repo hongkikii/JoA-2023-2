@@ -1,6 +1,7 @@
 package com.mjuAppSW.joA.geography.block.entity;
 
 import com.mjuAppSW.joA.geography.location.entity.Location;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class Block {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Block_id")
     private Long id;
 
     @ManyToOne

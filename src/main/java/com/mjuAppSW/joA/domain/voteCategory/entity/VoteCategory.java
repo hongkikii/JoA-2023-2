@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class VoteCategory {
 
     @Id
-    @Column(name = "Category_id")
+    @Column(name = "Vote_category_id")
     private Long id;
 
     @Column(nullable = false)

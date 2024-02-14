@@ -16,7 +16,7 @@ import org.locationtech.jts.geom.Polygon;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PCollege {
     @Id
-    @Column(name = "College_id")
+    @Column(name = "P_college_id")
     private Long collegeId;
 
     @Column(name = "Polygon_field", columnDefinition = "geometry(Polygon,4326)", nullable = false)
