@@ -4,14 +4,14 @@ import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_1_STO
 import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_2_STOP_STATUS;
 import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.STEP_3_STOP_STATUS;
 
-import com.mjuAppSW.joA.domain.college.MCollege;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.mCollege.entity.MCollege;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.exception.LoginIdAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.MemberAlreadyExistedException;
 import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.domain.member.exception.PermanentBanException;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
-import com.mjuAppSW.joA.geography.location.exception.AccessStoppedException;
+import com.mjuAppSW.joA.domain.location.exception.AccessStoppedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

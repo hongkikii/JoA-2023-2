@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.vote.repository;
 
-import com.mjuAppSW.joA.domain.vote.Vote;
+import com.mjuAppSW.joA.domain.vote.entity.Vote;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;

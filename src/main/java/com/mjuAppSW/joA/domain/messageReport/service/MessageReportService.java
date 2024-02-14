@@ -2,7 +2,7 @@ package com.mjuAppSW.joA.domain.messageReport.service;
 
 import static com.mjuAppSW.joA.common.constant.Constants.MessageReport.*;
 
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.message.entity.Message;
 import com.mjuAppSW.joA.domain.message.service.MessageService;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.mjuAppSW.joA.domain.messageReport.entity.MessageReport;
 import com.mjuAppSW.joA.domain.messageReport.repository.MessageReportRepository;
-import com.mjuAppSW.joA.domain.reportCategory.ReportCategory;
+import com.mjuAppSW.joA.domain.reportCategory.entity.ReportCategory;
 import com.mjuAppSW.joA.domain.reportCategory.repository.ReportCategoryRepository;
 import com.mjuAppSW.joA.domain.message.dto.request.ReportRequest;
 import com.mjuAppSW.joA.domain.message.exception.MessageReportAlreadyExistedException;

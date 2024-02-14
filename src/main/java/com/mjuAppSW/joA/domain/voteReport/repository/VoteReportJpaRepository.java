@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.voteReport.repository;
 
-import com.mjuAppSW.joA.domain.voteReport.VoteReport;
+import com.mjuAppSW.joA.domain.voteReport.entity.VoteReport;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

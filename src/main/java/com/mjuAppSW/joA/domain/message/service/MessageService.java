@@ -1,7 +1,7 @@
 package com.mjuAppSW.joA.domain.message.service;
 
 import com.mjuAppSW.joA.common.encryption.EncryptManager;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.message.repository.MessageRepository;
 import com.mjuAppSW.joA.domain.message.dto.vo.MessageVO;

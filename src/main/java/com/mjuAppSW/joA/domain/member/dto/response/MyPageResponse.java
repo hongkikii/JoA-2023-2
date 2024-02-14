@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.member.dto.response;
 
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.AccessLevel;
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class MyPageResponse {
     private final String name;
-    @Schema(description = "S3 객체(이미지) URL 고유 코드, 기본 이미지일 시 빈 문자열 반환")
+    @Schema(description = "S3 저장소 내 프로필 사진 고유 코드", defaultValue = "")
     private final String urlCode;
     private final String bio;
     private final Integer todayHeart;

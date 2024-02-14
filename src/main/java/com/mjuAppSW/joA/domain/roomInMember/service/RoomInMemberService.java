@@ -3,7 +3,7 @@ package com.mjuAppSW.joA.domain.roomInMember.service;
 import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
 
 import com.mjuAppSW.joA.common.encryption.EncryptManager;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.exception.MemberNotFoundException;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.member.vo.UserInfoVO;

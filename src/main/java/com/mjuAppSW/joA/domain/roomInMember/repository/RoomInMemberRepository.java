@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.roomInMember.repository;
 
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.vo.UserInfoVO;
 import com.mjuAppSW.joA.domain.room.entity.Room;
 import com.mjuAppSW.joA.domain.roomInMember.entity.RoomInMember;

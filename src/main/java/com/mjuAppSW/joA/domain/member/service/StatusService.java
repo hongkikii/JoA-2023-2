@@ -2,7 +2,7 @@ package com.mjuAppSW.joA.domain.member.service;
 
 import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.*;
 
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;

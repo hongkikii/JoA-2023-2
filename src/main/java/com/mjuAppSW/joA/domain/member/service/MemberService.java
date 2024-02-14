@@ -1,14 +1,14 @@
 package com.mjuAppSW.joA.domain.member.service;
 
-import com.mjuAppSW.joA.domain.college.MCollege;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.mCollege.entity.MCollege;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import com.mjuAppSW.joA.domain.member.infrastructure.PasswordManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
-import com.mjuAppSW.joA.geography.college.PCollege;
-import com.mjuAppSW.joA.geography.college.PCollegeService;
-import com.mjuAppSW.joA.geography.location.Location;
-import com.mjuAppSW.joA.geography.location.repository.LocationRepository;
+import com.mjuAppSW.joA.domain.pCollege.entity.PCollege;
+import com.mjuAppSW.joA.domain.pCollege.service.PCollegeService;
+import com.mjuAppSW.joA.domain.location.entity.Location;
+import com.mjuAppSW.joA.domain.location.repository.LocationRepository;
 import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;

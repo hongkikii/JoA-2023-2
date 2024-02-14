@@ -3,9 +3,9 @@ package com.mjuAppSW.joA.domain.member.service;
 import static com.mjuAppSW.joA.common.constant.Constants.Mail.TEMPORARY_PASSWORD_IS;
 import static com.mjuAppSW.joA.common.constant.Constants.Mail.USER_ID_IS;
 
-import com.mjuAppSW.joA.domain.college.MCollege;
-import com.mjuAppSW.joA.domain.college.MCollegeQueryService;
-import com.mjuAppSW.joA.domain.member.Member;
+import com.mjuAppSW.joA.domain.mCollege.entity.MCollege;
+import com.mjuAppSW.joA.domain.mCollege.service.MCollegeQueryService;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.dto.request.LoginRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.TransPasswordRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
