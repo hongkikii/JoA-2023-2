@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Status {
-    NONE("none"),
+    ACTIVE("active"),
     STEP_1_STOP("step_1_stop"),
     STEP_1_COMPLETE("step_1_complete"),
     STEP_2_STOP("step_2_stop"),
