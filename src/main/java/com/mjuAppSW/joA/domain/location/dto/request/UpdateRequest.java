@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor(force = true)
 public class UpdateRequest {
 
+    @Schema(description = "사용자 세션 id")
     @NotNull
     private final Long id;
     @NotNull

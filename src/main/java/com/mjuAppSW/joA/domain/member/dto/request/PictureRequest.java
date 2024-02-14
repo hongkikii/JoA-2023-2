@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
 public class PictureRequest {
+    @Schema(description = "사용자 세션 id")
     @NotNull
     private final Long id;
     @Schema(description = "이미지를 base 64로 인코딩한 문자열")

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Builder(access = AccessLevel.PRIVATE)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class SessionIdResponse {
+    @Schema(description = "사용자 세션 id")
     private final Long id;
 
     public static SessionIdResponse of(Long id) {
