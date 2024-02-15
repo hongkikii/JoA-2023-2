@@ -38,7 +38,7 @@ public class HeartApiController {
             @ApiResponse(responseCode = "409-2", description = "R001: 이미 채팅방이 존재합니다.", content = @Content(schema = @Schema(hidden = true)))
     })
     @PostMapping
-    public ResponseEntity<SuccessResponse<HeartResponse>> sendHeart(@RequestBody @Valid HeartRequest request) {
+    public ResponseEntity<SuccessResponse<HeartResponse>> send(@RequestBody @Valid HeartRequest request) {
         return SuccessResponse.of(heartService.send(request))
                 .asHttp(HttpStatus.OK);
     }

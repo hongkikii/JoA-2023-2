@@ -9,21 +9,21 @@ import static com.mjuAppSW.joA.common.constant.Constants.Mail.CERTIFY_NUMBER_IS;
 
 import com.mjuAppSW.joA.domain.mCollege.entity.MCollege;
 import com.mjuAppSW.joA.domain.mCollege.service.MCollegeQueryService;
-import com.mjuAppSW.joA.domain.member.dto.request.SendCertifyNumRequest;
-import com.mjuAppSW.joA.domain.member.dto.request.VerifyCertifyNumRequest;
-import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
+import com.mjuAppSW.joA.domain.member.dto.request.CertifyNumSendRequest;
+import com.mjuAppSW.joA.domain.member.dto.request.AsyncRequest;
+import com.mjuAppSW.joA.domain.member.dto.request.CertifyNumVerifyRequest;
 import com.mjuAppSW.joA.domain.member.exception.InvalidCertifyNumberException;
-import com.mjuAppSW.joA.domain.member.exception.JoiningMailException;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.MailSender;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
 @Builder
 @RequiredArgsConstructor
-public class CertifyService { //FIXME
+public class CertifyService {
 
     private final MemberQueryService memberQueryService;
     private final MCollegeQueryService mCollegeQueryService;
@@ -31,32 +31,27 @@ public class CertifyService { //FIXME
     private final CacheManager cacheManager;
     private final MailSender mailSender;
 
-    public SessionIdResponse send(SendCertifyNumRequest request) {
+    public AsyncRequest validate(CertifyNumSendRequest request) {
         MCollege college = mCollegeQueryService.getById(request.getCollegeId());
         String uEmail = request.getCollegeEmail();
 
         memberQueryService.validateNoExistedEmail(uEmail, college);
         memberQueryService.validateNoPermanentBan(uEmail, college);
         String eMail = uEmail + college.getDomain();
-        checkJoining(eMail);
 
-        long sessionId = sessionService.create();
-        String certifyNum = cacheManager.addRandomValue(
-                CERTIFY_NUMBER + sessionId, BEFORE_CERTIFY_TIME);
-        cacheManager.add(BEFORE_EMAIL + sessionId, eMail, BEFORE_CERTIFY_TIME);
-
-        mailSender.send(eMail, CERTIFY_NUMBER_IS, certifyNum);
-        return SessionIdResponse.of(sessionId);
+        return AsyncRequest.of(sessionService.create(), eMail);
     }
 
-    private void checkJoining(String eMail) {
-        if (cacheManager.isExistedValue(BEFORE_EMAIL, eMail)
-                || cacheManager.isExistedValue(AFTER_EMAIL, eMail)) {
-            throw new JoiningMailException();
-        }
+    @Async
+    public void send(AsyncRequest request) {
+        Long sessionId = request.getSessionId();
+        cacheManager.add(BEFORE_EMAIL + sessionId, request.getEMail(), BEFORE_CERTIFY_TIME);
+
+        String certifyNum = cacheManager.addRandomValue(CERTIFY_NUMBER + sessionId, BEFORE_CERTIFY_TIME);
+        mailSender.send(request.getEMail(), CERTIFY_NUMBER_IS, certifyNum);
     }
 
-    public void verify(VerifyCertifyNumRequest request) {
+    public void verify(CertifyNumVerifyRequest request) {
         Long sessionId = request.getId();
         sessionService.checkInCache(CERTIFY_NUMBER, sessionId);
 

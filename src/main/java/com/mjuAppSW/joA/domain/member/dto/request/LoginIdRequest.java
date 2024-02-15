@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(description = "아이디 중복 검증 request")
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public class VerifyIdRequest {
+public class LoginIdRequest {
     @NotNull
     private final Long sessionId;
     @NotBlank

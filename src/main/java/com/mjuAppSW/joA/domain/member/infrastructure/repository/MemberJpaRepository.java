@@ -26,7 +26,7 @@ public interface MemberJpaRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByuEmailAndcollege(@Param("uEmail") String uEmail,
                                             @Param("college") MCollege college);
 
-    @Query("SELECT m FROM Member m WHERE m.uEmail = :uEmail AND m.college = :college AND m.status = 3")
+    @Query("SELECT m FROM Member m WHERE m.uEmail = :uEmail AND m.college = :college AND m.status = 'step_3_stop'")
     Optional<Member> findForbidden(@Param("uEmail") String uEmail,
                                    @Param("college") MCollege college);
 

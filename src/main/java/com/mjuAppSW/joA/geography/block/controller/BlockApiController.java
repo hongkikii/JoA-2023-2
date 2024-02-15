@@ -30,8 +30,8 @@ public class BlockApiController {
             @ApiResponse(responseCode = "409", description = "B002: 이미 차단한 사용자입니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody BlockRequest blockRequest) {
-        blockService.create(blockRequest);
+    public ResponseEntity<Void> execute(@RequestBody BlockRequest blockRequest) {
+        blockService.execute(blockRequest);
         return ResponseEntity.noContent().build();
     }
 }

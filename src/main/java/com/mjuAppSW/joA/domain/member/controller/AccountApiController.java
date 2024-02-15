@@ -3,7 +3,7 @@ package com.mjuAppSW.joA.domain.member.controller;
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
 import com.mjuAppSW.joA.domain.member.service.AccountService;
 import com.mjuAppSW.joA.domain.member.dto.request.LoginRequest;
-import com.mjuAppSW.joA.domain.member.dto.request.TransPasswordRequest;
+import com.mjuAppSW.joA.domain.member.dto.request.PasswordRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -65,7 +65,7 @@ public class AccountApiController {
             @ApiResponse(responseCode = "404-2", description = "M001: 사용자를 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @GetMapping("/id/find")
-    public ResponseEntity<Void> findId(@RequestParam @NotBlank String collegeEmail, @RequestParam @NotNull Long collegeId) {
+    public ResponseEntity<Void> findLoginId(@RequestParam @NotBlank String collegeEmail, @RequestParam @NotNull Long collegeId) {
         accountService.findLoginId(collegeEmail, collegeId);
         return ResponseEntity.noContent().build();
     }
@@ -89,7 +89,7 @@ public class AccountApiController {
             @ApiResponse(responseCode = "400", description = "M012: 올바른 비밀번호 형식이 아닙니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PatchMapping("/password")
-    public ResponseEntity<Void> transPassword(@RequestBody @Valid TransPasswordRequest request) {
+    public ResponseEntity<Void> transPassword(@RequestBody @Valid PasswordRequest request) {
         accountService.transPassword(request);
         return ResponseEntity.noContent().build();
     }

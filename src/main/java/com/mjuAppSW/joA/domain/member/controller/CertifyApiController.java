@@ -1,8 +1,9 @@
 package com.mjuAppSW.joA.domain.member.controller;
 
 import com.mjuAppSW.joA.common.dto.SuccessResponse;
-import com.mjuAppSW.joA.domain.member.dto.request.SendCertifyNumRequest;
-import com.mjuAppSW.joA.domain.member.dto.request.VerifyCertifyNumRequest;
+import com.mjuAppSW.joA.domain.member.dto.request.CertifyNumSendRequest;
+import com.mjuAppSW.joA.domain.member.dto.request.AsyncRequest;
+import com.mjuAppSW.joA.domain.member.dto.request.CertifyNumVerifyRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
 import com.mjuAppSW.joA.domain.member.service.CertifyService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,8 +38,10 @@ public class CertifyApiController {
             @ApiResponse(responseCode = "409-2", description = "M006: 회원가입 중인 이메일입니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PostMapping("/certify-num/send")
-    public ResponseEntity<SuccessResponse<SessionIdResponse>> sendCertifyNum(@RequestBody @Valid SendCertifyNumRequest request) {
-        return SuccessResponse.of(certifyService.send(request))
+    public ResponseEntity<SuccessResponse<SessionIdResponse>> send(@RequestBody @Valid CertifyNumSendRequest request) {
+        AsyncRequest asyncRequest = certifyService.validate(request);
+        certifyService.send(asyncRequest);
+        return SuccessResponse.of(SessionIdResponse.of(asyncRequest.getSessionId()))
                 .asHttp(HttpStatus.OK);
     }
 
@@ -49,7 +52,7 @@ public class CertifyApiController {
             @ApiResponse(responseCode = "400", description = "M009: 인증번호가 올바르지 않습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
     @PostMapping("/certify-num/verify")
-    public ResponseEntity<Void> verifyCertifyNum(@RequestBody @Valid VerifyCertifyNumRequest request) {
+    public ResponseEntity<Void> verify(@RequestBody @Valid CertifyNumVerifyRequest request) {
         certifyService.verify(request);
         return ResponseEntity.noContent().build();
     }

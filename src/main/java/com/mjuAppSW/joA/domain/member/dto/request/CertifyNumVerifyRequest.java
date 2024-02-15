@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(description = "인증번호 확인 Request")
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public class VerifyCertifyNumRequest {
+public class CertifyNumVerifyRequest {
     @Schema(description = "사용자 세션 id")
     @NotNull
     private final Long id;

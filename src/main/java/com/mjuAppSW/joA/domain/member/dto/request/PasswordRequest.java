@@ -8,13 +8,14 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@Schema(description = "인증번호 전송 Request")
+@Schema(description = "비밀번호 변경 Request")
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public class SendCertifyNumRequest {
-    @Schema(description = "학교 이메일 아이디(도메인 미포함)")
-    @NotBlank
-    private final String collegeEmail;
+public class PasswordRequest {
     @NotNull
-    private final Long collegeId;
+    private final Long id;
+    @NotBlank
+    private final String currentPassword;
+    @NotBlank
+    private final String newPassword;
 }

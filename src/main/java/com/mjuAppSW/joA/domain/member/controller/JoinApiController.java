@@ -1,7 +1,7 @@
 package com.mjuAppSW.joA.domain.member.controller;
 
 import com.mjuAppSW.joA.domain.member.dto.request.JoinRequest;
-import com.mjuAppSW.joA.domain.member.dto.request.VerifyIdRequest;
+import com.mjuAppSW.joA.domain.member.dto.request.LoginIdRequest;
 import com.mjuAppSW.joA.domain.member.service.JoinService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,7 +34,7 @@ public class JoinApiController {
 
     })
     @PostMapping("/id/verify")
-    public ResponseEntity<Void> verifyId(@RequestBody @Valid VerifyIdRequest request) {
+    public ResponseEntity<Void> verifyLoginId(@RequestBody @Valid LoginIdRequest request) {
         joinService.verifyLoginId(request);
         return ResponseEntity.noContent().build();
     }
@@ -49,7 +49,7 @@ public class JoinApiController {
 
     })
     @PostMapping
-    public ResponseEntity<Void> join(@RequestBody @Valid JoinRequest request) {
+    public ResponseEntity<Void> execute(@RequestBody @Valid JoinRequest request) {
         joinService.execute(request);
         return ResponseEntity.noContent().build();
     }

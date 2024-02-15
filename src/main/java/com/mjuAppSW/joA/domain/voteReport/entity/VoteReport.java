@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class VoteReport {
 
     @Id @GeneratedValue
-    @Column(name = "Report_id")
+    @Column(name = "Vote_report_id")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -32,7 +32,7 @@ public class VoteReport {
     private Vote vote;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Category_id", nullable = false)
+    @JoinColumn(name = "Report_category_id", nullable = false)
     private ReportCategory reportCategory;
 
     private String content;

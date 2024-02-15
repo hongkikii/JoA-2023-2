@@ -29,7 +29,7 @@ public class VoteReportService {
     private final MemberQueryService memberQueryService;
 
     @Transactional
-    public void create(VoteReportRequest request) {
+    public void execute(VoteReportRequest request) {
         Long voteId = request.getVoteId();
         ReportCategory reportCategory = reportCategoryQueryService.getBy(request.getReportId());
         Vote vote = voteQueryService.getBy(voteId);
@@ -46,7 +46,7 @@ public class VoteReportService {
         giveMember.addReportCount();
     }
 
-    // 현재 해당 서비스 안에서만 사용중
+    // FIXME : 현재 해당 서비스 안에서만 사용중
     public void validateNoVoteReport(Long voteId) {
         voteReportRepository.findBy(voteId)
                 .ifPresent(report -> {

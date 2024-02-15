@@ -23,7 +23,7 @@ public class BlockService {
     private final BlockQueryService blockQueryService;
 
     @Transactional
-    public void create(BlockRequest request) {
+    public void execute(BlockRequest request) {
         Member blockerMember = memberQueryService.getBySessionId(request.getBlockerId());
         Member blockedMember = memberQueryService.getById(request.getBlockedId());
 

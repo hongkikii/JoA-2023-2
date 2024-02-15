@@ -8,14 +8,13 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@Schema(description = "비밀번호 변경 Request")
+@Schema(description = "인증번호 전송 Request")
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public class TransPasswordRequest {
+public class CertifyNumSendRequest {
+    @Schema(description = "학교 이메일 아이디(도메인 미포함)")
+    @NotBlank
+    private final String collegeEmail;
     @NotNull
-    private final Long id;
-    @NotBlank
-    private final String currentPassword;
-    @NotBlank
-    private final String newPassword;
+    private final Long collegeId;
 }

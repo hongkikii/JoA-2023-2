@@ -7,7 +7,7 @@ import com.mjuAppSW.joA.domain.mCollege.entity.MCollege;
 import com.mjuAppSW.joA.domain.mCollege.service.MCollegeQueryService;
 import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.dto.request.LoginRequest;
-import com.mjuAppSW.joA.domain.member.dto.request.TransPasswordRequest;
+import com.mjuAppSW.joA.domain.member.dto.request.PasswordRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SessionIdResponse;
 import com.mjuAppSW.joA.domain.member.infrastructure.MailSender;
 import com.mjuAppSW.joA.domain.member.infrastructure.PasswordManager;
@@ -66,7 +66,7 @@ public class AccountService {
     }
 
     @Transactional
-    public void transPassword(TransPasswordRequest request) {
+    public void transPassword(PasswordRequest request) {
         Member member = memberQueryService.getBySessionId(request.getId());
 
         String hashedCurrentPassword = passwordManager.createHashed(

@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class MCollege {
 
     @Id
-    @Column(name = "College_id")
+    @Column(name = "M_college_id")
     private Long id;
 
     @Column(nullable = false)
