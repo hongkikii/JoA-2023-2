@@ -17,6 +17,8 @@ public class HeartRequest {
     @Schema(description = "하트를 받는 사용자의 pk")
     @NotNull
     private final Long takeId;
+
+    // FIXME : 불필요한 data
     @Schema(description = "실명 여부(실명일 시 true)")
     @NotNull
     private final Boolean named;
