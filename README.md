@@ -3,8 +3,10 @@
 **고백에 필요한 것은 용기가 아니라 “JoA”다**
 
 Spring Boot + SwiftUI를 사용한 대학교 네트워킹 어플리케이션
+<br>
+<br>
 
-## **💁🏻‍♀️ 프로젝트 소개**
+# **💁🏻‍♀️ 프로젝트 소개**
 
 강의실에서 도서관에서…
 
@@ -17,30 +19,34 @@ Spring Boot + SwiftUI를 사용한 대학교 네트워킹 어플리케이션
 앱에서 내 주변에 있는 친구들을 확인하고,
 
 하트와 투표를 보내 마음을 전해보세요💘
+<br>
+<br>
 
-## **⚙️ 개발 환경**
+# **⚙️ 개발 환경**
 
 - `Java 17`, `Spring Boot 3.1.1`
 - `SwiftUI`, `Swift 5.9`, `UIKit`, `Combine`
 - MySQL, PostgreSQL
 - AWS - Lightsail, RDS, S3, Route 53, Cloudfront
 - [GitHub](https://github.com/hongkikii/JoA-2023-2), [Notion](https://www.notion.so/JoA-71b845898d3846d4a5a44578ded0d62e?pvs=21), Discord, Slack
+<br>
 
-## **👩‍👧‍👦 멤버와 역할**
+# **👩‍👧‍👦 멤버와 역할**
 
-- 홍향미
+### 홍향미
   - 프로젝트 리더, 백엔드
   - [회원](#회원), [위치](#위치), [하트](#하트), [투표](#투표)
   - Lightsail, S3, DNS
-- 최종현
+### 최종현
   - 백엔드
   - 채팅
   - RDS
-- 최가의
+### 최가의
   - 프론트엔드
   - UI/UX 디자인 및 구현
+<br>
 
-## **⏳ 진행 일정**
+# **⏳ 진행 일정**
 
 ### 2023.06.26 - 2023.07.02
 
@@ -65,8 +71,10 @@ Spring Boot + SwiftUI를 사용한 대학교 네트워킹 어플리케이션
 ### 2024.03.04
 
 정식 출시🥳(예정)
+<br>
+<br>
 
-## **🚀 기능**
+# **🚀 기능**
 
 <details>
 <summary>회원</summary>
@@ -157,17 +165,9 @@ Spring Boot + SwiftUI를 사용한 대학교 네트워킹 어플리케이션
 </div>
 </details>
 
-<details>
-<summary>주의사항</summary>
-<div markdown="1">
+<br>
 
-해당 리포지토리는 프론트엔드 코드를 제공하지 않습니다.
-
-App Store에 ‘JoA’를 검색하여 어플리케이션을 직접 만나보실 수 있습니다!
-</div>
-</details>
-
-## **✚ 추가 예정 기능**
+# **✚ 추가 예정 기능**
 
 <details>
 <summary>알림</summary>
@@ -195,8 +195,16 @@ App Store에 ‘JoA’를 검색하여 어플리케이션을 직접 만나보실
 </div>
 </details>
 
-## 📄 문서
+<br>
+
+# 📄 문서
 
 - 코드 컨벤션
 - [커밋 컨벤션](https://velog.io/@rladpwl0512/Git-commit-%EB%A9%94%EC%8B%9C%EC%A7%80-%EC%BB%A8%EB%B2%A4%EC%85%98)
 - [코드 리뷰 규칙](https://github.com/hongkikii/document/blob/main/guideline/%EC%BD%94%EB%93%9C_%EB%A6%AC%EB%B7%B0_%EA%B0%80%EC%9D%B4%EB%93%9C%EB%9D%BC%EC%9D%B8.md)
+
+<br>
+
+# ⚠️ 주의사항
+해당 리포지토리는 프론트엔드 코드를 제공하지 않습니다.  
+App Store에 ‘JoA’를 검색하여 어플리케이션을 직접 만나보실 수 있습니다!
