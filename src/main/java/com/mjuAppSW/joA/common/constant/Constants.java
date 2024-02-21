@@ -46,6 +46,7 @@ public class Constants {
 
     public static class Message{
         public static String CHECKED = "0";
+        public static String NOT_CHECKED = "1";
     }
 
     public static class WebSocketHandler{
@@ -88,6 +89,10 @@ public class Constants {
         public static final String FILTER_STRING = "joA";
         public static final String POINTER = "```";
         public static final String NEW_LINE = "\n";
+    }
+
+    public static class Encrypt{
+        public static final String alg = "AES/CBC/PKCS5Padding";
     }
 
     public static Integer ZERO = 0;
