@@ -1,9 +1,9 @@
 package com.mjuAppSW.joA.domain.messageReport.entity;
 
 import com.mjuAppSW.joA.domain.message.entity.Message;
-import java.time.LocalDateTime;
-
 import com.mjuAppSW.joA.domain.reportCategory.entity.ReportCategory;
+
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,7 +30,7 @@ public class MessageReport {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "Message_Id")
+    @JoinColumn(name = "Message_id")
     private Message message_id;
 
     @ManyToOne

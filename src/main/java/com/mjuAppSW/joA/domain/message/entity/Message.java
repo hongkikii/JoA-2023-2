@@ -2,8 +2,9 @@ package com.mjuAppSW.joA.domain.message.entity;
 
 import static com.mjuAppSW.joA.common.constant.Constants.Message.*;
 
-import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.room.entity.Room;
+import com.mjuAppSW.joA.domain.member.entity.Member;
+
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,11 +21,11 @@ public class Message {
     @Column(name ="Message_id", nullable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="Member_id", nullable = false)
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="Room_id", nullable = false)
     private Room room;
 
@@ -35,11 +36,12 @@ public class Message {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime time;
 
-    @Column(nullable = false)
+    @Column(name="Is_checked", nullable = false)
     private String isChecked;
 
     @Builder
-    public Message(Member member, Room room, String content, LocalDateTime date, String isChecked) {
+    public Message(Long id, Member member, Room room, String content, LocalDateTime date, String isChecked) {
+        this.id = id;
         this.member = member;
         this.room = room;
         this.content = content;
