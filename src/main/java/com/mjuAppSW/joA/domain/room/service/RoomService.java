@@ -53,13 +53,13 @@ public class RoomService {
         Room room = Room.builder()
             .date(createdRoomDate)
             .status(NOT_EXTEND)
-            .encryptKey(makeRandomString())
+            .encryptKey(makeRandomKey())
             .build();
         Room saveRoom = roomRepository.save(room);
         return RoomResponse.of(saveRoom.getId());
     }
 
-    private String makeRandomString(){
+    private String makeRandomKey(){
         byte[] randomBytes = new byte[16];
         SecureRandom secureRandom = new SecureRandom();
         secureRandom.nextBytes(randomBytes);
