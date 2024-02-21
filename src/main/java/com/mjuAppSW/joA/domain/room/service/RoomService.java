@@ -5,23 +5,23 @@ import static com.mjuAppSW.joA.common.constant.Constants.Room.OVER_ONE_DAY;
 import static com.mjuAppSW.joA.common.constant.Constants.Room.OVER_SEVEN_DAY;
 import static com.mjuAppSW.joA.common.constant.Constants.WebSocketHandler.*;
 
-import com.mjuAppSW.joA.common.encryption.EncryptManager;
-import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
-import com.mjuAppSW.joA.domain.message.repository.MessageRepository;
-import com.mjuAppSW.joA.domain.messageReport.entity.MessageReport;
-import com.mjuAppSW.joA.domain.messageReport.repository.MessageReportRepository;
+import com.mjuAppSW.joA.domain.message.entity.Message;
 import com.mjuAppSW.joA.domain.message.exception.MessageReportAlreadyReportException;
 import com.mjuAppSW.joA.domain.message.exception.MessageReportAlreadyReportedException;
-import com.mjuAppSW.joA.domain.room.entity.Room;
 import com.mjuAppSW.joA.domain.room.dto.response.RoomResponse;
 import com.mjuAppSW.joA.domain.room.exception.OverOneDayException;
 import com.mjuAppSW.joA.domain.room.exception.RoomAlreadyExtendException;
-import com.mjuAppSW.joA.domain.room.exception.RoomNotFoundException;
 import com.mjuAppSW.joA.domain.room.repository.RoomRepository;
+import com.mjuAppSW.joA.domain.member.entity.Member;
+import com.mjuAppSW.joA.domain.message.repository.MessageRepository;
+import com.mjuAppSW.joA.domain.messageReport.entity.MessageReport;
+import com.mjuAppSW.joA.domain.messageReport.repository.MessageReportRepository;
+import com.mjuAppSW.joA.domain.room.entity.Room;
 import com.mjuAppSW.joA.domain.roomInMember.entity.RoomInMember;
 import com.mjuAppSW.joA.domain.roomInMember.repository.RoomInMemberRepository;
 import com.mjuAppSW.joA.domain.roomInMember.exception.RoomInMemberAlreadyExistedException;
+import com.mjuAppSW.joA.domain.roomInMember.service.RoomInMemberQueryService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -40,47 +41,52 @@ import java.util.Set;
 public class RoomService {
 
     private final RoomRepository roomRepository;
+    private final RoomQueryService roomQueryService;
+    private final RoomInMemberQueryService roomInMemberQueryService;
     private final RoomInMemberRepository roomInMemberRepository;
     private final MemberQueryService memberQueryService;
     private final MessageRepository messageRepository;
     private final MessageReportRepository messageReportRepository;
-    private final EncryptManager encryptManager;
 
     @Transactional
-    public RoomResponse createRoom(LocalDateTime createdRoomDate){
+    public RoomResponse create(LocalDateTime createdRoomDate){
         Room room = Room.builder()
             .date(createdRoomDate)
             .status(NOT_EXTEND)
-            .encryptKey(encryptManager.makeRandomString())
+            .encryptKey(makeRandomString())
             .build();
         Room saveRoom = roomRepository.save(room);
         return RoomResponse.of(saveRoom.getId());
     }
 
+    private String makeRandomString(){
+        byte[] randomBytes = new byte[16];
+        SecureRandom secureRandom = new SecureRandom();
+        secureRandom.nextBytes(randomBytes);
+        return Base64.getEncoder().encodeToString(randomBytes);
+    }
+
     @Transactional
-    public void updateStatusAndDate(Long roomId, LocalDateTime updateRoomStatusDate){
-        Room room = findByRoomId(roomId);
+    public void update(Long roomId, LocalDateTime updateRoomStatusDate){
+        Room room = roomQueryService.getById(roomId);
         if(room.getStatus().equals(EXTEND)){
             throw new RoomAlreadyExtendException();
         }
         room.updateStatusAndDate(updateRoomStatusDate);
     }
 
-    public void checkRoomInMember(Long memberId1, Long memberId2) {
+    public void checkExisted(Long memberId1, Long memberId2) {
         Member member1 = memberQueryService.getBySessionId(memberId1);
         Member member2 = memberQueryService.getById(memberId2);
-        List<RoomInMember> roomInMemberList = roomInMemberRepository.checkRoomInMember(member1, member2);
-        if(!roomInMemberList.isEmpty()){
-            throw new RoomInMemberAlreadyExistedException();
-        }
+        roomInMemberQueryService.validateNoRoom(member1, member2);
     }
 
     public void checkMessageReport(Long memberId1, Long memberId2){
         Member member1 = memberQueryService.getBySessionId(memberId1);
         Member member2 = memberQueryService.getById(memberId2);
 
-        List<MessageReport> myMessageReport = messageReportRepository.findByMemberId(member1.getId());
-        List<MessageReport> opponentMessageReport = messageReportRepository.findByMemberId(member2.getId());
+        List<MessageReport> myMessageReport = messageReportRepository.findByMember(member1);
+        List<MessageReport> opponentMessageReport = messageReportRepository.findByMember(member2);
         Boolean reported = checkReportMessages(myMessageReport, member1.getId(), member2.getId());
         Boolean report = checkReportMessages(opponentMessageReport, member1.getId(), member2.getId());
         if(reported && report){throw new MessageReportAlreadyReportedException();}
@@ -89,15 +95,15 @@ public class RoomService {
     }
 
     private boolean checkReportMessages(List<MessageReport> messageReports, Long memberId1, Long memberId2){
-        Set<Room> roomIds = new HashSet<>();
+        Set<Room> rooms = new HashSet<>();
         if(messageReports != null){
             for(MessageReport mr : messageReports){
-                roomIds.add(mr.getMessage_id().getRoom());
+                rooms.add(mr.getMessage_id().getRoom());
             }
         }
 
-        for(Room rId : roomIds){
-            List<RoomInMember> roomInMembers = roomInMemberRepository.findByAllRoom(rId);
+        for(Room room : rooms){
+            List<RoomInMember> roomInMembers = roomInMemberRepository.findByRoom(room);
             boolean memberId1Exists = roomInMembers.stream()
                 .anyMatch(rim -> rim.getMember().getId().equals(memberId1));
             boolean memberId2Exists = roomInMembers.stream()
@@ -109,8 +115,8 @@ public class RoomService {
         return false;
     }
 
-    public void checkCreateAtRoom(Long roomId){
-        Room room = findByRoomId(roomId);
+    public void checkCreateAt(Long roomId){
+        Room room = roomQueryService.getById(roomId);
         LocalDateTime getDate = room.getDate();
         Long hours = calculationHour(getDate);
         if(hours >= ONE_DAY_HOURS){
@@ -119,16 +125,16 @@ public class RoomService {
     }
 
     public Integer checkTime(Long roomId){
-        Room room = findByRoomId(roomId);
+        Room room = roomQueryService.getById(roomId);
 
         String status = room.getStatus();
         LocalDateTime date = room.getDate();
         Long hours = calculationHour(date);
-        if(status.equals(EXTEND)){
-            if (hours >= SEVEN_DAY_HOURS){return OVER_SEVEN_DAY;}
+        if(status.equals(EXTEND) && hours >= SEVEN_DAY_HOURS){
+            return OVER_SEVEN_DAY;
         }
-        if(status.equals(NOT_EXTEND)){
-            if (hours >= ONE_DAY_HOURS) {return OVER_ONE_DAY;}
+        if(status.equals(NOT_EXTEND) && hours >= ONE_DAY_HOURS){
+            return OVER_ONE_DAY;
         }
         return NORMAL_OPERATION;
     }
@@ -141,22 +147,17 @@ public class RoomService {
     }
 
     public void findByRoom(Long roomId){
-        Room room = findByRoomId(roomId);
+        Room room = roomQueryService.getById(roomId);
 
-        List<RoomInMember> roomInMemberList = roomInMemberRepository.findAllRoom(room);
+        List<RoomInMember> roomInMemberList = roomInMemberRepository.findByRoom(room);
         if(!roomInMemberList.isEmpty()){
             throw new RoomInMemberAlreadyExistedException();
         }
     }
 
-    public Room findByRoomId(Long roomId){
-        return roomRepository.findById(roomId)
-            .orElseThrow(RoomNotFoundException::new);
-    }
-
-    @Scheduled(cron = "0 0 0,12 * * *")
-    public void deleteRooms(){
-        log.info("00, 12 delete Room");
+    @Scheduled(cron = "0,30 0 0,12 * * *")
+    public void deleteRelatedChatData(){
+        log.info("00:00, 12:00 delete message, roomInMember, room");
         List<MessageReport> messageReports = messageReportRepository.findAll();
         Set<Long> roomIds = new HashSet<>();
         if(messageReports != null){
@@ -169,15 +170,15 @@ public class RoomService {
         checkStatus(roomIds, NOT_EXTEND, ONE_DAY_HOURS);
     }
 
-    private void checkStatus(Set<Long> roomIds, String status, int validTime){
+    private void checkStatus(Set<Long> roomIds, String status, int validTime) {
         List<Room> rooms;
-        if(roomIds.isEmpty()){rooms = roomRepository.findByStatus(status);}
-        else{rooms = roomRepository.findByStatusAndNotRoomIds(status, roomIds);}
+        if (roomIds.isEmpty()) { rooms = roomRepository.findByStatus(status); }
+        else { rooms = roomRepository.findByStatusAndNotRoomIds(status, roomIds); }
 
-        for(Room room : rooms){
+        for (Room room : rooms) {
             LocalDateTime date = room.getDate();
             Long calculateHours = calculationHour(date);
-            if(calculateHours > validTime){
+            if (calculateHours >= validTime) {
                 log.info("delete : roomId = {}", room.getId());
                 deleteMemory(room);
             }
@@ -185,8 +186,12 @@ public class RoomService {
     }
 
     private void deleteMemory(Room room) {
-        messageRepository.deleteByRoom(room);
-        roomInMemberRepository.deleteByRoom(room);
-        roomRepository.deleteById(room.getId());
+        List<Message> deleteRooms = messageRepository.findByRoom(room);
+        if(!deleteRooms.isEmpty()) messageRepository.deleteAll(deleteRooms);
+
+        List<RoomInMember> deleteRoomInMembers = roomInMemberRepository.findByRoom(room);
+        if(!deleteRoomInMembers.isEmpty()) roomInMemberRepository.deleteAll(deleteRoomInMembers);
+
+        roomRepository.delete(room);
     }
 }
