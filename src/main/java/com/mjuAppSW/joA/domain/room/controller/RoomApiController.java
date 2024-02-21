@@ -2,8 +2,8 @@ package com.mjuAppSW.joA.domain.room.controller;
 
 import java.time.LocalDateTime;
 
-import com.mjuAppSW.joA.common.dto.SuccessResponse;
 import com.mjuAppSW.joA.domain.room.dto.response.RoomResponse;
+import com.mjuAppSW.joA.common.dto.SuccessResponse;
 import com.mjuAppSW.joA.domain.room.service.RoomService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 @RequestMapping("/joa/rooms")
 public class RoomApiController {
 
@@ -33,47 +31,47 @@ public class RoomApiController {
 
     @Operation(summary = "채팅방 생성", description = "메인 페이지에서 하트가 눌렸을 때 방을 생성하는 API")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "방 생성 완료")
+        @ApiResponse(responseCode = "200", description = "채팅방 생성 완료")
     })
     @PostMapping
-    public ResponseEntity<SuccessResponse<RoomResponse>> createRoom(){
+    public ResponseEntity<SuccessResponse<RoomResponse>> create(){
         LocalDateTime createdRoomDate = LocalDateTime.now();
-        return SuccessResponse.of(roomService.createRoom(createdRoomDate)).asHttp(HttpStatus.OK);
+        return SuccessResponse.of(roomService.create(createdRoomDate)).asHttp(HttpStatus.OK);
     }
     @Operation(summary = "채팅방 생성 시간 조회", description = "채팅방 페이지에서 투표를 누르기 전 유효기간을 확인하는 API")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환"),
-        @ApiResponse(responseCode = "400", description = "R002: 방이 생성된지 24시간이 지났습니다."),
-        @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다.")
+        @ApiResponse(responseCode = "400", description = "R002: 채팅방이 생성된지 24시간이 지났습니다."),
+        @ApiResponse(responseCode = "404", description = "R003: 채팅방을 찾을 수 없습니다.")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Void> checkCreateAtRoom(
+    public ResponseEntity<Void> checkCreateAt(
             @Parameter(description = "방 id", in = ParameterIn.PATH) @PathVariable("id") Long roomId){
-        roomService.checkCreateAtRoom(roomId);
+        roomService.checkCreateAt(roomId);
         return ResponseEntity.noContent().build();
     }
     @Operation(summary = "채팅방 상태 연장", description = "채팅방 페이지에서 투표가 완료되었을 때 유효기간을 연장하는 API")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환"),
-        @ApiResponse(responseCode = "404", description = "R003: 방을 찾을 수 없습니다."),
-        @ApiResponse(responseCode = "409", description = "R004: 이미 연장된 방입니다.")
+        @ApiResponse(responseCode = "404", description = "R003: 채팅방을 찾을 수 없습니다."),
+        @ApiResponse(responseCode = "409", description = "R004: 이미 연장된 채팅방입니다.")
     })
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateStatusAndDate(
+    public ResponseEntity<Void> update(
          @Parameter(description = "방 id", in = ParameterIn.PATH) @PathVariable("id") Long roomId){
         LocalDateTime updateRoomStatusDate = LocalDateTime.now();
-        roomService.updateStatusAndDate(roomId, updateRoomStatusDate);
+        roomService.update(roomId, updateRoomStatusDate);
         return ResponseEntity.noContent().build();
     }
     @Operation(summary = "채팅방 생성 전 채팅방 유무 확인", description = "채팅방 생성 전 이미 두 사용자의 채팅방이 존재하는지 확인 API")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "HTTP 상태 코드 반환"),
         @ApiResponse(responseCode = "404", description = "M001: 사용자를 찾을 수 없습니다."),
-        @ApiResponse(responseCode = "400", description = "RIM002: 이미 두 사용자의 채팅방이 존재합니다.")
+        @ApiResponse(responseCode = "409", description = "R001: 이미 채팅방이 존재합니다.")
     })
     @GetMapping("/existence")
-    public ResponseEntity<Void> checkRoomInMember(@RequestParam("memberId1") Long memberId1, @RequestParam("memberId2") Long memberId2){
-        roomService.checkRoomInMember(memberId1, memberId2);
+    public ResponseEntity<Void> checkExisted(@RequestParam("memberId1") Long memberId1, @RequestParam("memberId2") Long memberId2){
+        roomService.checkExisted(memberId1, memberId2);
         return ResponseEntity.noContent().build();
     }
 

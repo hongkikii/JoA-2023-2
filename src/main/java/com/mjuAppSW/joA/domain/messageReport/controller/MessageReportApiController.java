@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/joa/reports")
 @Slf4j
 public class MessageReportApiController {
-
     private final MessageReportService messageReportService;
     @Operation(summary = "메시지 신고", description = "메시지 신고 API")
     @ApiResponses(value = {
@@ -36,9 +35,9 @@ public class MessageReportApiController {
         @ApiResponse(responseCode = "409", description = "MR001: 이미 신고된 메시지가 존재합니다."),
     })
     @PostMapping("/message")
-    public ResponseEntity<Void> messageReport(@RequestBody @Valid ReportRequest request){
+    public ResponseEntity<Void> execute(@RequestBody @Valid ReportRequest request){
         LocalDateTime messageReportDate = LocalDateTime.now();
-        messageReportService.messageReport(request, messageReportDate);
+        messageReportService.execute(request, messageReportDate);
         return ResponseEntity.noContent().build();
     }
 
@@ -48,8 +47,8 @@ public class MessageReportApiController {
         @ApiResponse(responseCode = "404", description = "MR002: 신고된 메시지를 찾을 수 없습니다."),
     })
     @DeleteMapping("/{messageReportId}/message")
-    public ResponseEntity<Void> deleteMessageReportAdmin(@PathVariable("messageReportId") Long messageReportId) {
-        messageReportService.deleteMessageReportAdmin(messageReportId);
+    public ResponseEntity<Void> deleteByAdmin(@PathVariable("messageReportId") Long messageReportId) {
+        messageReportService.deleteByAdmin(messageReportId);
         return ResponseEntity.noContent().build();
     }
 }
