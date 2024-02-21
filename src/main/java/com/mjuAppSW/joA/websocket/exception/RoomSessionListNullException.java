@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.common.websocket.exception;
+package com.mjuAppSW.joA.websocket.exception;
 
 import com.mjuAppSW.joA.common.exception.BusinessException;
 import com.mjuAppSW.joA.common.exception.ErrorCode;
