@@ -51,15 +51,6 @@ public class InfoService {
         return MyPageResponse.of(member, todayHeart, totalHeart, voteTop3);
     }
 
-    public ChattingPageResponse getChattingPage(Long roomId, Long memberId){
-        Room room = roomService.findByRoomId(roomId);
-        Member member = memberQueryService.getBySessionId(memberId);
-        RoomInMember roomInMember = roomInMemberService.findByRoomAndMember(room, member);
-
-        UserInfoVO userInfoVO = roomInMemberService.findOpponentUserInfoByRoomAndMember(roomInMember.getRoom(), roomInMember.getMember());
-        return ChattingPageResponse.of(userInfoVO.getName(), userInfoVO.getUrlCode(), userInfoVO.getBio());
-    }
-
     public VotePageResponse getVotePage(Long sessionId) {
         return VotePageResponse.of(memberQueryService.getNormalBySessionId(sessionId));
     }
