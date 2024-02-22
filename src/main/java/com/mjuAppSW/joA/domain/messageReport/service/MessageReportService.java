@@ -2,10 +2,14 @@ package com.mjuAppSW.joA.domain.messageReport.service;
 
 import static com.mjuAppSW.joA.common.constant.Constants.MessageReport.*;
 
-import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
+import com.mjuAppSW.joA.domain.message.dto.request.ReportRequest;
 import com.mjuAppSW.joA.domain.message.entity.Message;
-import com.mjuAppSW.joA.domain.message.service.MessageService;
+import com.mjuAppSW.joA.domain.reportCategory.entity.ReportCategory;
+import com.mjuAppSW.joA.domain.reportCategory.service.ReportCategoryQueryService;
+import com.mjuAppSW.joA.domain.member.entity.Member;
+import com.mjuAppSW.joA.domain.message.service.MessageQueryService;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,12 +20,6 @@ import org.springframework.stereotype.Service;
 
 import com.mjuAppSW.joA.domain.messageReport.entity.MessageReport;
 import com.mjuAppSW.joA.domain.messageReport.repository.MessageReportRepository;
-import com.mjuAppSW.joA.domain.reportCategory.entity.ReportCategory;
-import com.mjuAppSW.joA.domain.reportCategory.repository.ReportCategoryRepository;
-import com.mjuAppSW.joA.domain.message.dto.request.ReportRequest;
-import com.mjuAppSW.joA.domain.message.exception.MessageReportAlreadyExistedException;
-import com.mjuAppSW.joA.domain.message.exception.MessageReportNotFoundException;
-import com.mjuAppSW.joA.domain.vote.exception.ReportCategoryNotFoundException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,22 +30,18 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MessageReportService {
     private final MemberQueryService memberQueryService;
-    private final MessageService messageService;
+    private final MessageReportQueryService messageReportQueryService;
+    private final MessageQueryService messageQueryService;
     private final MessageReportRepository messageReportRepository;
-    private final ReportCategoryRepository reportCategoryRepository;
+    private final ReportCategoryQueryService reportCategoryQueryService;
 
     @Transactional
-    public void messageReport(ReportRequest request, LocalDateTime messageReportDate){
-        Message message = messageService.findByMessageId(request.getMessageId());
-        ReportCategory reportCategory = findByCategoryId(request.getCategoryId());
-        checkExistedReportMessage(message);
+    public void execute(ReportRequest request, LocalDateTime messageReportDate){
+        Message message = messageQueryService.getById(request.getMessageId());
+        ReportCategory reportCategory = reportCategoryQueryService.getBy(request.getCategoryId());
+        messageReportQueryService.validateNoExistedMessageReport(message);
 
-        MessageReport messageReport = MessageReport.builder()
-            .message_id(message)
-            .category_id(reportCategory)
-            .content(message.getContent())
-            .date(messageReportDate)
-            .build();
+        MessageReport messageReport = create(message, reportCategory, messageReportDate);
 
         messageReportRepository.save(messageReport);
 
@@ -55,30 +49,23 @@ public class MessageReportService {
         member.addReportCount();
     }
 
+    private MessageReport create(Message message, ReportCategory reportCategory, LocalDateTime messageReportDate){
+        return MessageReport.builder()
+            .message_id(message)
+            .category_id(reportCategory)
+            .content(message.getContent())
+            .date(messageReportDate)
+            .build();
+    }
+
     @Transactional
-    public void deleteMessageReportAdmin(Long id){
-        MessageReport messageReport = findByMessageReportId(id);
+    public void deleteByAdmin(Long id){
+        MessageReport messageReport = messageReportQueryService.getById(id);
         messageReportRepository.delete(messageReport);
     }
 
-    private MessageReport findByMessageReportId(Long messageReportId){
-        return messageReportRepository.findById(messageReportId)
-            .orElseThrow(MessageReportNotFoundException::new);
-    }
-    private ReportCategory findByCategoryId(Long categoryId){
-        return reportCategoryRepository.findById(categoryId)
-            .orElseThrow(ReportCategoryNotFoundException::new);
-    }
-
-    private void checkExistedReportMessage(Message message){
-        messageReportRepository.findByMessage(message)
-            .ifPresent(messageReport -> {
-                throw new MessageReportAlreadyExistedException();
-            });
-    }
-
     @Scheduled(cron = "0 55 23 14,L * ?")
-    public void deleteMessageReport(){
+    public void delete(){
         log.info("23:55 1 or 15, deleteMessageReport");
         List<MessageReport> messageReports = messageReportRepository.findAll();
         List<MessageReport> deleteMessageReports = new ArrayList<>();

@@ -28,14 +28,15 @@ public class Room{
     @Column(nullable = false)
     private String status;
 
-    @Column(nullable = false)
+    @Column(name="Encrypt_key", nullable = false)
     private String encryptKey;
 
     @OneToMany(mappedBy = "room")
     private List<RoomInMember> roomInMember = new ArrayList<>();
 
     @Builder
-    public Room(LocalDateTime date, String status, String encryptKey) {
+    public Room(Long id, LocalDateTime date, String status, String encryptKey) {
+        this.id = id;
         this.date = date;
         this.status = status;
         this.encryptKey = encryptKey;

@@ -1,7 +1,7 @@
 package com.mjuAppSW.joA.domain.roomInMember.entity;
 
-import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.room.entity.Room;
+import com.mjuAppSW.joA.domain.member.entity.Member;
 
 import jakarta.persistence.*;
 import lombok.Builder;
