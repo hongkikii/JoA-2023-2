@@ -99,19 +99,24 @@ Spring Boot + SwiftUI를 사용한 대학교 네트워킹 어플리케이션
 
 <img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/2dfd982a-d934-4de3-8a67-442fc327226b" width="200" height="400"/>
 
-2. 아이디를 잊어버렸을 시, 학교 웹메일로 아이디를 전송받을 수 있다.
+2. 사용자는 아이디를 잊어버렸을 시, 학교 웹메일로 아이디를 전송받을 수 있다.
 
 <img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/1f67a684-8589-43d9-a77e-06102019d75f" width="200" height="400"/>
 
-3. 비밀번호를 잊어버렸을 시, 학교 웹메일로 임시 비밀번호를 전송받아 사용할 수 있다.
+3. 사용자는 비밀번호를 잊어버렸을 시, 학교 웹메일로 임시 비밀번호를 전송받아 사용할 수 있다.
+
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/fa1a8c96-38ed-42d9-b18f-cd332bf04d50" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/3eb2e88e-8555-4c11-843a-c1e1ba8ecfc9" width="200" height="400"/>
+
+4. 사용자는 비밀번호를 변경할 수 있다.
 
 <img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/a3b9f37a-170f-45c6-ad66-2be2e3fb5457" width="200" height="400"/>
 
-4. 사용자는 로그아웃을 할 수 있다.
+5. 사용자는 로그아웃을 할 수 있다.
 
 <img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/c2e8237c-cc5b-4b78-9018-6654262e1a81" width="200" height="400"/>
 
-5. 사용자는 탈퇴를 할 수 있다.
+6. 사용자는 탈퇴를 할 수 있다.
 
 ### [회원 정보](https://github.com/hongkikii/JoA-2023-2/blob/main/src/main/java/com/mjuAppSW/joA/domain/member/controller/InfoApiController.java)
 
@@ -211,7 +216,7 @@ Spring Boot + SwiftUI를 사용한 대학교 네트워킹 어플리케이션
 
 <img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/4fc1eaa0-ca77-4461-ab85-4c959c0bc589" width="200" height="400"/>
 
-4. [투표 수신자는 투표 코멘트를 확인하고, 투표를 신고할 수 있다.](https://github.com/hongkikii/JoA-2023-2/blob/main/src/main/java/com/mjuAppSW/joA/domain/voteReport/controller/VoteReportApiController.java)
+4. [투표 수신자는 코멘트를 확인하고 투표를 신고할 수 있다.](https://github.com/hongkikii/JoA-2023-2/blob/main/src/main/java/com/mjuAppSW/joA/domain/voteReport/controller/VoteReportApiController.java)
 </div>
 </details>
 
