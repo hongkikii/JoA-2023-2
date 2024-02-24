@@ -105,28 +105,29 @@ Spring Boot + SwiftUI를 사용한 대학교 네트워킹 어플리케이션
 
 3. 비밀번호를 잊어버렸을 시, 학교 웹메일로 임시 비밀번호를 전송받아 사용할 수 있다.
 
-<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/1f67a684-8589-43d9-a77e-06102019d75f" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/a3b9f37a-170f-45c6-ad66-2be2e3fb5457" width="200" height="400"/>
 
 4. 사용자는 로그아웃을 할 수 있다.
 
-<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/12b2f8e2-ccdf-4bc4-aff4-64765f298fbe" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/c2e8237c-cc5b-4b78-9018-6654262e1a81" width="200" height="400"/>
 
 5. 사용자는 탈퇴를 할 수 있다.
 
 ### [회원 정보](https://github.com/hongkikii/JoA-2023-2/blob/main/src/main/java/com/mjuAppSW/joA/domain/member/controller/InfoApiController.java)
 
-<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/12b2f8e2-ccdf-4bc4-aff4-64765f298fbe" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/819b6ecf-8072-4d4a-9ab1-5a6c38cf3b02" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/a17ffd9f-3348-4f58-90ad-c173e4faaab1" width="200" height="400"/>
 
 1. 사용자는 프로필 사진을 변경하거나 삭제할 수 있다.
 
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/d6c70a7b-01fe-4695-b4f5-c427ef36fbd2" width="200" height="400"/>
 <img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/8f59836f-2432-4291-b089-f7dbd91ffdc6" width="200" height="400"/>
 <img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/46d2cf4b-7bd6-4c59-90d7-93ba66a7404b" width="200" height="400"/>
-<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/2e9847d7-39e5-48d4-9000-440d24a4ade7" width="200" height="400"/>
-<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/e72b6b17-0bda-492a-ae1e-a62c69cd87a7" width="200" height="400"/>
+
 
 2. 사용자는 한 줄 소개를 변경하거나 삭제할 수 있다.
 
-<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/851e96b6-0fdb-4046-a84f-3bba8ae18886" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/d89b3663-6be8-4213-b808-f3ebec35b712" width="200" height="400"/>
 
 
 3. 사용자는 계정 정보와 획득한 투표, 하트에 관한 정보를 확인할 수 있다.
@@ -138,8 +139,6 @@ Spring Boot + SwiftUI를 사용한 대학교 네트워킹 어플리케이션
 2. 사용자는 10회 신고될 시 7일 계정 정지에 처해진다.
 
 3. 사용자는 15회 신고될 시 계정 영구 정지에 처해진다.
-
-<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/12b2f8e2-ccdf-4bc4-aff4-64765f298fbe" width="200" height="400"/>
 
 4. 영구 정지된 계정은 재가입이 불가능하다.
 
@@ -180,6 +179,8 @@ Spring Boot + SwiftUI를 사용한 대학교 네트워킹 어플리케이션
 ### [하트 전송](https://github.com/hongkikii/JoA-2023-2/blob/main/src/main/java/com/mjuAppSW/joA/domain/heart/controller/HeartApiController.java)
 
 <img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/be8dc431-7fb2-41da-92d7-b549ace5fef6" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/2c178d0a-e9c3-499d-b891-a6f9741ba8cf" width="200" height="400"/>
+
 
 1. 사용자는 익명 혹은 실명으로 다른 사용자에게 매일 한 번 하트를 보낼 수 있다.
 </div>
@@ -193,7 +194,8 @@ Spring Boot + SwiftUI를 사용한 대학교 네트워킹 어플리케이션
 
 ### 투표 전송
 
-<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/1529eb97-6f4a-411c-a296-cf46946194be" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/5eae2970-1ad1-4de4-9e5f-ee3b6399afa5" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/058635aa-8f3f-4b01-9437-2bc1c5e3d703" width="200" height="400"/>
 <img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/fbd8a92e-71ed-4bea-a66d-599d2f37ae09" width="200" height="400"/>
 
 1. [사용자는 다른 사용자에게 카테고리별로 매일 한 번 투표할 수 있다.](https://github.com/hongkikii/JoA-2023-2/blob/main/src/main/java/com/mjuAppSW/joA/domain/vote/controller/VoteApiController.java)
@@ -207,9 +209,9 @@ Spring Boot + SwiftUI를 사용한 대학교 네트워킹 어플리케이션
 
 3. [사용자는 자신이 받은 투표 목록을 확인할 수 있다.](https://github.com/hongkikii/JoA-2023-2/blob/main/src/main/java/com/mjuAppSW/joA/domain/vote/controller/VoteApiController.java)
 
-<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/c2acbe56-e904-46ec-9843-0845b95fa557" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/110226866/4fc1eaa0-ca77-4461-ab85-4c959c0bc589" width="200" height="400"/>
 
-4. [투표 수신자는 투표를 신고할 수 있다.](https://github.com/hongkikii/JoA-2023-2/blob/main/src/main/java/com/mjuAppSW/joA/domain/voteReport/controller/VoteReportApiController.java)
+4. [투표 수신자는 투표 코멘트를 확인하고, 투표를 신고할 수 있다.](https://github.com/hongkikii/JoA-2023-2/blob/main/src/main/java/com/mjuAppSW/joA/domain/voteReport/controller/VoteReportApiController.java)
 </div>
 </details>
 
