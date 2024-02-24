@@ -8,13 +8,7 @@ import com.mjuAppSW.joA.domain.member.dto.request.BioRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.MyPageResponse;
 import com.mjuAppSW.joA.domain.member.dto.request.PictureRequest;
 import com.mjuAppSW.joA.domain.member.dto.response.SettingPageResponse;
-import com.mjuAppSW.joA.domain.member.dto.response.ChattingPageResponse;
 import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
-import com.mjuAppSW.joA.domain.member.vo.UserInfoVO;
-import com.mjuAppSW.joA.domain.room.entity.Room;
-import com.mjuAppSW.joA.domain.room.service.RoomService;
-import com.mjuAppSW.joA.domain.roomInMember.entity.RoomInMember;
-import com.mjuAppSW.joA.domain.roomInMember.service.RoomInMemberService;
 import com.mjuAppSW.joA.domain.member.dto.response.VotePageResponse;
 import com.mjuAppSW.joA.domain.member.dto.response.LocationPageResponse;
 import com.mjuAppSW.joA.domain.vote.repository.VoteRepository;
@@ -31,8 +25,6 @@ import org.springframework.stereotype.Service;
 public class InfoService {
 
     private final MemberQueryService memberQueryService;
-    private final RoomService roomService;
-    private final RoomInMemberService roomInMemberService;
     private final ImageUploader imageUploader;
     private final HeartRepository heartRepository;
     private final VoteRepository voteRepository;
