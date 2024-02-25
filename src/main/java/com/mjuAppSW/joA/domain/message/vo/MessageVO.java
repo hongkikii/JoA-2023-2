@@ -1,4 +1,4 @@
-package com.mjuAppSW.joA.domain.message.dto.vo;
+package com.mjuAppSW.joA.domain.message.vo;
 
 import lombok.Data;
 

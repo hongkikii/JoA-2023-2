@@ -6,7 +6,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
 
 import com.mjuAppSW.joA.domain.member.dto.response.ChattingPageResponse;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
-import com.mjuAppSW.joA.domain.message.dto.vo.CurrentMessageVO;
+import com.mjuAppSW.joA.domain.message.vo.CurrentMessageVO;
 import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
 import com.mjuAppSW.joA.domain.message.repository.MessageRepository;
 import com.mjuAppSW.joA.domain.room.entity.Room;

@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-import com.mjuAppSW.joA.domain.message.dto.vo.MessageVO;
+import com.mjuAppSW.joA.domain.message.vo.MessageVO;
 
 @Getter
 @Schema(description = "채팅 목록 Response")

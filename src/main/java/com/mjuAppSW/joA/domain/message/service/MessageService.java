@@ -5,7 +5,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.Message.*;
 
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.message.dto.response.MessageResponse;
-import com.mjuAppSW.joA.domain.message.dto.vo.MessageVO;
+import com.mjuAppSW.joA.domain.message.vo.MessageVO;
 import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
 import com.mjuAppSW.joA.domain.message.exception.FailEncryptException;
 import com.mjuAppSW.joA.domain.room.entity.Room;
