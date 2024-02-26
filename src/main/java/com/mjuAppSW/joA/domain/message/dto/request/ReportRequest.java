@@ -15,4 +15,5 @@ public class ReportRequest {
     private final Long messageId;
     @NotNull
     private final Long categoryId;
+    private final String content;
 }

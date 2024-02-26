@@ -41,7 +41,7 @@ public class MessageReportService {
         ReportCategory reportCategory = reportCategoryQueryService.getBy(request.getCategoryId());
         messageReportQueryService.validateNoExistedMessageReport(message);
 
-        MessageReport messageReport = create(message, reportCategory, messageReportDate);
+        MessageReport messageReport = create(message, reportCategory, request.getContent(), messageReportDate);
 
         messageReportRepository.save(messageReport);
 
@@ -49,11 +49,11 @@ public class MessageReportService {
         member.addReportCount();
     }
 
-    private MessageReport create(Message message, ReportCategory reportCategory, LocalDateTime messageReportDate){
+    private MessageReport create(Message message, ReportCategory reportCategory, String content, LocalDateTime messageReportDate){
         return MessageReport.builder()
             .message_id(message)
             .category_id(reportCategory)
-            .content(message.getContent())
+            .content(content)
             .date(messageReportDate)
             .build();
     }

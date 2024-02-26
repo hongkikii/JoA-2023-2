@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.task.TaskRejectedException;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.mjuAppSW.joA.slack.vo.HttpServletRequestVO;
 import com.slack.api.Slack;
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.model.Attachment;
@@ -24,16 +27,18 @@ public class SlackService {
 	@Value(value = "${slack.channel.monitor}")
 	String channelName;
 
+	@Async
 	public void sendSlackMessageProductError(HttpServletRequest httpServletRequest, Exception exception) {
 		try {
-			List<LayoutBlock> layoutBlocks = SlackServiceUtil.createProdErrorMessage(httpServletRequest, exception);
+			HttpServletRequestVO httpServletRequestVO = new HttpServletRequestVO(httpServletRequest);
+			List<LayoutBlock> layoutBlocks = SlackServiceUtil.createProdErrorMessage(httpServletRequestVO, exception);
 			List<Attachment> attachments = SlackServiceUtil.createAttachments(ERROR_COLOR,
 				layoutBlocks);
 			Slack.getInstance().methods(token).chatPostMessage(request ->
 				request.channel(channelName)
 					.attachments(attachments)
 					.text(ERROR_MESSAGE_TITLE));
-		} catch (SlackApiException | IOException e) {
+		} catch (SlackApiException | IOException | TaskRejectedException e) {
 			log.error(e.getMessage(), e);
 		}
 	}
