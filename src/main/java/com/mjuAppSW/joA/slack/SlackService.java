@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.task.TaskRejectedException;
 import org.springframework.stereotype.Service;
 
 import com.slack.api.Slack;
@@ -33,7 +34,7 @@ public class SlackService {
 				request.channel(channelName)
 					.attachments(attachments)
 					.text(ERROR_MESSAGE_TITLE));
-		} catch (SlackApiException | IOException e) {
+		} catch (SlackApiException | IOException | TaskRejectedException e) {
 			log.error(e.getMessage(), e);
 		}
 	}

@@ -42,6 +42,7 @@ public class RoomInMemberApiController {
             .asHttp(HttpStatus.OK);
     }
 
+
     @Operation(summary = "채팅방 연장 투표 저장 및 상대방 투표 유무 확인", description = "채팅방 연장 투표 저장 및 상대방 투표 유무 확인 API")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "채팅방 연장 투표 저장 및 상대방 투표 유무 반환"),

@@ -60,11 +60,11 @@ public class Constants {
         public static Integer NORMAL_OPERATION = 0;
         public static String AND_OPERATION = "&";
         public static String EQUAL_OPERATION = "=";
-        public static String ALARM_REPORTED_ROOM = "신고된 방입니다.";
-        public static String ALARM_OPPONENT_EXITED = "상대방이 나갔습니다.";
-        public static String ALARM_OPPONENT_IS_WITH_DRAWAL = "상대방이 탈퇴하였습니다.";
-        public static String ALARM_OVER_ONE_DAY = "방 유효시간이 24시간을 초과하였습니다.";
-        public static String ALARM_OVER_SEVEN_DAY = "방 유효시간이 7일을 초과하였습니다.";
+        public static String ALARM_REPORTED_ROOM = "신고된 채팅방입니다.";
+        public static String ALARM_OPPONENT_EXITED = "상대방이 채팅방을 나갔습니다.";
+        public static String ALARM_OPPONENT_IS_WITH_DRAWAL = "상대방이 JoA를 탈퇴하였습니다.";
+        public static String ALARM_OVER_ONE_DAY = "채팅방 유효기간이 24시간을 초과하였습니다.";
+        public static String ALARM_OVER_SEVEN_DAY = "채팅방 유효기간이 7일을 초과하였습니다.";
         public static Integer MAX_CAPACITY_IN_ROOM = 2;
     }
 

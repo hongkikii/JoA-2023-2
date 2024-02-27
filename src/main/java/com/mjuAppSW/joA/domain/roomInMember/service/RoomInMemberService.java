@@ -6,7 +6,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
 
 import com.mjuAppSW.joA.domain.member.dto.response.ChattingPageResponse;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
-import com.mjuAppSW.joA.domain.message.dto.vo.CurrentMessageVO;
+import com.mjuAppSW.joA.domain.message.vo.CurrentMessageVO;
 import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
 import com.mjuAppSW.joA.domain.message.repository.MessageRepository;
 import com.mjuAppSW.joA.domain.room.entity.Room;
@@ -194,11 +194,9 @@ public class RoomInMemberService {
     public Boolean checkIsWithDrawal(Long roomId, Long memberId){
 		Room room = roomQueryService.getById(roomId);
         Member member = memberQueryService.getById(memberId);
-		RoomInMember rim = roomInMemberQueryService.getOpponentByRoomAndMember(room, member);
+		RoomInMember opponent = roomInMemberQueryService.getOpponentByRoomAndMember(room, member);
 
-        Member opponentMember = memberQueryService.getById(rim.getMember().getId());
-        if (opponentMember != null) return true;
-        return false;
+        return memberQueryService.validateIsWithDrawal(opponent.getMember().getId());
     }
 
     private String decrypt(String cipherText, String encryptionKey){

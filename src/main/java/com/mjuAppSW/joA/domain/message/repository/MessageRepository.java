@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.domain.message.repository;
 
-import com.mjuAppSW.joA.domain.message.dto.vo.CurrentMessageVO;
+import com.mjuAppSW.joA.domain.message.vo.CurrentMessageVO;
 import com.mjuAppSW.joA.domain.message.entity.Message;
 import com.mjuAppSW.joA.domain.room.entity.Room;
 import com.mjuAppSW.joA.domain.member.entity.Member;
