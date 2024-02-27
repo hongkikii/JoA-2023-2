@@ -194,11 +194,9 @@ public class RoomInMemberService {
     public Boolean checkIsWithDrawal(Long roomId, Long memberId){
 		Room room = roomQueryService.getById(roomId);
         Member member = memberQueryService.getById(memberId);
-		RoomInMember rim = roomInMemberQueryService.getOpponentByRoomAndMember(room, member);
+		RoomInMember opponent = roomInMemberQueryService.getOpponentByRoomAndMember(room, member);
 
-        Member opponentMember = memberQueryService.getById(rim.getMember().getId());
-        if (opponentMember != null) return true;
-        return false;
+        return memberQueryService.validateIsWithDrawal(opponent.getMember().getId());
     }
 
     private String decrypt(String cipherText, String encryptionKey){
