@@ -45,6 +45,3 @@ slack:
 server:
   tomcat:
     max-threads: 600
-    min-spare-threads: 25
-    accept-count: 200
-    connection-timeout: 20000
