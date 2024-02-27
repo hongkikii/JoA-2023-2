@@ -84,4 +84,8 @@ public class MemberQueryService {
             throw new PermanentBanException();
         }
     }
+
+    public Boolean validateIsWithDrawal(Long id){
+        return memberRepository.findById(id).isPresent();
+    }
 }
