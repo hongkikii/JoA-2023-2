@@ -9,10 +9,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mjuAppSW.joA.slack.vo.HttpServletRequestVO;
 import com.slack.api.model.Attachment;
 import com.slack.api.model.block.LayoutBlock;
 import com.slack.api.model.block.composition.TextObject;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 public class SlackServiceUtil {
 
@@ -25,7 +26,7 @@ public class SlackServiceUtil {
 		return attachments;
 	}
 
-	public static List<LayoutBlock> createProdErrorMessage(HttpServletRequestVO request, Exception exception) {
+	public static List<LayoutBlock> createProdErrorMessage(HttpServletRequest request, Exception exception) {
 		StackTraceElement[] stacks = exception.getStackTrace();
 
 		List<LayoutBlock> layoutBlockList = new ArrayList<>();
@@ -33,8 +34,8 @@ public class SlackServiceUtil {
 		List<TextObject> sectionInFields = new ArrayList<>();
 		sectionInFields.add(markdownText(ERROR_MESSAGE + exception.getMessage()));
 		sectionInFields.add(markdownText(ERROR_STACK + exception));
-		sectionInFields.add(markdownText(ERROR_URI + request.getHttpServletRequest().getRequestURL()));
-		sectionInFields.add(markdownText(ERROR_METHOD + request.getHttpServletRequest().getMethod()));
+		sectionInFields.add(markdownText(ERROR_URI + request.getRequestURI()));
+		sectionInFields.add(markdownText(ERROR_METHOD + request.getMethod()));
 		sectionInFields.add(markdownText(ERROR_DATE + formatDate(LocalDateTime.now())));
 		layoutBlockList.add(section(section -> section.fields(sectionInFields)));
 
