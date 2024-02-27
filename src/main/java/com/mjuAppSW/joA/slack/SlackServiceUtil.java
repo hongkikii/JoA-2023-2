@@ -34,7 +34,7 @@ public class SlackServiceUtil {
 		List<TextObject> sectionInFields = new ArrayList<>();
 		sectionInFields.add(markdownText(ERROR_MESSAGE + exception.getMessage()));
 		sectionInFields.add(markdownText(ERROR_STACK + exception));
-		sectionInFields.add(markdownText(ERROR_URI + request.getRequestURI()));
+		sectionInFields.add(markdownText(ERROR_URI + request.getRequestURL()));
 		sectionInFields.add(markdownText(ERROR_METHOD + request.getMethod()));
 		sectionInFields.add(markdownText(ERROR_DATE + formatDate(LocalDateTime.now())));
 		layoutBlockList.add(section(section -> section.fields(sectionInFields)));
