@@ -36,11 +36,12 @@ public class RoomInMemberApiController {
         @ApiResponse(responseCode = "404-2", description = "RIM001: 사용자와 연결된 채팅방을 찾을 수 없습니다.", content = @Content(schema = @Schema(hidden = true))),
         @ApiResponse(responseCode = "500", description = "MG003: 메시지 복호화에 실패했습니다.", content = @Content(schema = @Schema(hidden = true))),
     })
-    @GetMapping
-    public ResponseEntity<SuccessResponse<RoomListResponse>> getChattingRoomListPage(@RequestParam("memberId") Long memberId){
+    @GetMapping("/{memberId}")
+    public ResponseEntity<SuccessResponse<RoomListResponse>> getChattingRoomListPage(@PathVariable("memberId") Long memberId){
         return SuccessResponse.of(roomInMemberService.getChattingRoomListPage(memberId))
             .asHttp(HttpStatus.OK);
     }
+
 
     @Operation(summary = "채팅방 연장 투표 저장 및 상대방 투표 유무 확인", description = "채팅방 연장 투표 저장 및 상대방 투표 유무 확인 API")
     @ApiResponses(value = {
