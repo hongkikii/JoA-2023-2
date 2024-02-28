@@ -41,3 +41,7 @@ slack:
   token: ${SLACK_TOKEN}
   channel:
     monitor: ${SLACK_CHANNEL_MONITOR}
+
+server:
+  tomcat:
+    max-threads: 600
