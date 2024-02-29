@@ -83,7 +83,7 @@ public class Constants {
     public static class SlackServiceUtil{
         public static final String ERROR_MESSAGE = "*Error Message:*\n";
         public static final String ERROR_STACK = "*Error Stack:*\n";
-        public static final String ERROR_URI = "*Error URI:*\n";
+        public static final String ERROR_URL = "*Error URL:*\n";
         public static final String ERROR_METHOD = "*Error Method:*\n";
         public static final String ERROR_DATE = "*Error Date:*\n";
         public static final String FILTER_STRING = "joA";
