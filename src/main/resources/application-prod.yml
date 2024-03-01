@@ -44,4 +44,4 @@ slack:
 
 server:
   tomcat:
-    max-threads: 600
+    max-threads: 1200
