@@ -2,9 +2,9 @@ spring:
   datasource:
     hikari:
       primary:
-        maximum-pool-size: 500
+        maximum-pool-size: 1200
       secondary:
-        maximum-pool-size: 500
+        maximum-pool-size: 1200
     primary:
       driver-class-name: com.mysql.cj.jdbc.Driver
       jdbc-url: ${AWS_MYSQL_URL}
