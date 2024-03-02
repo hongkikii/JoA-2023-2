@@ -1,6 +1,7 @@
 package com.mjuAppSW.joA.common.exception;
 
 import com.mjuAppSW.joA.common.dto.ErrorResponse;
+import com.mjuAppSW.joA.slack.vo.HttpServletRequestVO;
 import com.mjuAppSW.joA.slack.SlackService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,20 +22,26 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<?> handleBusinessException(HttpServletRequest request, BusinessException e) {
+        HttpServletRequestVO httpServletRequestVO = new HttpServletRequestVO(request);
         ErrorCode errorCode = e.getErrorCode();
         if (errorCode.getStatus() == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
             log.error("handleBusinessException", e);
         } else {
             log.warn("handleBusinessException", e);
         }
-        slackService.sendSlackMessageProductError(request, e);
+
+        if(errorCode.isAlarm()){
+            slackService.sendSlackMessageProductError(httpServletRequestVO, e);
+        }
+
         return makeErrorResponse(errorCode);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException(HttpServletRequest request, Exception e) {
+        HttpServletRequestVO httpServletRequestVO = new HttpServletRequestVO(request);
         log.error("handleException", e);
-        slackService.sendSlackMessageProductError(request, e);
+        slackService.sendSlackMessageProductError(httpServletRequestVO, e);
         return makeErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 
