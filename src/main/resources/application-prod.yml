@@ -42,6 +42,11 @@ spring:
       s3:
         bucket: j-project-2023
 
+logging:
+  level:
+    web: trace
+    sql: trace
+
 slack:
   token: ${SLACK_TOKEN}
   channel:
