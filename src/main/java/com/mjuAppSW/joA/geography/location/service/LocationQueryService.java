@@ -1,6 +1,6 @@
 package com.mjuAppSW.joA.geography.location.service;
 
-import com.mjuAppSW.joA.geography.block.exception.LocationNotFoundException;
+import com.mjuAppSW.joA.geography.block.exception.BlockException;
 import com.mjuAppSW.joA.geography.location.entity.Location;
 import com.mjuAppSW.joA.geography.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +16,6 @@ public class LocationQueryService {
 
     public Location getBy(Long memberId) {
         return locationRepository.findById(memberId)
-                .orElseThrow(LocationNotFoundException::new);
+                .orElseThrow(() -> BlockException.LocationNotFoundException);
     }
 }
