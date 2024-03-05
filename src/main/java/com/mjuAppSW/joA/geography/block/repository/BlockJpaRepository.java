@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface BlockJpaRepository extends JpaRepository<Block, Long> {
 
-    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT b FROM Block b WHERE b.blocker.id = :blockerId AND b.blocked.id = :blockedId")
     Optional<Block> findEqualBy(@Param("blockerId") Long blockerId, @Param("blockedId") Long blockedId);
 
