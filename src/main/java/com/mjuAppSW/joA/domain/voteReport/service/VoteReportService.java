@@ -1,5 +1,7 @@
 package com.mjuAppSW.joA.domain.voteReport.service;
 
+import static com.mjuAppSW.joA.common.exception.BusinessException.*;
+
 import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.reportCategory.entity.ReportCategory;
@@ -7,7 +9,6 @@ import com.mjuAppSW.joA.domain.reportCategory.service.ReportCategoryQueryService
 import com.mjuAppSW.joA.domain.vote.entity.Vote;
 import com.mjuAppSW.joA.domain.vote.service.VoteQueryService;
 import com.mjuAppSW.joA.domain.vote.dto.VoteReportRequest;
-import com.mjuAppSW.joA.domain.vote.exception.VoteReportAlreadyExistedException;
 import com.mjuAppSW.joA.domain.voteReport.entity.VoteReport;
 import com.mjuAppSW.joA.domain.voteReport.repository.VoteReportRepository;
 import jakarta.transaction.Transactional;
@@ -50,7 +51,7 @@ public class VoteReportService {
     public void validateNoVoteReport(Long voteId) {
         voteReportRepository.findBy(voteId)
                 .ifPresent(report -> {
-                    throw new VoteReportAlreadyExistedException();});
+                    throw VoteReportAlreadyExistedException;});
     }
 
 }

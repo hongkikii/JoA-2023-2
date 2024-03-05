@@ -6,13 +6,14 @@ import static com.mjuAppSW.joA.common.constant.Constants.Cache.BEFORE_CERTIFY_TI
 import static com.mjuAppSW.joA.common.constant.Constants.Cache.BEFORE_EMAIL;
 import static com.mjuAppSW.joA.common.constant.Constants.Cache.CERTIFY_NUMBER;
 import static com.mjuAppSW.joA.common.constant.Constants.Mail.CERTIFY_NUMBER_IS;
+import static com.mjuAppSW.joA.common.exception.BusinessException.*;
 
+import com.mjuAppSW.joA.common.exception.BusinessException;
 import com.mjuAppSW.joA.domain.mCollege.entity.MCollege;
 import com.mjuAppSW.joA.domain.mCollege.service.MCollegeQueryService;
 import com.mjuAppSW.joA.domain.member.dto.request.CertifyNumSendRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.AsyncRequest;
 import com.mjuAppSW.joA.domain.member.dto.request.CertifyNumVerifyRequest;
-import com.mjuAppSW.joA.domain.member.exception.InvalidCertifyNumberException;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.MailSender;
 import lombok.Builder;
@@ -56,7 +57,7 @@ public class CertifyService {
         sessionService.checkInCache(CERTIFY_NUMBER, sessionId);
 
         if (!cacheManager.compare(CERTIFY_NUMBER + sessionId, request.getCertifyNum())) {
-            throw new InvalidCertifyNumberException();
+            throw InvalidCertifyNumberException;
         }
         cacheEmailOnly(sessionId);
     }

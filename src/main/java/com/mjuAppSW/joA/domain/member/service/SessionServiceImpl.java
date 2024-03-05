@@ -1,7 +1,8 @@
 package com.mjuAppSW.joA.domain.member.service;
 
+import static com.mjuAppSW.joA.common.exception.BusinessException.*;
+
 import com.mjuAppSW.joA.domain.member.entity.Member;
-import com.mjuAppSW.joA.domain.member.exception.SessionNotFoundException;
 import com.mjuAppSW.joA.domain.member.infrastructure.CacheManager;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -42,7 +43,7 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public void checkInCache(String status, Long sessionId) {
         if (cacheManager.isNotExistedKey(status + sessionId)) {
-            throw new SessionNotFoundException();
+            throw SessionNotFoundException;
         }
     }
 }

@@ -1,9 +1,10 @@
 package com.mjuAppSW.joA.geography.pCollege.service;
 
+import static com.mjuAppSW.joA.common.exception.BusinessException.*;
+
 import com.mjuAppSW.joA.geography.pCollege.dto.PolygonRequest;
 import com.mjuAppSW.joA.geography.pCollege.entity.PCollege;
 import com.mjuAppSW.joA.geography.pCollege.repository.PCollegeRepository;
-import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
@@ -41,7 +42,7 @@ public class PCollegeService {
 
     public PCollege getBy(Long collegeId) {
         return pCollegeRepository.findById(collegeId)
-                .orElseThrow(CollegeNotFoundException::new);
+                .orElseThrow(() -> CollegeNotFoundException);
     }
 
     public boolean isWithinCollege(double latitude, double longitude, PCollege pCollege) {

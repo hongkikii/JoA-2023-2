@@ -1,8 +1,9 @@
 package com.mjuAppSW.joA.domain.reportCategory.service;
 
+import static com.mjuAppSW.joA.common.exception.BusinessException.*;
+
 import com.mjuAppSW.joA.domain.reportCategory.entity.ReportCategory;
 import com.mjuAppSW.joA.domain.reportCategory.repository.ReportCategoryRepository;
-import com.mjuAppSW.joA.domain.vote.exception.ReportCategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,6 @@ public class ReportCategoryQueryService {
 
     public ReportCategory getBy(Long reportCategoryId) {
         return reportCategoryRepository.findById(reportCategoryId)
-                .orElseThrow(ReportCategoryNotFoundException::new);
+                .orElseThrow(() -> ReportCategoryNotFoundException);
     }
 }

@@ -1,6 +1,7 @@
 package com.mjuAppSW.joA.geography.block.service;
 
-import com.mjuAppSW.joA.geography.block.exception.BlockException;
+import static com.mjuAppSW.joA.common.exception.BusinessException.*;
+
 import com.mjuAppSW.joA.geography.block.repository.BlockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,12 @@ public class BlockQueryService {
     public void validateNoEqualBlock(Long blockerId, Long blockedId) {
         blockRepository.findEqualBy(blockerId, blockedId)
                 .ifPresent(block -> {
-                    throw BlockException.BlockAlreadyExistedException;});
+                    throw BlockAlreadyExistedException;});
     }
 
     public void validateNoBlock(Long blockerId, Long blockedId) {
         if (!blockRepository.findBy(blockedId, blockerId).isEmpty()) {
-            throw BlockException.BlockAccessForbiddenException;
+            throw BlockAccessForbiddenException;
         }
     }
 }

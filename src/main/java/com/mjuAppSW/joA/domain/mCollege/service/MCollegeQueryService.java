@@ -1,10 +1,10 @@
 package com.mjuAppSW.joA.domain.mCollege.service;
 
 import static com.mjuAppSW.joA.common.constant.Constants.EMAIL_SPLIT;
+import static com.mjuAppSW.joA.common.exception.BusinessException.*;
 
 import com.mjuAppSW.joA.domain.mCollege.entity.MCollege;
 import com.mjuAppSW.joA.domain.mCollege.repository.MCollegeRepository;
-import com.mjuAppSW.joA.geography.location.exception.CollegeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +16,11 @@ public class MCollegeQueryService {
 
     public MCollege getById(Long collegeId) {
         return mCollegeRepository.findById(collegeId)
-                .orElseThrow(CollegeNotFoundException::new);
+                .orElseThrow(() -> CollegeNotFoundException);
     }
 
     public MCollege getByDomain(String domain) {
         return mCollegeRepository.findByDomain(EMAIL_SPLIT + domain)
-                .orElseThrow(CollegeNotFoundException::new);
+                .orElseThrow(() -> CollegeNotFoundException);
     }
 }

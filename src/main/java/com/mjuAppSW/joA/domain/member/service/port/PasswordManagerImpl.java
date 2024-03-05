@@ -1,7 +1,7 @@
 package com.mjuAppSW.joA.domain.member.service.port;
 
-import com.mjuAppSW.joA.domain.member.exception.InvalidPasswordException;
-import com.mjuAppSW.joA.domain.member.exception.PasswordNotFoundException;
+import static com.mjuAppSW.joA.common.exception.BusinessException.*;
+
 import com.mjuAppSW.joA.domain.member.infrastructure.PasswordManager;
 import java.security.SecureRandom;
 import java.util.Random;
@@ -51,14 +51,14 @@ public class PasswordManagerImpl implements PasswordManager {
         Pattern regexPattern = Pattern.compile(pattern);
         Matcher matcher = regexPattern.matcher(rawPassword);
         if (!matcher.matches()) {
-            throw new InvalidPasswordException();
+            throw InvalidPasswordException;
         }
     }
 
     @Override
     public void compare(String originalPassword, String InputPassword) {
         if (!originalPassword.equals(InputPassword)) {
-            throw new PasswordNotFoundException();
+            throw PasswordNotFoundException;
         }
     }
 }
