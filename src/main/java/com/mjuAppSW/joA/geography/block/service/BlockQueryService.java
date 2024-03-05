@@ -2,8 +2,6 @@ package com.mjuAppSW.joA.geography.block.service;
 
 import com.mjuAppSW.joA.geography.block.exception.BlockException;
 import com.mjuAppSW.joA.geography.block.repository.BlockRepository;
-import com.mjuAppSW.joA.geography.block.exception.BlockAccessForbiddenException;
-import com.mjuAppSW.joA.geography.block.exception.BlockAlreadyExistedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
