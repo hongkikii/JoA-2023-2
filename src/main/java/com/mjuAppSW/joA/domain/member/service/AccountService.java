@@ -28,7 +28,6 @@ public class AccountService {
     private final MailSender mailSender;
     private final PasswordManager passwordManager;
 
-    @Transactional
     public SessionIdResponse login(LoginRequest request) {
         Member member = memberQueryService.getByLoginId(request.getLoginId());
         String hashedPassword = passwordManager.createHashed (
@@ -38,7 +37,6 @@ public class AccountService {
         return SessionIdResponse.of(member.getSessionId());
     }
 
-    @Transactional
     public void logout(Long sessionId) {
         Member member = memberQueryService.getBySessionId(sessionId);
         member.expireSessionId();
