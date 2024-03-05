@@ -3,11 +3,10 @@ package com.mjuAppSW.joA.domain.message.service;
 import static com.mjuAppSW.joA.common.constant.Constants.Encrypt.*;
 import static com.mjuAppSW.joA.common.constant.Constants.Message.*;
 
+import com.mjuAppSW.joA.common.exception.BusinessException;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.message.dto.response.MessageResponse;
 import com.mjuAppSW.joA.domain.message.vo.MessageVO;
-import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
-import com.mjuAppSW.joA.domain.message.exception.FailEncryptException;
 import com.mjuAppSW.joA.domain.room.entity.Room;
 import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.message.repository.MessageRepository;
@@ -47,7 +46,7 @@ public class MessageService {
         Member member = memberQueryService.getById(memberId);
         String encryptedMessage = encrypt(content, room.getEncryptKey());
         if(encryptedMessage == null){
-            throw new FailEncryptException();
+            throw BusinessException.FailDecryptException;
         }
         Message message = create(room, member, encryptedMessage, createdMessageDate, isChecked);
         Message saveMessage = messageRepository.save(message);
@@ -83,7 +82,7 @@ public class MessageService {
     private String devide(Message message, Member member, Room room) {
         String decryptedMessage = decrypt(message.getContent(), room.getEncryptKey());
         if(decryptedMessage == null){
-            throw new FailDecryptException();
+            throw BusinessException.FailDecryptException;
         }
         String messageType = (message.getMember() == member) ? "R" : "L";
         return messageType + " " + message.getId() + " " + message.getIsChecked() + " " + decryptedMessage;

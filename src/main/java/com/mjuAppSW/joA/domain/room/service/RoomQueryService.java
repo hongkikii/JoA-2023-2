@@ -3,8 +3,8 @@ package com.mjuAppSW.joA.domain.room.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mjuAppSW.joA.common.exception.BusinessException;
 import com.mjuAppSW.joA.domain.room.entity.Room;
-import com.mjuAppSW.joA.domain.room.exception.RoomNotFoundException;
 import com.mjuAppSW.joA.domain.room.repository.RoomRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +17,6 @@ public class RoomQueryService {
 
 	public Room getById(Long roomId){
 		return roomRepository.findById(roomId)
-			.orElseThrow(RoomNotFoundException::new);
+			.orElseThrow(() -> BusinessException.RoomNotFoundException);
 	}
 }

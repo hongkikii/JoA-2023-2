@@ -5,13 +5,10 @@ import static com.mjuAppSW.joA.common.constant.Constants.Room.OVER_ONE_DAY;
 import static com.mjuAppSW.joA.common.constant.Constants.Room.OVER_SEVEN_DAY;
 import static com.mjuAppSW.joA.common.constant.Constants.WebSocketHandler.*;
 
+import com.mjuAppSW.joA.common.exception.BusinessException;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.message.entity.Message;
-import com.mjuAppSW.joA.domain.message.exception.MessageReportAlreadyReportException;
-import com.mjuAppSW.joA.domain.message.exception.MessageReportAlreadyReportedException;
 import com.mjuAppSW.joA.domain.room.dto.response.RoomResponse;
-import com.mjuAppSW.joA.domain.room.exception.OverOneDayException;
-import com.mjuAppSW.joA.domain.room.exception.RoomAlreadyExtendException;
 import com.mjuAppSW.joA.domain.room.repository.RoomRepository;
 import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.message.repository.MessageRepository;
@@ -20,7 +17,6 @@ import com.mjuAppSW.joA.domain.messageReport.repository.MessageReportRepository;
 import com.mjuAppSW.joA.domain.room.entity.Room;
 import com.mjuAppSW.joA.domain.roomInMember.entity.RoomInMember;
 import com.mjuAppSW.joA.domain.roomInMember.repository.RoomInMemberRepository;
-import com.mjuAppSW.joA.domain.roomInMember.exception.RoomInMemberAlreadyExistedException;
 import com.mjuAppSW.joA.domain.roomInMember.service.RoomInMemberQueryService;
 
 import jakarta.transaction.Transactional;
@@ -70,7 +66,7 @@ public class RoomService {
     public void update(Long roomId, LocalDateTime updateRoomStatusDate){
         Room room = roomQueryService.getById(roomId);
         if(room.getStatus().equals(EXTEND)){
-            throw new RoomAlreadyExtendException();
+            throw BusinessException.RoomAlreadyExtendException;
         }
         room.updateStatusAndDate(updateRoomStatusDate);
     }
@@ -89,9 +85,9 @@ public class RoomService {
         List<MessageReport> opponentMessageReport = messageReportRepository.findByMember(member2);
         Boolean reported = checkReportMessages(myMessageReport, member1.getId(), member2.getId());
         Boolean report = checkReportMessages(opponentMessageReport, member1.getId(), member2.getId());
-        if(reported && report){throw new MessageReportAlreadyReportedException();}
-        if(reported){throw new MessageReportAlreadyReportedException();}
-        if(report){throw new MessageReportAlreadyReportException();}
+        if(reported && report){throw BusinessException.MessageReportAlreadyReportedException;}
+        if(reported){throw BusinessException.MessageReportAlreadyReportedException;}
+        if(report){throw BusinessException.MessageReportAlreadyReportException;}
     }
 
     private boolean checkReportMessages(List<MessageReport> messageReports, Long memberId1, Long memberId2){
@@ -120,7 +116,7 @@ public class RoomService {
         LocalDateTime getDate = room.getDate();
         Long hours = calculationHour(getDate);
         if(hours >= ONE_DAY_HOURS){
-            throw new OverOneDayException();
+            throw BusinessException.OverOneDayException;
         }
     }
 
@@ -151,7 +147,7 @@ public class RoomService {
 
         List<RoomInMember> roomInMemberList = roomInMemberRepository.findByRoom(room);
         if(!roomInMemberList.isEmpty()){
-            throw new RoomInMemberAlreadyExistedException();
+            throw BusinessException.RoomInMemberAlreadyExistedException;
         }
     }
 
