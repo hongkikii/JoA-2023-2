@@ -4,10 +4,10 @@ import static com.mjuAppSW.joA.common.constant.Constants.Encrypt.*;
 import static com.mjuAppSW.joA.common.constant.Constants.Message.*;
 import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
 
+import com.mjuAppSW.joA.common.exception.BusinessException;
 import com.mjuAppSW.joA.domain.member.dto.response.ChattingPageResponse;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.message.vo.CurrentMessageVO;
-import com.mjuAppSW.joA.domain.message.exception.FailDecryptException;
 import com.mjuAppSW.joA.domain.message.repository.MessageRepository;
 import com.mjuAppSW.joA.domain.room.entity.Room;
 import com.mjuAppSW.joA.domain.roomInMember.entity.RoomInMember;
@@ -19,7 +19,6 @@ import com.mjuAppSW.joA.domain.roomInMember.dto.request.UpdateExpiredRequest;
 import com.mjuAppSW.joA.domain.roomInMember.dto.request.VoteRequest;
 import com.mjuAppSW.joA.domain.roomInMember.dto.response.RoomListResponse;
 import com.mjuAppSW.joA.domain.roomInMember.dto.response.VoteResponse;
-import com.mjuAppSW.joA.domain.roomInMember.exception.RoomInMemberAlreadyVoteResultException;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoExceptMessageVO;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoIncludeMessageVO;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoVO;
@@ -73,7 +72,7 @@ public class RoomInMemberService {
             CurrentMessageVO currentMessage = currentMessageVOS.get(0);
             String decryptedString = decrypt(currentMessage.getContent(), opponent.getRoom().getEncryptKey());
             if (decryptedString == null) {
-                throw new FailDecryptException();
+                throw BusinessException.FailDecryptException;
             }
             RoomInfoVO roomInfoVO = new RoomInfoVO(roomInfoEMVO.getRoom().getId(), roomInfoEMVO.getName(),
                 roomInfoEMVO.getUrlCode(), decryptedString, currentMessage.getTime(), String.valueOf(unCheckedMessage));
@@ -110,7 +109,7 @@ public class RoomInMemberService {
 
         String decryptedString = decrypt(rlr.getContent(), rlr.getRoom().getEncryptKey());
         if(decryptedString == null){
-            throw new FailDecryptException();
+            throw BusinessException.FailDecryptException;
         }
         return RoomInfoExceptDateVO.of(rlr.getRoom().getId(), rlr.getName(), rlr.getUrlCode(), decryptedString, String.valueOf(unCheckedMessageCount));
     }
@@ -147,7 +146,7 @@ public class RoomInMemberService {
         Member member = memberQueryService.getBySessionId(request.getMemberId());
         RoomInMember roomInMember = roomInMemberQueryService.getByRoomAndMember(room, member);
         if (roomInMember.getResult().equals(APPROVE_VOTE) || roomInMember.getResult().equals(DISAPPROVE_VOTE)) {
-            throw new RoomInMemberAlreadyVoteResultException();
+            throw BusinessException.RoomInMemberAlreadyVoteResultException;
         }
 
         roomInMember.saveResult(request.getResult());

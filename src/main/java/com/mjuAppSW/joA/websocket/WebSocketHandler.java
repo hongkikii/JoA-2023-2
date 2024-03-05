@@ -3,9 +3,8 @@ package com.mjuAppSW.joA.websocket;
 import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
 import static com.mjuAppSW.joA.common.constant.Constants.WebSocketHandler.*;
 
+import com.mjuAppSW.joA.common.exception.BusinessException;
 import com.mjuAppSW.joA.domain.room.service.RoomQueryService;
-import com.mjuAppSW.joA.websocket.exception.MemberSessionListNullException;
-import com.mjuAppSW.joA.websocket.exception.RoomSessionListNullException;
 import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.message.service.MessageService;
@@ -76,7 +75,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         if(checkCondition(Long.parseLong(roomId), Long.parseLong(memberId), session)){
             List<WebSocketSession> roomSessionsList = roomSessions.get(roomId);
             if(roomSessionsList == null || roomSessionsList.isEmpty()){
-                throw new RoomSessionListNullException();
+                throw BusinessException.RoomSessionListNullException;
             }
             int count = MAX_CAPACITY_IN_ROOM;
             for(int i=0; i<roomSessionsList.size(); i++) count--;
@@ -140,7 +139,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private void sendExceptionMessage(String roomId, WebSocketSession session, String message) throws IOException {
         List<WebSocketSession> roomSessionsList = roomSessions.get(roomId);
         if(roomSessionsList == null || roomSessionsList.isEmpty()){
-            throw new RoomSessionListNullException();
+            throw BusinessException.RoomSessionListNullException;
         }
         for (WebSocketSession targetSession : roomSessionsList) {
             if (targetSession.equals(session)) {
@@ -268,7 +267,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
                     List<WebSocketSession> roomSessionsList = roomSessions.get(roomId);
                     if(roomSessionsList.isEmpty() || roomSessionsList == null) {
-                        throw new RoomSessionListNullException();
+                        throw BusinessException.RoomSessionListNullException;
                     }
 
                     Integer checkTime = roomService.checkTime(Long.parseLong(roomId));
@@ -297,7 +296,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 List<WebSocketSession> memberSessionsList = memberSessions.get(memberId);
 
                 if(memberSessionsList.isEmpty() || memberSessionsList == null){
-                    throw new MemberSessionListNullException();
+                    throw BusinessException.MemberSessionListNullException;
                 }
 
                 memberSessionsList.remove(session);
@@ -312,7 +311,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 List<WebSocketSession> roomSessionsList = roomSessions.get(roomId);
 
                 if(roomSessionsList.isEmpty() || roomSessionsList == null){
-                    throw new RoomSessionListNullException();
+                    throw BusinessException.RoomSessionListNullException;
                 }
 
                 roomSessionsList.remove(session);
