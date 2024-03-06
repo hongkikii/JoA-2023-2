@@ -8,9 +8,9 @@ public class Constants {
         public static String AFTER_EMAIL = "AfterEmail";
         public static String ID = "Id";
 
-        public static Integer BEFORE_CERTIFY_TIME = 7;
-        public static Integer AFTER_CERTIFY_TIME = 60;
-        public static Integer AFTER_SAVE_LOGIN_ID_TIME = 30;
+        public static int BEFORE_CERTIFY_TIME = 7;
+        public static int AFTER_CERTIFY_TIME = 60;
+        public static int AFTER_SAVE_LOGIN_ID_TIME = 30;
     }
 
     public static class Mail {
@@ -19,8 +19,23 @@ public class Constants {
         public static String CERTIFY_NUMBER_IS = "인증번호";
     }
 
-    public static class S3Uploader {
+    public static class S3 {
         public static String ERROR = "error";
+    }
+
+    public static class Password {
+        public static String CONDITION = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*()_+=]).{8,16}$";
+        public static String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        public static String LOWER = UPPER.toLowerCase();
+        public static String DIGITS = "0123456789";
+        public static String SPECIAL_CHARS = "!@#$%^&*()-_+=<>?";
+        public static int MAX_LENGTH = 16;
+    }
+
+    public static class LoginId {
+        public static String CONDITION = "^[a-z0-9-_]+$";
+        public static int MIN_LENGTH = 5;
+        public static int MAX_LENGTH = 20;
     }
 
     public static class Room {
@@ -95,7 +110,7 @@ public class Constants {
         public static final String alg = "AES/CBC/PKCS5Padding";
     }
 
-    public static Integer ZERO = 0;
+    public static int ZERO = 0;
     public static String EMPTY_STRING = "";
     public static String EMAIL_SPLIT = "@";
 }

@@ -4,7 +4,6 @@ import static com.mjuAppSW.joA.common.constant.Constants.MemberStatus.*;
 import static com.mjuAppSW.joA.domain.member.entity.Status.*;
 
 import com.mjuAppSW.joA.domain.member.entity.Member;
-import com.mjuAppSW.joA.domain.member.entity.Status;
 import com.mjuAppSW.joA.domain.member.infrastructure.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;

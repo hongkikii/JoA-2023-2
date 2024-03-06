@@ -1,9 +1,11 @@
 package com.mjuAppSW.joA.geography.location.service;
 
+import static com.mjuAppSW.joA.common.exception.BusinessException.*;
+
+import com.mjuAppSW.joA.common.exception.BusinessException;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByInfo;
 import com.mjuAppSW.joA.geography.location.dto.response.NearByListResponse;
 import com.mjuAppSW.joA.geography.location.entity.Location;
-import com.mjuAppSW.joA.geography.location.exception.OutOfCollegeException;
 import com.mjuAppSW.joA.geography.location.repository.LocationRepository;
 import com.mjuAppSW.joA.domain.mCollege.entity.MCollege;
 import com.mjuAppSW.joA.domain.heart.service.HeartQueryService;
@@ -71,7 +73,7 @@ public class LocationService {
 
     private void validateWithinCollege(Location location) {
         if (!location.getIsContained()) {
-            throw new OutOfCollegeException();
+            throw OutOfCollegeException;
         }
     }
 

@@ -1,9 +1,8 @@
 package com.mjuAppSW.joA.domain.member.service.port;
 
 import static com.mjuAppSW.joA.common.constant.Constants.EMPTY_STRING;
-import static com.mjuAppSW.joA.common.constant.Constants.S3Uploader.ERROR;
+import static com.mjuAppSW.joA.common.exception.BusinessException.*;
 
-import com.mjuAppSW.joA.domain.member.exception.InvalidS3Exception;
 import com.mjuAppSW.joA.domain.member.infrastructure.ImageUploader;
 import java.nio.ByteBuffer;
 import java.util.Base64;
@@ -48,7 +47,7 @@ public class ImageUploaderImpl implements ImageUploader {
         }
         catch (S3Exception e) {
             log.error("Error uploading picture to S3: " + e.getMessage());
-            throw new InvalidS3Exception();
+            throw InvalidS3Exception;
         }
     }
 
@@ -68,7 +67,7 @@ public class ImageUploaderImpl implements ImageUploader {
         }
         catch (Exception e) {
             log.error("Error deleting picture from S3: " + e.getMessage());
-            throw new InvalidS3Exception();
+            throw InvalidS3Exception;
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.mjuAppSW.joA.domain.voteCategory.service;
 
-import com.mjuAppSW.joA.domain.vote.exception.VoteCategoryNotFoundException;
+import static com.mjuAppSW.joA.common.exception.BusinessException.*;
+
 import com.mjuAppSW.joA.domain.voteCategory.entity.VoteCategory;
 import com.mjuAppSW.joA.domain.voteCategory.repository.VoteCategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,6 @@ public class VoteCategoryQueryService {
 
     public VoteCategory getBy(Long id) {
         return voteCategoryRepository.findById(id)
-                .orElseThrow(VoteCategoryNotFoundException::new);
+                .orElseThrow(() -> VoteCategoryNotFoundException);
     }
 }

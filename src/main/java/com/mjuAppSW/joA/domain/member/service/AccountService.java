@@ -14,6 +14,7 @@ import com.mjuAppSW.joA.domain.member.infrastructure.PasswordManager;
 import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service

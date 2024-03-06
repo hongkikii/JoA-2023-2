@@ -1,10 +1,10 @@
 package com.mjuAppSW.joA.domain.member.service.port;
 
-import com.mjuAppSW.joA.domain.member.exception.InvalidPasswordException;
-import com.mjuAppSW.joA.domain.member.exception.PasswordNotFoundException;
+import static com.mjuAppSW.joA.common.exception.BusinessException.*;
+import static com.mjuAppSW.joA.common.constant.Constants.Password.*;
+
 import com.mjuAppSW.joA.domain.member.infrastructure.PasswordManager;
-import java.security.SecureRandom;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class PasswordManagerImpl implements PasswordManager {
+
+    private static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
 
     @Override
     public String createHashed(String rawPassword, String salt) {
@@ -27,18 +29,11 @@ public class PasswordManagerImpl implements PasswordManager {
 
     @Override
     public String createRandom() {
-        String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String lower = upper.toLowerCase();
-        String digits = "0123456789";
-        String specialChars = "!@#$%^&*()-_+=<>?";
-
-        String allCharacters = upper + lower + digits + specialChars;
-        int maxLength = 16;
-        Random random = new SecureRandom();
+        String allCharacters = UPPER + LOWER + DIGITS + SPECIAL_CHARS;
         StringBuilder builder = new StringBuilder();
 
-        while (builder.length() < maxLength) {
-            int index = random.nextInt(allCharacters.length());
+        while (builder.length() < MAX_LENGTH) {
+            int index = RANDOM.nextInt(allCharacters.length());
             char randomChar = allCharacters.charAt(index);
             builder.append(randomChar);
         }
@@ -47,18 +42,17 @@ public class PasswordManagerImpl implements PasswordManager {
 
     @Override
     public void validate(String rawPassword) {
-        String pattern = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*()_+=]).{8,16}$";
-        Pattern regexPattern = Pattern.compile(pattern);
+        Pattern regexPattern = Pattern.compile(CONDITION);
         Matcher matcher = regexPattern.matcher(rawPassword);
         if (!matcher.matches()) {
-            throw new InvalidPasswordException();
+            throw InvalidPasswordException;
         }
     }
 
     @Override
     public void compare(String originalPassword, String InputPassword) {
         if (!originalPassword.equals(InputPassword)) {
-            throw new PasswordNotFoundException();
+            throw PasswordNotFoundException;
         }
     }
 }
