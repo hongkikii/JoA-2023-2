@@ -66,11 +66,11 @@ Spring Boot + SwiftUI를 사용한 대학교 네트워킹 어플리케이션
 
 ### 2024.01.03 - 2024.03.01
 
-리팩토링, 테스트, 앱스토어 재심사(예정)
+리팩토링, 테스트, 앱스토어 재심사
 
 ### 2024.03.04
 
-정식 출시🥳(예정)
+정식 출시🥳
 <br>
 <br>
 
@@ -224,7 +224,56 @@ Spring Boot + SwiftUI를 사용한 대학교 네트워킹 어플리케이션
 <summary>채팅</summary>
 <div markdown="1">
 
-...
+## 채팅방 생성
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/178fda73-ad61-4efa-9dff-75114b79448f" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/5df8ec0d-664e-4d90-9edd-5868e4cffcbe" width="200"
+height="400"/>
+
+1. 사용자는 특정 사용자에게 하트를 보내, 현재 특정 사용자와 채팅방이 존재하지 않은 경우 채팅방을 생성할 수 있다.
+
+    1. 익명으로 보낼 시, 상대방이 하트를 보냈을 경우 채팅방이 생성된다.
+    2. 실명으로 보낼 시, 바로 채팅방이 생성된다.
+
+
+## 채팅방 목록
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/fbd337c5-d2d0-4f52-b242-4de938e206ff" width="200" height="400"/>
+
+1. 사용자는 생성된 채팅방 정보를 확인할 수 있다.
+
+## 채팅 전송
+
+1. 사용자는 아래 경우를 제외하고 채팅방에서 채팅을 보낼 수 있다.
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/7eb909fc-f009-4c08-91fa-46d7a104df94" width="200" height="400"/>
+<br>
+
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/6b3d6a0d-ddd6-417d-bd27-7cb7635bc060" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/dcbddefb-e22a-44b5-8f2b-ff2b2ba7fe83" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/983e95d8-53f7-4e6a-9472-a7f6c6cbd9a8" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/e1ffba92-2bea-4972-8698-668aff944acb" width="200" height="400"/>
+
+    1. 채팅방이 유효기간이 지났을 경우 “채팅방 유효기간이 {유효기간}을 초과하였습니다.” 라는 문구가 보여진다.
+    2. 상대방이 채팅방을 나갔을 경우 “상대방이 채팅방을 나갔습니다.” 라는 문구가 보여진다.
+    3. 상대방이 JoA 앱을 탈퇴했을 경우 “상대방이 JoA를 탈퇴하였습니다.” 라는 문구가 보여진다.
+    4. 채팅방 내 신고내역이 존재했을 경우 “신고된 채팅방입니다.” 라는 문구가 보여진다.
+
+## 채팅 신고
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/70d4e35f-8394-4e3a-8ffb-5133211f2b71" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/1ae19929-e7f6-4c3c-8cf9-0ca3fa1aa685" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/3635d035-cbdd-41d8-8c0b-7885d25aa680" width="200" height="400"/>
+
+1. 채팅 수신자는 채팅 내용이 불순할 경우 신고 카테고리를 선택한 후 채팅을 신고할 수 있다.
+
+## 채팅방 연장하기
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/6cacfe5e-a00c-4277-a4cc-d7ddb79da117" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/c3e7746d-63c4-473c-83c3-68171219fa26" width="200" height="400"/>
+
+1. 사용자는 채팅방을 연장하고 싶은 경우, 채팅방이 생성된 시점으로 24시간 내에 채팅방 연장 투표를 할 수 있다.
+
+## 채팅방 나가기
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/2985f859-4ebf-4c25-901e-98f12f47951b" width="200" height="400"/>
+<img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/1e0a56dd-6463-4428-a689-dc934ffa7613" width="200" height="400"/>
+
+1. 사용자는 ‘채팅방 나가기’ 버튼을 눌러 채팅을 방을 나갈 수 있다.
 
 </div>
 </details>
