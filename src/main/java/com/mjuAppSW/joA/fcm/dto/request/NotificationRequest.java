@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@Schema(description = "채팅방 퇴장 Request")
+@Schema(description = "알림 전송 Request")
 @NoArgsConstructor(force = true)
 @RequiredArgsConstructor
 public class NotificationRequest{
