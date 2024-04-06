@@ -36,6 +36,7 @@ public class AccountService {
                 request.getPassword(), member.getSalt());
         passwordManager.compare(member.getPassword(), hashedPassword);
         member.updateSessionId(sessionService.create());
+        member.updateFcmToken(request.getFcmToken());
         return SessionIdResponse.of(member.getSessionId());
     }
 
