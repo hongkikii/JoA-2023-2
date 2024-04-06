@@ -1,5 +1,6 @@
 package com.mjuAppSW.joA.websocket;
 
+import static com.mjuAppSW.joA.common.constant.AlarmConstants.ChatInChattingRoom;
 import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
 import static com.mjuAppSW.joA.common.constant.Constants.WebSocketHandler.*;
 
@@ -17,6 +18,8 @@ import com.mjuAppSW.joA.domain.roomInMember.service.RoomInMemberQueryService;
 import com.mjuAppSW.joA.domain.roomInMember.service.RoomInMemberService;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoExceptDateVO;
 
+import com.mjuAppSW.joA.fcm.service.FCMService;
+import com.mjuAppSW.joA.fcm.vo.FCMInfoVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -45,6 +48,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private final RoomService roomService;
     private final RoomQueryService roomQueryService;
     private final MessageReportRepository messageReportRepository;
+    private final FCMService fcmService;
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -65,7 +69,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         return memberId;
     }
 
-    public void createRoomManage(String roomId, String memberId1, String memberId2){
+    public void createRoomManage(String roomId, String memberId1, String memberId2) {
         roomService.findByRoom(Long.parseLong(roomId));
         String[] idArr = {memberId1, memberId2};
         roomInMemberService.create(Long.parseLong(roomId), idArr);
@@ -83,7 +87,22 @@ public class WebSocketHandler extends TextWebSocketHandler {
             Long saveId = saveMessage(roomId, memberId, content, isChecked);
             updateCurrentMessage(roomId, memberId);
             sendMessage(content, saveId, session, roomSessionsList);
+            makeFCMVO(roomId, memberId, content, session);
         }
+    }
+
+    private void makeFCMVO(String roomId, String memberId, String content, WebSocketSession session){
+        List<WebSocketSession> roomSessionsList = roomSessions.get(roomId);
+        String targetMemberId = null;
+        for(WebSocketSession targetSession : roomSessionsList){
+            if(!targetSession.equals(session)){
+                targetMemberId = targetSession.getId();
+            }
+        }
+        Member targetMember = memberQueryService.getById(Long.parseLong(targetMemberId));
+        String opponentMemberName = memberQueryService.getById(Long.parseLong(memberId)).getName();
+        fcmService.send(
+            FCMInfoVO.ofWithContent(targetMember, opponentMemberName, ChatInChattingRoom, content));
     }
 
 

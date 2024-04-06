@@ -1,9 +1,12 @@
 package com.mjuAppSW.joA.domain.roomInMember.service;
 
+import static com.mjuAppSW.joA.common.constant.AlarmConstants.CreateChattingRoom;
+import static com.mjuAppSW.joA.common.constant.AlarmConstants.VoteChattingRoom;
 import static com.mjuAppSW.joA.common.constant.Constants.Encrypt.*;
 import static com.mjuAppSW.joA.common.constant.Constants.Message.*;
 import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
 
+import com.mjuAppSW.joA.common.constant.AlarmConstants;
 import com.mjuAppSW.joA.common.exception.BusinessException;
 import com.mjuAppSW.joA.domain.member.dto.response.ChattingPageResponse;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
@@ -24,6 +27,8 @@ import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoIncludeMessageVO;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoVO;
 import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoExceptDateVO;
 
+import com.mjuAppSW.joA.fcm.service.FCMService;
+import com.mjuAppSW.joA.fcm.vo.FCMInfoVO;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -46,6 +51,7 @@ public class RoomInMemberService {
     private final RoomInMemberRepository roomInMemberRepository;
     private final MessageRepository messageRepository;
     private final MemberQueryService memberQueryService;
+    private final FCMService fcmService;
 
     public RoomListResponse getChattingRoomListPage(Long memberId) {
         Member member = memberQueryService.getBySessionId(memberId);
@@ -138,6 +144,22 @@ public class RoomInMemberService {
 
             roomInMemberRepository.save(roomInMember);
         }
+
+        makeFCMVO(idArr, CreateChattingRoom);
+    }
+
+    private void makeFCMVO(String[] memberIds, AlarmConstants alarm){
+        List<Member> members = new ArrayList<>();
+        for(String memberId : memberIds){
+            Member member = memberQueryService.getById(Long.parseLong(memberId));
+            members.add(member);
+        }
+
+        for(int i=0; i<2; i++){
+            Member targetMember = members.get(i);
+            String name = members.get((i + 1) % members.size()).getName();
+            fcmService.send(FCMInfoVO.of(targetMember, name, alarm));
+        }
     }
 
     @Transactional
@@ -151,6 +173,9 @@ public class RoomInMemberService {
 
         roomInMember.saveResult(request.getResult());
         RoomInMember anotherRoomInMember = roomInMemberQueryService.getOpponentByRoomAndMember(room, member);
+
+        fcmService.send(FCMInfoVO.of(anotherRoomInMember.getMember(), roomInMember.getMember().getName(), VoteChattingRoom));
+
         return VoteResponse.of(anotherRoomInMember.getRoom().getId(), anotherRoomInMember.getMember().getId(), anotherRoomInMember.getResult());
     }
 
@@ -200,7 +225,7 @@ public class RoomInMemberService {
 
     private String decrypt(String cipherText, String encryptionKey){
         try{
-            Cipher cipher = Cipher.getInstance(alg);
+            Cipher cipher = Cipher.getInstance(ALG);
             SecretKeySpec keySpec = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
             IvParameterSpec IV = new IvParameterSpec(encryptionKey.substring(0,16).getBytes());
             cipher.init(Cipher.DECRYPT_MODE, keySpec, IV);
