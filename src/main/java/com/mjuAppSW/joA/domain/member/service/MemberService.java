@@ -27,7 +27,7 @@ public class MemberService {
 
     @Transactional
     public void create(Long sessionId, String name, String loginId,
-                         String password, String uEmail, MCollege mCollege) {
+                         String password, String uEmail, MCollege mCollege, String fcmToken) {
         passwordManager.validate(password);
         String salt = passwordManager.createSalt();
         String hashedPassword = passwordManager.createHashed(password, salt);
@@ -38,7 +38,8 @@ public class MemberService {
                             .salt(salt)
                             .uEmail(uEmail)
                             .college(mCollege)
-                            .sessionId(sessionId).build();
+                            .sessionId(sessionId)
+                            .fcmToken(fcmToken).build();
         memberRepository.save(member);
         PCollege pCollege = pCollegeService.getBy(mCollege.getId());
         Location location = new Location(member.getId(), pCollege);

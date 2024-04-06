@@ -21,4 +21,6 @@ public class JoinRequest {
     private final String name;
     @NotBlank
     private final String password;
+    @NotBlank
+    private final String fcmToken;
 }
