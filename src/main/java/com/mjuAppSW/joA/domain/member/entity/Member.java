@@ -69,8 +69,11 @@ public class Member {
     @Column(name = "Stop_end_date")
     private LocalDateTime stopEndDate;
 
+    @Column(name ="Fcm_token")
+    private String fcmToken;
+
     @Builder
-    public Member(Long id, String name, String loginId, String password, String salt, String uEmail, MCollege college, Long sessionId) {
+    public Member(Long id, String name, String loginId, String password, String salt, String uEmail, MCollege college, Long sessionId, String fcmToken) {
         this.id = id;
         this.name = name;
         this.loginId = loginId;
@@ -84,6 +87,7 @@ public class Member {
         this.sessionId = sessionId;
         this.reportCount = ZERO;
         this.status = Status.ACTIVE;
+        this.fcmToken = fcmToken;
     }
 
     public void updateSessionId(Long sessionId) {
@@ -140,4 +144,6 @@ public class Member {
         deleteUrlCode();
         this.isWithdrawal = true;
     }
+
+    public void updateFcmToken(String fcmToken){ this.fcmToken = fcmToken; }
 }
