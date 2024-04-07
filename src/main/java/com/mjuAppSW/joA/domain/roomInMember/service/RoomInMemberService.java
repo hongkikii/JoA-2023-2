@@ -1,7 +1,6 @@
 package com.mjuAppSW.joA.domain.roomInMember.service;
 
 import static com.mjuAppSW.joA.common.constant.AlarmConstants.CreateChattingRoom;
-import static com.mjuAppSW.joA.common.constant.AlarmConstants.VoteChattingRoom;
 import static com.mjuAppSW.joA.common.constant.Constants.Encrypt.*;
 import static com.mjuAppSW.joA.common.constant.Constants.Message.*;
 import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
@@ -173,9 +172,6 @@ public class RoomInMemberService {
 
         roomInMember.saveResult(request.getResult());
         RoomInMember anotherRoomInMember = roomInMemberQueryService.getOpponentByRoomAndMember(room, member);
-
-        fcmService.send(FCMInfoVO.of(anotherRoomInMember.getMember(), roomInMember.getMember().getName(), VoteChattingRoom));
-
         return VoteResponse.of(anotherRoomInMember.getRoom().getId(), anotherRoomInMember.getMember().getId(), anotherRoomInMember.getResult());
     }
 
