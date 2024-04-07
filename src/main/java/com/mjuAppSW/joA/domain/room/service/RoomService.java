@@ -90,7 +90,6 @@ public class RoomService {
         for(int i=0; i<2; i++){
             Member targetMember = members.get(i);
             String name = members.get((i + 1) % members.size()).getName();
-            log.info(targetMember.getName(), name);
             fcmService.send(FCMInfoVO.of(targetMember, name, alarm));
         }
     }
