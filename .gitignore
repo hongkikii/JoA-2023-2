@@ -46,3 +46,6 @@ application-dev.yml
 
 # Init data
 /src/main/java/com/mjuAppSW/joA/common/data/
+
+# Ignore firebaes/jsonfile
+/src/main/resources/firebase
