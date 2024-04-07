@@ -4,6 +4,7 @@ import static com.mjuAppSW.joA.common.constant.AlarmConstants.ChatInChattingRoom
 import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
 import static com.mjuAppSW.joA.common.constant.Constants.WebSocketHandler.*;
 
+import com.mjuAppSW.joA.common.constant.Constants;
 import com.mjuAppSW.joA.common.exception.BusinessException;
 import com.mjuAppSW.joA.domain.room.service.RoomQueryService;
 import com.mjuAppSW.joA.domain.member.entity.Member;
@@ -20,6 +21,7 @@ import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoExceptDateVO;
 
 import com.mjuAppSW.joA.fcm.service.FCMService;
 import com.mjuAppSW.joA.fcm.vo.FCMInfoVO;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -87,22 +89,16 @@ public class WebSocketHandler extends TextWebSocketHandler {
             Long saveId = saveMessage(roomId, memberId, content, isChecked);
             updateCurrentMessage(roomId, memberId);
             sendMessage(content, saveId, session, roomSessionsList);
-            makeFCMVO(roomId, memberId, content, session);
         }
     }
 
-    private void makeFCMVO(String roomId, String memberId, String content, WebSocketSession session){
-        List<WebSocketSession> roomSessionsList = roomSessions.get(roomId);
-        String targetMemberId = null;
-        for(WebSocketSession targetSession : roomSessionsList){
-            if(!targetSession.equals(session)){
-                targetMemberId = targetSession.getId();
-            }
-        }
-        Member targetMember = memberQueryService.getById(Long.parseLong(targetMemberId));
-        String opponentMemberName = memberQueryService.getById(Long.parseLong(memberId)).getName();
-        fcmService.send(
-            FCMInfoVO.ofWithContent(targetMember, opponentMemberName, ChatInChattingRoom, content));
+    private void makeFCMVO(String roomId, String memberId, String content){
+        Room room = roomQueryService.getById(Long.parseLong(roomId));
+        Member member = memberQueryService.getById(Long.parseLong(memberId));
+
+        RoomInMember anotherRoomInMember = roomInMemberQueryService.getOpponentByRoomAndMember(room, member);
+
+        fcmService.send(FCMInfoVO.ofWithContent(anotherRoomInMember.getMember(), member.getName(), ChatInChattingRoom, content));
     }
 
 
