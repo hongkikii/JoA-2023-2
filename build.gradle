@@ -50,6 +50,9 @@ dependencies {
 	implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
 
 	implementation "com.slack.api:slack-api-client:1.36.1"
+
+	implementation "com.google.firebase:firebase-admin:7.1.1"
+	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.10.0'
 }
 
 tasks.named('test') {

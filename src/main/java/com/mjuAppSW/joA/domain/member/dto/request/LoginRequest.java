@@ -15,4 +15,6 @@ public class LoginRequest {
     private final String loginId;
     @NotBlank
     private final String password;
+    @NotBlank
+    private final String fcmToken;
 }

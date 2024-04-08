@@ -107,7 +107,11 @@ public class Constants {
     }
 
     public static class Encrypt{
-        public static final String alg = "AES/CBC/PKCS5Padding";
+        public static final String ALG = "AES/CBC/PKCS5Padding";
+    }
+
+    public static class Heart{
+        public static final String ANONYMOUS = "익명";
     }
 
     public static int ZERO = 0;

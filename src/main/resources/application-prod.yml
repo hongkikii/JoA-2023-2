@@ -52,6 +52,11 @@ slack:
   channel:
     monitor: ${SLACK_CHANNEL_MONITOR}
 
+fcm:
+  url: ${FCM_URL}
+  json:
+    path: ${FCM_JSON_PATH}
+
 server:
   tomcat:
     max-threads: 1200

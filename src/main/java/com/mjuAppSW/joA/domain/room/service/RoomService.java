@@ -1,10 +1,13 @@
 package com.mjuAppSW.joA.domain.room.service;
 
+import static com.mjuAppSW.joA.common.constant.AlarmConstants.CreateChattingRoom;
+import static com.mjuAppSW.joA.common.constant.AlarmConstants.ExtendChattingRoom;
 import static com.mjuAppSW.joA.common.constant.Constants.Room.*;
 import static com.mjuAppSW.joA.common.constant.Constants.Room.OVER_ONE_DAY;
 import static com.mjuAppSW.joA.common.constant.Constants.Room.OVER_SEVEN_DAY;
 import static com.mjuAppSW.joA.common.constant.Constants.WebSocketHandler.*;
 
+import com.mjuAppSW.joA.common.constant.AlarmConstants;
 import com.mjuAppSW.joA.common.exception.BusinessException;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.message.entity.Message;
@@ -19,6 +22,8 @@ import com.mjuAppSW.joA.domain.roomInMember.entity.RoomInMember;
 import com.mjuAppSW.joA.domain.roomInMember.repository.RoomInMemberRepository;
 import com.mjuAppSW.joA.domain.roomInMember.service.RoomInMemberQueryService;
 
+import com.mjuAppSW.joA.fcm.service.FCMService;
+import com.mjuAppSW.joA.fcm.vo.FCMInfoVO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +48,7 @@ public class RoomService {
     private final MemberQueryService memberQueryService;
     private final MessageRepository messageRepository;
     private final MessageReportRepository messageReportRepository;
+    private final FCMService fcmService;
 
     @Transactional
     public RoomResponse create(LocalDateTime createdRoomDate){
@@ -52,6 +58,7 @@ public class RoomService {
             .encryptKey(makeRandomKey())
             .build();
         Room saveRoom = roomRepository.save(room);
+
         return RoomResponse.of(saveRoom.getId());
     }
 
@@ -68,7 +75,23 @@ public class RoomService {
         if(room.getStatus().equals(EXTEND)){
             throw BusinessException.RoomAlreadyExtendException;
         }
+
+        makeFCMVO(room, ExtendChattingRoom);
+
         room.updateStatusAndDate(updateRoomStatusDate);
+    }
+
+    private void makeFCMVO(Room room, AlarmConstants alarm){
+        List<Member> members = new ArrayList<>();
+        for(RoomInMember roomInMember : room.getRoomInMember()){
+            members.add(roomInMember.getMember());
+        }
+
+        for(int i=0; i<2; i++){
+            Member targetMember = members.get(i);
+            String name = members.get((i + 1) % members.size()).getName();
+            fcmService.send(FCMInfoVO.of(targetMember, name, alarm));
+        }
     }
 
     public void checkExisted(Long memberId1, Long memberId2) {

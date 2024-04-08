@@ -24,6 +24,12 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
+      - name: Setup Firebase Config
+        run: |
+          mkdir -p ./src/main/resources/firebase
+          echo "${{ secrets.FIREBASE_CONFIG }}" | base64 -d > ./src/main/resources/firebase/joa-fcm-sdk.json
+        shell: bash
+
       - name: Build with Gradle
         run: ./gradlew build
 

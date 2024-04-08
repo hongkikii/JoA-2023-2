@@ -103,7 +103,7 @@ public class MessageService {
 
     private String encrypt(String text, String encryptionKey) {
         try{
-            Cipher cipher = Cipher.getInstance(alg);
+            Cipher cipher = Cipher.getInstance(ALG);
             SecretKeySpec keySpec = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
             IvParameterSpec IV = new IvParameterSpec(encryptionKey.substring(0,16).getBytes());
             cipher.init(Cipher.ENCRYPT_MODE, keySpec, IV);
@@ -117,7 +117,7 @@ public class MessageService {
 
     private String decrypt(String cipherText, String encryptionKey){
         try{
-            Cipher cipher = Cipher.getInstance(alg);
+            Cipher cipher = Cipher.getInstance(ALG);
             SecretKeySpec keySpec = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
             IvParameterSpec IV = new IvParameterSpec(encryptionKey.substring(0,16).getBytes());
             cipher.init(Cipher.DECRYPT_MODE, keySpec, IV);

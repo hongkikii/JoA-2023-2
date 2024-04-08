@@ -1,10 +1,14 @@
 package com.mjuAppSW.joA.domain.vote.service;
 
+import static com.mjuAppSW.joA.common.constant.AlarmConstants.VoteGame;
+
 import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
 import com.mjuAppSW.joA.domain.vote.entity.Vote;
 import com.mjuAppSW.joA.domain.vote.repository.VoteRepository;
 import com.mjuAppSW.joA.domain.voteCategory.service.VoteCategoryQueryService;
+import com.mjuAppSW.joA.fcm.service.FCMService;
+import com.mjuAppSW.joA.fcm.vo.FCMInfoVO;
 import com.mjuAppSW.joA.geography.block.service.BlockQueryService;
 import com.mjuAppSW.joA.domain.vote.dto.request.VoteRequest;
 import com.mjuAppSW.joA.domain.vote.dto.response.VoteListResponse;
@@ -27,6 +31,7 @@ public class VoteService {
     private final VoteCategoryQueryService voteCategoryQueryService;
     private final BlockQueryService blockQueryService;
     private final MemberQueryService memberQueryService;
+    private final FCMService fcmService;
 
     @Transactional
     public void send(VoteRequest request) {
@@ -40,6 +45,8 @@ public class VoteService {
         voteQueryService.validateNoTodayVote(giveMemberId, takeMemberId, voteCategory.getId());
         voteQueryService.validateNoInvalidVotes(giveMemberId, takeMemberId);
         blockQueryService.validateNoBlock(giveMemberId, takeMemberId);
+
+        fcmService.send(FCMInfoVO.of(takeMember, giveMember.getName(), VoteGame));
 
         create(giveMember, takeMember, voteCategory, request.getHint());
     }

@@ -54,7 +54,7 @@ public class JoinService { //FIXME
         MCollege mCollege = mCollegeQueryService.getByDomain(splitEMail[1]);
 
         memberService.create(sessionId, request.getName(), request.getLoginId(),
-                            request.getPassword(), uEmail, mCollege);
+                            request.getPassword(), uEmail, mCollege, request.getFcmToken());
         emptyCache(sessionId);
     }
 
