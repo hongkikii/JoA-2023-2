@@ -98,6 +98,10 @@ public class Member {
         this.sessionId = null;
     }
 
+    public void expireFcmToken(){
+        this.fcmToken = null;
+    }
+
     public void updatePassword(String password) {
         this.password = password;
     }

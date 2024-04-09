@@ -44,6 +44,7 @@ public class AccountService {
     public void logout(Long sessionId) {
         Member member = memberQueryService.getBySessionId(sessionId);
         member.expireSessionId();
+        member.expireFcmToken();
     }
 
     public void findLoginId(String collegeEmail, Long collegeId) {
