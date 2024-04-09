@@ -54,6 +54,7 @@ slack:
 
 fcm:
   url: ${FCM_URL}
+  project-id: ${FCM_PROJECT_ID}
   json:
     path: ${FCM_JSON_PATH}
 
