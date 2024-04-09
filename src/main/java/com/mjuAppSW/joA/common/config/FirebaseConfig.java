@@ -15,6 +15,10 @@ import org.springframework.core.io.ClassPathResource;
 public class FirebaseConfig {
     @Value(value = "${fcm.json.path}")
     private String jsonPath;
+
+    @Value(value = "${fcm.project-id}")
+    private String projectId;
+
     private ClassPathResource firebaseResource;
 
     @PostConstruct
@@ -26,6 +30,7 @@ public class FirebaseConfig {
     FirebaseApp firebaseApp() throws IOException{
         FirebaseOptions options = FirebaseOptions.builder()
             .setCredentials(GoogleCredentials.fromStream(firebaseResource.getInputStream()))
+            .setProjectId(projectId)
             .build();
         return FirebaseApp.initializeApp(options);
     }
