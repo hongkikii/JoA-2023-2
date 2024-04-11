@@ -57,7 +57,7 @@ public class FCMService {
             .message(FCMMessageVO.Message.builder()
                 .token(vo.getTargetMember().getFcmToken())
                 .notification(FCMMessageVO.Notification.builder()
-                    .title(vo.getConstants().getTitle())
+                    .title(vo.getMemberName() + " " + vo.getConstants().getTitle())
                     .body(vo.getConstants().getBody())
                     .build())
                 .build())
