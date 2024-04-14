@@ -10,14 +10,12 @@ import lombok.Getter;
 @Builder(access = AccessLevel.PRIVATE)
 public class FCMInfoVO {
     private final String targetMemberToken;
-    private final String categoryName;
     private final String titleValue;
     private final AlarmConstants constants;
     private final String content;
 
-    public FCMInfoVO(String targetMemberToken, String categoryName, String titleValue, AlarmConstants constants, String content){
+    public FCMInfoVO(String targetMemberToken, String titleValue, AlarmConstants constants, String content){
         this.targetMemberToken = targetMemberToken;
-        this.categoryName = categoryName;
         this.titleValue = titleValue;
         this.constants = constants;
         this.content = content;
