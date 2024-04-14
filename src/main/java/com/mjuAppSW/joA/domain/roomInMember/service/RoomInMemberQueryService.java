@@ -1,5 +1,6 @@
 package com.mjuAppSW.joA.domain.roomInMember.service;
 
+import com.mjuAppSW.joA.domain.member.vo.UserFcmTokenVO;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -41,6 +42,11 @@ public class RoomInMemberQueryService {
 	public UserInfoVO getOpponentUserInfoByRoomAndMember(Room room, Member member){
 		return roomInMemberRepository.findOpponentUserInfoByRoomAndMember(room, member)
 			.orElseThrow(() -> BusinessException.MemberNotFoundException);
+	}
+
+	public UserFcmTokenVO getOpponentFcmTokenByRoomAndMember(Room room, Member member){
+		return roomInMemberRepository.findOpponentFcmTokenByRoomAndMember(room, member)
+			.orElseThrow(() -> BusinessException.FcmTokenNotFoundException);
 	}
 
 	public RoomInMember getOpponentByRoomAndMemberAndExpired(Room room, Member member, String expired){

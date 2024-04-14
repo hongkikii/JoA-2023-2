@@ -46,7 +46,7 @@ public class FCMService {
                 .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
                 .build();
             Response response = client.newCall(request).execute();
-            log.info(response.body().string());
+            log.info("FCM send success = {}", response.body().string());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -55,10 +55,10 @@ public class FCMService {
     public String make(FCMInfoVO vo) throws JsonProcessingException {
         FCMMessageVO fcmMessageVO = FCMMessageVO.builder()
             .message(FCMMessageVO.Message.builder()
-                .token(vo.getTargetMember().getFcmToken())
+                .token(vo.getTargetMemberToken())
                 .notification(FCMMessageVO.Notification.builder()
-                    .title(vo.getMemberName() + " " + vo.getConstants().getTitle())
-                    .body(vo.getConstants().getBody())
+                    .title(vo.getTitleValue() + vo.getConstants().getTitle())
+                    .body(decideBody(vo.getConstants().getBody(), vo.getContent()))
                     .build())
                 .build())
             .validateOnly(false)
@@ -66,7 +66,12 @@ public class FCMService {
         return objectMapper.writeValueAsString(fcmMessageVO);
     }
 
-    private String getAccessToken () throws IOException {
+    private String decideBody(String body, String content){
+        if(body == null) return content;
+        return body;
+    }
+
+    private String getAccessToken() throws IOException {
         GoogleCredentials googleCredentials = GoogleCredentials
             .fromStream(new ClassPathResource(jsonPath).getInputStream())
             .createScoped(Arrays.asList("https://www.googleapis.com/auth/cloud-platform"));
