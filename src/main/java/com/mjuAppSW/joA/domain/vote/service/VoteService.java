@@ -46,7 +46,7 @@ public class VoteService {
         voteQueryService.validateNoInvalidVotes(giveMemberId, takeMemberId);
         blockQueryService.validateNoBlock(giveMemberId, takeMemberId);
 
-        fcmService.send(FCMInfoVO.of(takeMember, giveMember.getName(), VoteGame));
+        fcmService.send(FCMInfoVO.of(takeMember.getFcmToken(), voteCategory.getName(), VoteGame));
 
         create(giveMember, takeMember, voteCategory, request.getHint());
     }

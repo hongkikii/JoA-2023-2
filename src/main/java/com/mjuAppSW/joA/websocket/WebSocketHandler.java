@@ -6,6 +6,7 @@ import static com.mjuAppSW.joA.common.constant.Constants.WebSocketHandler.*;
 
 import com.mjuAppSW.joA.common.constant.Constants;
 import com.mjuAppSW.joA.common.exception.BusinessException;
+import com.mjuAppSW.joA.domain.member.vo.UserFcmTokenVO;
 import com.mjuAppSW.joA.domain.room.service.RoomQueryService;
 import com.mjuAppSW.joA.domain.member.entity.Member;
 import com.mjuAppSW.joA.domain.member.service.MemberQueryService;
@@ -21,10 +22,10 @@ import com.mjuAppSW.joA.domain.roomInMember.vo.RoomInfoExceptDateVO;
 
 import com.mjuAppSW.joA.fcm.service.FCMService;
 import com.mjuAppSW.joA.fcm.vo.FCMInfoVO;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -89,6 +90,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
             Long saveId = saveMessage(roomId, memberId, content, isChecked);
             updateCurrentMessage(roomId, memberId);
             sendMessage(content, saveId, session, roomSessionsList);
+            makeFCMVO(roomId, memberId, content);
         }
     }
 
@@ -96,11 +98,10 @@ public class WebSocketHandler extends TextWebSocketHandler {
         Room room = roomQueryService.getById(Long.parseLong(roomId));
         Member member = memberQueryService.getById(Long.parseLong(memberId));
 
-        RoomInMember anotherRoomInMember = roomInMemberQueryService.getOpponentByRoomAndMember(room, member);
+        UserFcmTokenVO opponentTokenVO = roomInMemberQueryService.getOpponentFcmTokenByRoomAndMember(room, member);
 
-        fcmService.send(FCMInfoVO.ofWithContent(anotherRoomInMember.getMember(), member.getName(), ChatInChattingRoom, content));
+        fcmService.send(FCMInfoVO.ofWithContent(opponentTokenVO.getFcmToken(), member.getName(), ChatInChattingRoom, content));
     }
-
 
     private Boolean checkCondition(Long roomId, Long memberId, WebSocketSession session) throws IOException {
         if(checkMessageReport(roomId, session) && checkExpired(roomId, memberId, session)

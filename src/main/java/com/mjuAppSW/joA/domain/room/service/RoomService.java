@@ -75,10 +75,9 @@ public class RoomService {
         if(room.getStatus().equals(EXTEND)){
             throw BusinessException.RoomAlreadyExtendException;
         }
+        room.updateStatusAndDate(updateRoomStatusDate);
 
         makeFCMVO(room, ExtendChattingRoom);
-
-        room.updateStatusAndDate(updateRoomStatusDate);
     }
 
     private void makeFCMVO(Room room, AlarmConstants alarm){
@@ -88,9 +87,9 @@ public class RoomService {
         }
 
         for(int i=0; i<2; i++){
-            Member targetMember = members.get(i);
-            String name = members.get((i + 1) % members.size()).getName();
-            fcmService.send(FCMInfoVO.of(targetMember, name, alarm));
+            String targetMemberToken = members.get(i).getFcmToken();
+            String opponentName = members.get((i + 1) % members.size()).getName();
+            fcmService.send(FCMInfoVO.of(targetMemberToken, opponentName, alarm));
         }
     }
 

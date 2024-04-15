@@ -65,6 +65,9 @@ public class BusinessException extends RuntimeException {
     public static final BusinessException SessionNotFoundException = new BusinessException(
         ErrorCode.SESSION_NOT_FOUND
     );
+    public static final BusinessException FcmTokenNotFoundException = new BusinessException(
+        ErrorCode.FCM_TOKEN_NOT_FOUND
+    );
 
     // Message
     public static final BusinessException FailDecryptException = new BusinessException(

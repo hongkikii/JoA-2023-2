@@ -36,6 +36,7 @@ public enum ErrorCode {
     LOGIN_ID_NOT_AUTHORIZED(404, "M013", "아이디 중복 확인이 완료되지 않았습니다.", false),
     PERMANENT_BAN(403, "M014", "영구 정지된 계정입니다.", false),
     PASSWORD_NOT_FOUND(404, "M015", "비밀번호가 올바르지 않습니다.", false),
+    FCM_TOKEN_NOT_FOUND(404, "M016", "fcm 토큰을 찾을 수 없습니다.", true),
 
     // PCollege
     COLLEGE_NOT_FOUND(404,"P001" , "학교 정보를 찾을 수 없습니다.", false),

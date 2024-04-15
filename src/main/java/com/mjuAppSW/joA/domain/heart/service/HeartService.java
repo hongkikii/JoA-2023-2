@@ -46,14 +46,14 @@ public class HeartService {
         roomInMemberQueryService.validateNoRoom(giveMember, takeMember);
         boolean isMatched = heartQueryService.isTodayHeartExisted(takeMemberId, giveMemberId);
 
-        fcmService.send(decide(takeMember, giveMember.getName(), request.getNamed()));
+        fcmService.send(decide(takeMember.getFcmToken(), giveMember.getName(), request.getNamed()));
 
         return HeartResponse.of(isMatched, giveMember, takeMember);
     }
 
-    private FCMInfoVO decide(Member takeMember, String giveMemberName, boolean named){
-        if(named) return FCMInfoVO.of(takeMember, giveMemberName, giveHeart);
-        else return FCMInfoVO.of(takeMember, ANONYMOUS, giveHeart);
+    private FCMInfoVO decide(String takeMemberToken, String giveMemberName, boolean named){
+        if(named) return FCMInfoVO.of(takeMemberToken, ANONYMOUS, giveHeart);
+        else return FCMInfoVO.of(takeMemberToken, giveMemberName, giveHeart);
     }
 
     private Heart create(Long giveId, Member takeMember) {

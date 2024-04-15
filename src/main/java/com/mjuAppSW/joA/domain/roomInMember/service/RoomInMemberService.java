@@ -1,6 +1,7 @@
 package com.mjuAppSW.joA.domain.roomInMember.service;
 
 import static com.mjuAppSW.joA.common.constant.AlarmConstants.CreateChattingRoom;
+import static com.mjuAppSW.joA.common.constant.AlarmConstants.VoteChattingRoom;
 import static com.mjuAppSW.joA.common.constant.Constants.Encrypt.*;
 import static com.mjuAppSW.joA.common.constant.Constants.Message.*;
 import static com.mjuAppSW.joA.common.constant.Constants.RoomInMember.*;
@@ -155,9 +156,9 @@ public class RoomInMemberService {
         }
 
         for(int i=0; i<2; i++){
-            Member targetMember = members.get(i);
-            String name = members.get((i + 1) % members.size()).getName();
-            fcmService.send(FCMInfoVO.of(targetMember, name, alarm));
+            String targetMemberToken = members.get(i).getFcmToken();
+            String opponentName = members.get((i + 1) % members.size()).getName();
+            fcmService.send(FCMInfoVO.of(targetMemberToken, opponentName, alarm));
         }
     }
 
@@ -172,6 +173,7 @@ public class RoomInMemberService {
 
         roomInMember.saveResult(request.getResult());
         RoomInMember anotherRoomInMember = roomInMemberQueryService.getOpponentByRoomAndMember(room, member);
+        fcmService.send(FCMInfoVO.of(anotherRoomInMember.getMember().getFcmToken(), member.getName(), VoteChattingRoom));
         return VoteResponse.of(anotherRoomInMember.getRoom().getId(), anotherRoomInMember.getMember().getId(), anotherRoomInMember.getResult());
     }
 

@@ -1,5 +1,6 @@
 package com.mjuAppSW.joA.domain.roomInMember.repository;
 
+import com.mjuAppSW.joA.domain.member.vo.UserFcmTokenVO;
 import com.mjuAppSW.joA.domain.room.entity.Room;
 import com.mjuAppSW.joA.domain.roomInMember.entity.RoomInMember;
 import com.mjuAppSW.joA.domain.member.entity.Member;
@@ -53,5 +54,8 @@ public interface RoomInMemberRepository extends JpaRepository<RoomInMember, Long
     @Query("SELECT rim.room.id AS roomId ,rim.member.id AS memberId, rim.member.name AS name, rim.member.urlCode AS urlCode, rim.member.bio AS bio " +
         "FROM RoomInMember rim WHERE rim.room = :room AND rim.member <> :member")
     Optional<UserInfoVO> findOpponentUserInfoByRoomAndMember(@Param("room") Room room, @Param("member") Member member);
+
+    @Query("SELECT rim.member.fcmToken AS fcmToken FROM RoomInMember rim WHERE rim.room = :room AND rim.member <> :member")
+    Optional<UserFcmTokenVO> findOpponentFcmTokenByRoomAndMember(@Param("room") Room room, @Param("member") Member member);
 }
 

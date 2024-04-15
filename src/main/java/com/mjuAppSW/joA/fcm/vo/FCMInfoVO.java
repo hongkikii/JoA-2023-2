@@ -9,33 +9,32 @@ import lombok.Getter;
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
 public class FCMInfoVO {
-    private final Member targetMember;
-    private final String memberName;
+    private final String targetMemberToken;
+    private final String titleValue;
     private final AlarmConstants constants;
     private final String content;
 
-    public FCMInfoVO(Member targetMember, String memberName, AlarmConstants constants, String content){
-        this.targetMember = targetMember;
-        this.memberName = memberName;
+    public FCMInfoVO(String targetMemberToken, String titleValue, AlarmConstants constants, String content){
+        this.targetMemberToken = targetMemberToken;
+        this.titleValue = titleValue;
         this.constants = constants;
         this.content = content;
     }
 
-    public static FCMInfoVO of(Member targetMember, String memberName, AlarmConstants constants) {
+    public static FCMInfoVO of(String targetMemberToken, String titleValue, AlarmConstants constants) {
         return FCMInfoVO.builder()
-            .targetMember(targetMember)
-            .memberName(memberName)
+            .targetMemberToken(targetMemberToken)
+            .titleValue(titleValue)
             .constants(constants)
             .build();
     }
 
-    public static FCMInfoVO ofWithContent(Member targetMember, String memberName, AlarmConstants constants, String content){
+    public static FCMInfoVO ofWithContent(String targetMemberToken, String titleValue, AlarmConstants constants, String content){
         return FCMInfoVO.builder()
-            .targetMember(targetMember)
-            .memberName(memberName)
+            .targetMemberToken(targetMemberToken)
+            .titleValue(titleValue)
             .constants(constants)
             .content(content)
             .build();
     }
-
 }
