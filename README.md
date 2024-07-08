@@ -274,39 +274,21 @@ height="400"/>
 <img src="https://github.com/hongkikii/JoA-2023-2/assets/61353820/1e0a56dd-6463-4428-a689-dc934ffa7613" width="200" height="400"/>
 
 1. 사용자는 ‘채팅방 나가기’ 버튼을 눌러 채팅을 방을 나갈 수 있다.
-
 </div>
 </details>
-
-<br>
-
-# **✚ 추가 예정 기능**
 
 <details>
 <summary>알림</summary>
 <div markdown="1">
 
-### **기획 의도**
-
-- 하트, 투표, 채팅을 보냈을 때 알림 기능이 있을 시 사용자들 간의 더욱 빠른 소통이 가능할 것으로 예측
-- 실시간 소통은 더욱 활발한 기능 사용으로 이어질 것
-- 뿐만 아니라 사용자들의 어플리케이션 사용 만족도를 높일 것이라 예상
-- 위와 같은 이유로 알림 기능이 필요하다 판단
-
-### **사용 기술**
-
-- FCM, APNs(Apple Push Notification Service)
-
-### **담당자**
-
-- 최종현, 최가의
-
-### **진행 시기**
-
-- 3월 내 구현 후 즉시 도입 예정
+## 알림 발송
+1. 사용자는 하트 전송(익명/실명), 투표, 채팅방, 채팅에 대해 푸시 알림을 받을 수 있다.
+<img scr = "https://github.com/hongkikii/JoA-2023-2/assets/61353820/1b38c6fd-e316-43dd-86d4-70e623a87ee1" width="200" height="400"/>
 
 </div>
 </details>
+
+
 
 <br>
 
