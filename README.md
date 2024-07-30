@@ -283,12 +283,10 @@ height="400"/>
 
 ## 알림 발송
 1. 사용자는 하트 전송(익명/실명), 투표, 채팅방, 채팅에 대해 푸시 알림을 받을 수 있다.
-<img scr = "https://github.com/hongkikii/JoA-2023-2/assets/61353820/1b38c6fd-e316-43dd-86d4-70e623a87ee1" width="200" height="400"/>
+<img src = "https://github.com/hongkikii/JoA-2023-2/assets/61353820/1b38c6fd-e316-43dd-86d4-70e623a87ee1" width="200" height="400"/>
 
 </div>
 </details>
-
-
 
 <br>
 
